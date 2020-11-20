@@ -385,3 +385,6 @@ FodyWeavers.xsd
 
 # IntelliJ configuration folder
 .idea
+
+# App Specfic
+SgfDevs/config/connectionStrings.config
