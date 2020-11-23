@@ -19,50 +19,43 @@ using Umbraco.ModelsBuilder.Embedded;
 
 namespace Umbraco.Web.PublishedModels
 {
-	/// <summary>Presentation</summary>
-	[PublishedModel("presentation")]
-	public partial class Presentation : PublishedContentModel
+	/// <summary>Non-Member Presenter</summary>
+	[PublishedModel("nonMemberPresenter")]
+	public partial class NonMemberPresenter : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		public new const string ModelTypeAlias = "presentation";
+		public new const string ModelTypeAlias = "nonMemberPresenter";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		public new static IPublishedContentType GetModelContentType()
 			=> PublishedModelUtility.GetModelContentType(ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<Presentation, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<NonMemberPresenter, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(), selector);
 #pragma warning restore 0109
 
 		// ctor
-		public Presentation(IPublishedContent content)
+		public NonMemberPresenter(IPublishedElement content)
 			: base(content)
 		{ }
 
 		// properties
 
 		///<summary>
-		/// Group: The group hosting this presentation
+		/// Presenter Name
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("group")]
-		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Group => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("group");
+		[ImplementPropertyType("presenterName")]
+		public string PresenterName => this.Value<string>("presenterName");
 
 		///<summary>
-		/// Presenter
+		/// Profile Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("presenter")]
-		public global::Umbraco.Core.Models.Blocks.BlockListModel Presenter => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("presenter");
-
-		///<summary>
-		/// Skill Tags
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("skillTags")]
-		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> SkillTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("skillTags");
+		[ImplementPropertyType("profileImage")]
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent ProfileImage => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("profileImage");
 	}
 }
