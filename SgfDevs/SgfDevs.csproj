@@ -265,7 +265,13 @@
       <HintPath>..\packages\UmbracoCms.Web.8.9.1\lib\net472\Umbraco.Web.UI.dll</HintPath>
     </Reference>
     <Reference Include="uSync8.BackOffice, Version=8.7.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\uSync.8.7.2\lib\net472\uSync8.BackOffice.dll</HintPath>
+      <HintPath>..\packages\uSync.BackOffice.Core.8.7.2\lib\net472\uSync8.BackOffice.dll</HintPath>
+    </Reference>
+    <Reference Include="uSync8.Community.Contrib, Version=8.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\uSync.Community.Contrib.8.7.2\lib\net472\uSync8.Community.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="uSync8.ContentEdition, Version=8.7.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\uSync.ContentEdition.8.7.2.2\lib\net472\uSync8.ContentEdition.dll</HintPath>
     </Reference>
     <Reference Include="uSync8.Core, Version=8.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\uSync.Core.8.7.2\lib\net472\uSync8.Core.dll</HintPath>
@@ -368,7 +374,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
+        <WebProjectProperties>u
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>65172</DevelopmentServerPort>
