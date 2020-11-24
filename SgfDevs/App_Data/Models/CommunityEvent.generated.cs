@@ -43,5 +43,12 @@ namespace Umbraco.Web.PublishedModels
 		{ }
 
 		// properties
+
+		///<summary>
+		/// Host
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("host")]
+		public global::Umbraco.Core.Models.Blocks.BlockListModel Host => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("host");
 	}
 }

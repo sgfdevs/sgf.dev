@@ -383,6 +383,10 @@ FodyWeavers.xsd
 # Ignore the Models Builder models out of date flag
 **/App_Data/Models/ood.flag
 
+# Media folder
+SgfDevs/Media/
+!SgfDevs/Media/Web.config
+
 # IntelliJ configuration folder
 .idea
 
