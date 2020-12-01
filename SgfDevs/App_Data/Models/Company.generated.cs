@@ -52,6 +52,13 @@ namespace Umbraco.Web.PublishedModels
 		public global::System.Web.IHtmlString AboutText => this.Value<global::System.Web.IHtmlString>("aboutText");
 
 		///<summary>
+		/// Available For Hire
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("availableForHire")]
+		public bool AvailableForHire => this.Value<bool>("availableForHire");
+
+		///<summary>
 		/// Company Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]

@@ -52,6 +52,13 @@ namespace Umbraco.Web.PublishedModels
 		public global::System.Web.IHtmlString AboutText => this.Value<global::System.Web.IHtmlString>("aboutText");
 
 		///<summary>
+		/// Available for Hire
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("availableForHire")]
+		public bool AvailableForHire => this.Value<bool>("availableForHire");
+
+		///<summary>
 		/// Company
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -78,6 +85,13 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("instagramUrl")]
 		public string InstagramUrl => this.Value<string>("instagramUrl");
+
+		///<summary>
+		/// Job Title
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("jobTitle")]
+		public string JobTitle => this.Value<string>("jobTitle");
 
 		///<summary>
 		/// LinkedIn Url
