@@ -19,43 +19,43 @@ using Umbraco.ModelsBuilder.Embedded;
 
 namespace Umbraco.Web.PublishedModels
 {
-	/// <summary>Group</summary>
-	[PublishedModel("group")]
-	public partial class Group : PublishedContentModel
+	/// <summary>Leader</summary>
+	[PublishedModel("leader")]
+	public partial class Leader : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		public new const string ModelTypeAlias = "group";
+		public new const string ModelTypeAlias = "leader";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		public new static IPublishedContentType GetModelContentType()
 			=> PublishedModelUtility.GetModelContentType(ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<Group, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<Leader, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(), selector);
 #pragma warning restore 0109
 
 		// ctor
-		public Group(IPublishedContent content)
+		public Leader(IPublishedElement content)
 			: base(content)
 		{ }
 
 		// properties
 
 		///<summary>
-		/// Leaders
+		/// Member
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("leaders")]
-		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Web.PublishedModels.Leader> Leaders => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Web.PublishedModels.Leader>>("leaders");
+		[ImplementPropertyType("member")]
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Member => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("member");
 
 		///<summary>
-		/// Skill Tags
+		/// Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("skillTags")]
-		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> SkillTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("skillTags");
+		[ImplementPropertyType("title")]
+		public string Title => this.Value<string>("title");
 	}
 }
