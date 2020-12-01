@@ -8,7 +8,7 @@
 - Open `SgfDevs/Web.config`, look for `<add key="Umbraco.Core.ConfigurationStatus" value="8.9.1" />`, and remove the `8.9.1` (or whatever version number we're currently on).
     - Umbraco will automatically add that value back as a part of the install process.
 - Run the project and open it in a browser. You should be presented with the Umbraco install screen.
-- Enter in the details for your local admin user and click Customize.
+- Enter in the details for what will be your local admin user for the CMS and click **Customize**.
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_1.png)
 - Enter in the connection details for your local database. If you do not have a SQL/SQLExpress server to connect to you can select SQL CE
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_2.png)
