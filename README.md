@@ -9,13 +9,22 @@
     - Umbraco will automatically add that value back as a part of the install process.
 - Run the project and open it in a browser. You should be presented with the Umbraco install screen.
 - Enter in the details for what will be your local admin user for the CMS and click **Customize**.
+
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_1.png)
+
 - Enter in the connection details for your local database. If you do not have a SQL/SQLExpress server to connect to you can select SQL CE
+
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_2.png)
+
 - On the next screen be sure to choose **"No thanks, I do not want to install a starter website"**
+
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_3.png)
+
 - Login to the Umbraco backoffice (/umbraco) and go to Settings > uSync.
 - Click the Import dropdown and select Full Import.
+
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_4.png)
+
 - Refresh the page and go to the Content section you should now see some nodes in the content tree.
+
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_5.png)
