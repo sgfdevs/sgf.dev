@@ -101,6 +101,13 @@ namespace Umbraco.Web.PublishedModels
 		public string LinkedInUrl => this.Value<string>("linkedInUrl");
 
 		///<summary>
+		/// Location
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("location")]
+		public string Location => this.Value<string>("location");
+
+		///<summary>
 		/// Meetup Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
