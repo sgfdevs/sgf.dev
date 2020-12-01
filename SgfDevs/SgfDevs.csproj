@@ -337,33 +337,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\Models\CommunityEvent.generated.cs" />
-    <Compile Include="App_Data\Models\Companies.generated.cs" />
-    <Compile Include="App_Data\Models\Company.generated.cs" />
-    <Compile Include="App_Data\Models\CompanyHost.generated.cs" />
-    <Compile Include="App_Data\Models\Event.generated.cs" />
-    <Compile Include="App_Data\Models\Events.generated.cs" />
-    <Compile Include="App_Data\Models\File.generated.cs" />
-    <Compile Include="App_Data\Models\Folder.generated.cs" />
-    <Compile Include="App_Data\Models\Group.generated.cs" />
-    <Compile Include="App_Data\Models\GroupHost.generated.cs" />
-    <Compile Include="App_Data\Models\Groups.generated.cs" />
-    <Compile Include="App_Data\Models\Home.generated.cs" />
-    <Compile Include="App_Data\Models\Image.generated.cs" />
-    <Compile Include="App_Data\Models\IntroImage.generated.cs" />
-    <Compile Include="App_Data\Models\IntroVideo.generated.cs" />
-    <Compile Include="App_Data\Models\Job.generated.cs" />
-    <Compile Include="App_Data\Models\Leader.generated.cs" />
-    <Compile Include="App_Data\Models\ManualEntryHost.generated.cs" />
-    <Compile Include="App_Data\Models\Markdown.generated.cs" />
-    <Compile Include="App_Data\Models\Member.generated.cs" />
-    <Compile Include="App_Data\Models\NonMemberPresenter.generated.cs" />
-    <Compile Include="App_Data\Models\Page.generated.cs" />
-    <Compile Include="App_Data\Models\Presentation.generated.cs" />
-    <Compile Include="App_Data\Models\PresenterPicker.generated.cs" />
-    <Compile Include="App_Data\Models\Tag.generated.cs" />
-    <Compile Include="App_Data\Models\TagGroup.generated.cs" />
-    <Compile Include="App_Data\Models\Tags.generated.cs" />
+    <Content Include="App_Data\Models\*.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
