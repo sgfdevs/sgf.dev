@@ -45,11 +45,60 @@ namespace Umbraco.Web.PublishedModels
 		// properties
 
 		///<summary>
+		/// Established Text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("establishedText")]
+		public string EstablishedText => this.Value<string>("establishedText");
+
+		///<summary>
+		/// Facebook
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("facebook")]
+		public string Facebook => this.Value<string>("facebook");
+
+		///<summary>
+		/// Group Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("groupImage")]
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent GroupImage => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("groupImage");
+
+		///<summary>
+		/// Instagram
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("instagram")]
+		public string Instagram => this.Value<string>("instagram");
+
+		///<summary>
+		/// Intro Image/Video
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("introImageVideo")]
+		public global::Umbraco.Core.Models.Blocks.BlockListModel IntroImageVideo => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("introImageVideo");
+
+		///<summary>
 		/// Leaders
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("leaders")]
-		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Web.PublishedModels.Leader> Leaders => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Web.PublishedModels.Leader>>("leaders");
+		public global::Umbraco.Core.Models.Blocks.BlockListModel Leaders => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("leaders");
+
+		///<summary>
+		/// LinkedIn
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("linkedIn")]
+		public string LinkedIn => this.Value<string>("linkedIn");
+
+		///<summary>
+		/// Meetup
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("meetup")]
+		public string Meetup => this.Value<string>("meetup");
 
 		///<summary>
 		/// Skill Tags
@@ -57,5 +106,33 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("skillTags")]
 		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> SkillTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("skillTags");
+
+		///<summary>
+		/// Twitch
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("twitch")]
+		public string Twitch => this.Value<string>("twitch");
+
+		///<summary>
+		/// Twitter
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("twitter")]
+		public string Twitter => this.Value<string>("twitter");
+
+		///<summary>
+		/// Website
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("website")]
+		public string Website => this.Value<string>("website");
+
+		///<summary>
+		/// YouTube
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("youTube")]
+		public string YouTube => this.Value<string>("youTube");
 	}
 }
