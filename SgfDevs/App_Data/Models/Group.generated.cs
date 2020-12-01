@@ -45,6 +45,13 @@ namespace Umbraco.Web.PublishedModels
 		// properties
 
 		///<summary>
+		/// About Text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("aboutText")]
+		public global::System.Web.IHtmlString AboutText => this.Value<global::System.Web.IHtmlString>("aboutText");
+
+		///<summary>
 		/// Established Text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -52,11 +59,11 @@ namespace Umbraco.Web.PublishedModels
 		public string EstablishedText => this.Value<string>("establishedText");
 
 		///<summary>
-		/// Facebook
+		/// Facebook Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("facebook")]
-		public string Facebook => this.Value<string>("facebook");
+		[ImplementPropertyType("facebookUrl")]
+		public string FacebookUrl => this.Value<string>("facebookUrl");
 
 		///<summary>
 		/// Group Image
@@ -66,11 +73,11 @@ namespace Umbraco.Web.PublishedModels
 		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent GroupImage => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("groupImage");
 
 		///<summary>
-		/// Instagram
+		/// Instagram Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("instagram")]
-		public string Instagram => this.Value<string>("instagram");
+		[ImplementPropertyType("instagramUrl")]
+		public string InstagramUrl => this.Value<string>("instagramUrl");
 
 		///<summary>
 		/// Intro Image/Video
@@ -87,18 +94,18 @@ namespace Umbraco.Web.PublishedModels
 		public global::Umbraco.Core.Models.Blocks.BlockListModel Leaders => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("leaders");
 
 		///<summary>
-		/// LinkedIn
+		/// LinkedIn Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("linkedIn")]
-		public string LinkedIn => this.Value<string>("linkedIn");
+		[ImplementPropertyType("linkedInUrl")]
+		public string LinkedInUrl => this.Value<string>("linkedInUrl");
 
 		///<summary>
-		/// Meetup
+		/// Meetup Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("meetup")]
-		public string Meetup => this.Value<string>("meetup");
+		[ImplementPropertyType("meetupUrl")]
+		public string MeetupUrl => this.Value<string>("meetupUrl");
 
 		///<summary>
 		/// Skill Tags
@@ -108,31 +115,31 @@ namespace Umbraco.Web.PublishedModels
 		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> SkillTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("skillTags");
 
 		///<summary>
-		/// Twitch
+		/// Twitch Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("twitch")]
-		public string Twitch => this.Value<string>("twitch");
+		[ImplementPropertyType("twitchUrl")]
+		public string TwitchUrl => this.Value<string>("twitchUrl");
 
 		///<summary>
-		/// Twitter
+		/// Twitter Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("twitter")]
-		public string Twitter => this.Value<string>("twitter");
+		[ImplementPropertyType("twitterUrl")]
+		public string TwitterUrl => this.Value<string>("twitterUrl");
 
 		///<summary>
-		/// Website
+		/// Website Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("website")]
-		public string Website => this.Value<string>("website");
+		[ImplementPropertyType("websiteUrl")]
+		public string WebsiteUrl => this.Value<string>("websiteUrl");
 
 		///<summary>
-		/// YouTube
+		/// YouTube Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("youTube")]
-		public string YouTube => this.Value<string>("youTube");
+		[ImplementPropertyType("youTubeUrl")]
+		public string YouTubeUrl => this.Value<string>("youTubeUrl");
 	}
 }
