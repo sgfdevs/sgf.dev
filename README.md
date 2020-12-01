@@ -12,7 +12,7 @@
 
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_1.png)
 
-- Enter in the connection details for your local database. If you do not have a SQL/SQLExpress server to connect to you can select SQL CE
+- Enter in the connection details for your local database. If you do not have a SQL/SQLExpress server to connect to you can select SQL CE.
 
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_2.png)
 
@@ -28,3 +28,5 @@
 - Refresh the page and go to the Content section you should now see some nodes in the content tree.
 
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_5.png)
+
+- For good measure, run a build in Visual Studio to compile everything needed on the front-end of the site.
