@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Company-Profile-Card" transform="translate(-139.000000, -316.000000)">
+            <g id="Group" transform="translate(140.000000, 317.000000)">
+                <circle id="Oval-Copy-4" stroke="#D8D8D8" cx="12" cy="12" r="12"></circle>
+                <path d="M12.5,11.5 C14.295625,11.5 15.75,10.045625 15.75,8.25 C15.75,6.454375 14.295625,5 12.5,5 C10.704375,5 9.25,6.454375 9.25,8.25 C9.25,10.045625 10.704375,11.5 12.5,11.5 Z M12.5,13.125 C10.330625,13.125 6,14.21375 6,16.375 L6,18 L19,18 L19,16.375 C19,14.21375 14.669375,13.125 12.5,13.125 Z" id="person" fill="#D8D8D8" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>
