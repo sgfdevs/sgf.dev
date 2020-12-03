@@ -1,5 +1,49 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Web.PublishedModels;
+@using Member = Umbraco.Web.PublishedModels.Member;
+@using Umbraco.Web.PublishedModels;
 @{
-	Layout = null;
+    Layout = "_Layout.cshtml";
+    var devNight = Model.Descendants<ContentModels.Event>().OrderBy(d => d.Date).FirstOrDefault();
+}
+
+@if (devNight != null)
+{
+    var presentations = devNight.Children<Presentation>();
+
+    if (presentations.Any())
+    {
+        <section class="dev_night_banner">
+            <time datetime="@devNight.Date.ToString("MM-dd-yyyy HH:mm:ss")"><span>@devNight.Date.ToString("MMM d, yyyy")</span></time>
+            <div class="headline">
+                <img src="/images/headlines/dev_night.svg" alt="Dev Night">
+            </div>
+
+            <ul class="presentations_@presentations.Count()">
+                @foreach (var presentation in presentations)
+                {
+                    var group = presentation.Group;
+                    //var presenter = (Member)presentation.Presenter;
+
+                    <li>
+                        <figure>
+                            <img src="/images/members/tim_franklin.jpg" alt="Tim Franklin">
+                        </figure>
+
+                        <h3>@presentation.Name</h3>
+
+                        <dl>
+                            <dt>Presented By</dt>
+                            <dd><a href="#">Tim Franklin</a></dd>
+                        </dl>
+
+                        <dl>
+                            <dt>From</dt>
+                            <dd><a href="@group.Url()">@group.Name</a></dd>
+                        </dl>
+                    </li>
+                }
+            </ul>
+        </section>
+    }
 }
