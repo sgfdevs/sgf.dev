@@ -1,10 +1,8 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Web.PublishedModels;
-@using Member = Umbraco.Web.PublishedModels.Member;
-@using Umbraco.Web.PublishedModels;
 @{
     Layout = "_Layout.cshtml";
-    var devNight = Model.Descendants<ContentModels.Event>().OrderBy(d => d.Date).FirstOrDefault();
+    var devNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
 }
 
 @if (devNight != null)
