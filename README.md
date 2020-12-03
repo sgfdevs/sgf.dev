@@ -12,16 +12,11 @@
 
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_1.png)
 
-- Enter in the connection details for your local database. If you do not have a SQL/SQLExpress server to connect to you can select SQL CE.
-
-![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_2.png)
-
-- On the next screen be sure to choose **"No thanks, I do not want to install a starter website"**
-
-![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_3.png)
+- Enter in the connection details for your local SQL database.
 
 - Login to the Umbraco backoffice (/umbraco) and go to Settings > uSync.
-- Click the Import dropdown and select Full Import.
+
+- Click the Import dropdown arrow(not the button text) and select Full Import.
 
 ![](https://mykebates.blob.core.windows.net/towk/sgfdevs/install_4.png)
 
