@@ -1,5 +1,7 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Web.PublishedModels;
+@using Member = Umbraco.Web.PublishedModels.Member;
+
 @{
     Layout = "_Layout.cshtml";
     var devNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
@@ -21,18 +23,18 @@
                 @foreach (var presentation in presentations)
                 {
                     var group = presentation.Group;
-                    //var presenter = (Member)presentation.Presenter;
+                    var presenter = (Member)presentation.Presenter;
 
                     <li>
                         <figure>
-                            <img src="/images/members/tim_franklin.jpg" alt="Tim Franklin">
+                            <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
                         </figure>
 
                         <h3>@presentation.Name</h3>
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="#">Tim Franklin</a></dd>
+                            <dd><a href="#">@presenter.Name</a></dd>
                         </dl>
 
                         <dl>
@@ -45,3 +47,262 @@
         </section>
     }
 }
+
+<section class="upcoming_events">
+    <header>
+        <span>Upcoming</span>
+        <img src="/images/headlines/events.svg" alt="Upcoming Events">
+    </header>
+
+    <div class="scroll_list">
+        <ul>
+            @for (int i = 0; i < 4; i++)
+            {
+                <li>
+                    <a href="#">
+                        <figure>
+                            <img src="/images/event_method.png" alt="Method">
+                        </figure>
+
+                        <div class="content">
+                            <div class="details">
+                                <h3>Method Conf 2021</h3>
+                                <h4>Springfield, MO</h4>
+                                <time datetime="04-28-2020">Oct <span>28</span></time>
+                            </div>
+
+                            <footer>
+                                <div class="host">By <span>Springfield Devs</span></div>
+                                <div class="price">$100</div>
+                            </footer>
+                        </div>
+                    </a>
+                </li>
+
+            }
+        </ul>
+    </div>
+
+    <footer>
+        <a href="#">See All Events</a>
+    </footer>
+</section>
+
+<section class="directory_preview">
+    <header>
+        <section>
+            <img src="/images/headlines/directory.svg" alt="Directory">
+            <span>Find the Best Agencies and Professionals </span>
+        </section>
+
+        <section>
+            <span>
+                <strong>642</strong> Members
+            </span>
+
+            <a href="#" class="button outline dark">Join Us</a>
+        </section>
+    </header>
+
+    <div class="cards inline">
+        <a href="#" class="scroll_trigger scroll_left">
+            <i class="far fa-chevron-left"></i>
+        </a>
+
+        <a href="#" class="scroll_trigger scroll_right">
+            <i class="far fa-chevron-right"></i>
+        </a>
+
+
+        <div class="scroll">
+            <div class="card intro_card">
+                <dl>
+                    <dt>Professional Directory</dt>
+                    <dd>
+                        Find the <strong>best agencies</strong> and <strong>talented professionals</strong> in Southwest Missouri
+                    </dd>
+                </dl>
+
+                <p>
+                    342 profiles found
+                </p>
+
+                <footer>
+                    <a href="#" class="button outline">Explore</a>
+                </footer>
+            </div>
+
+            @for (int cc = 0; cc < 4; cc++)
+            {
+                <div class="card company_card">
+                    <figure>
+                        <img src="/images/cards/business.jpg" alt="">
+                        <figcaption>
+                            <div>Platinum Sponsor</div>
+                            <div>Founding Sponsor</div>
+                        </figcaption>
+                    </figure>
+
+                    <div class="content">
+                        <dl>
+                            <dt>Marlin Network</dt>
+                            <dd>Springfield, MO</dd>
+                        </dl>
+
+                        <footer>
+                            <div class="members">
+                                @for (int i = 1; i < 5; i++)
+                                {
+                                    var imagePath = "/images/members/member_0" + i + ".jpeg";
+                                    <a href="#">
+                                        <img src="@imagePath" alt="">
+                                    </a>
+                                }
+                            </div>
+
+                            <a class="button outline small" href="#">Job Listings</a>
+                        </footer>
+                    </div>
+                </div>
+
+                <div class="card company_card">
+                    <figure>
+                        <img src="/images/cards/mostly_serious.jpg" alt="">
+                        <figcaption>
+                            <div>Founding Sponsor</div>
+                        </figcaption>
+                    </figure>
+
+                    <div class="content">
+                        <dl>
+                            <dt>Mostly Serious</dt>
+                            <dd>Springfield, MO</dd>
+                        </dl>
+
+                        <footer>
+                            <div class="members">
+                                @for (int i = 1; i < 5; i++)
+                                {
+                                    var imagePath = "/images/members/member_0" + i + ".jpeg";
+                                    <a href="#">
+                                        <img src="@imagePath" alt="">
+                                    </a>
+                                }
+                            </div>
+
+                            <a class="button outline small" href="#">Hire Us</a>
+                        </footer>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="sponsors_highlight">
+    <header>
+        <section>
+            <img src="/images/headlines/sponsor.svg" alt="Sponsors">
+            <span>We are proudly supported by these companies & brands</span>
+        </section>
+
+        <div class="circuit_graphic"></div>
+
+        <section>
+            <a href="#" class="button blue">See All Sponsors</a>
+        </section>
+    </header>
+
+    <div class="cards grid">
+        <div class="card intro_card">
+            <dl>
+                <dt>Sponsorship Opportunities</dt>
+                <dd>
+                    Connect with the developer community in Springfield
+                </dd>
+            </dl>
+
+            <footer>
+                <a href="#" class="button outline black">Become a Sponsor</a>
+            </footer>
+        </div>
+
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="card sponsor_card">
+                <figure>
+                    <img src="/images/cards/hearo.jpg" alt="">
+                    <figcaption>
+                        <div>Platnium Sponsor</div>
+                        <div>Founding Sponsor</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>Hearo</dt>
+                        <dd><a href="https://hearo.ai/" target="_blank">hearo.ai</a></dd>
+                    </dl>
+
+                    <footer>
+                        <a class="button outline small gray" href="#">Job Listings</a>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="card sponsor_card">
+                <figure>
+                    <img src="/images/cards/marlin.jpg" alt="">
+                    <figcaption>
+                        <div>Founding Sponsor</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>Marlin</dt>
+                        <dd><a href="https://marlinco.com/" target="_blank">marlinco.com</a></dd>
+                    </dl>
+
+                    <footer>
+                        <a class="button outline small gray" href="#">Job Listings</a>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="card sponsor_card">
+                <figure>
+                    <img src="/images/cards/tap.jpg" alt="">
+                    <figcaption>
+                        <div>Founding Sponsor</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>The Alchemedia Project</dt>
+                        <dd><a href="https://marlinco.com/" target="_blank">marlinco.com</a></dd>
+                    </dl>
+
+                    <footer>
+                        <a class="button outline small gray" href="#">Job Listings</a>
+                    </footer>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="about_banner">
+    <div class="container">
+        <div class="content">
+            <h3>Educating, inspiring and supporting developers, agencies and professionals in the Greater Springfield, Mo area.</h3>
+            <p>
+                Lorem ipsum  sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.
+            </p>
+            <p>
+                <a href="#" class="button">Things We Hold True</a>
+            </p>
+        </div>
+    </div>
+</section>
