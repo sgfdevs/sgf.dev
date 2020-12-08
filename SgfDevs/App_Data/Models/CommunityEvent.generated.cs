@@ -45,6 +45,20 @@ namespace Umbraco.Web.PublishedModels
 		// properties
 
 		///<summary>
+		/// City
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("city")]
+		public string City => this.Value<string>("city");
+
+		///<summary>
+		/// End Time
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("endTime")]
+		public global::System.DateTime EndTime => this.Value<global::System.DateTime>("endTime");
+
+		///<summary>
 		/// Event Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -52,10 +66,38 @@ namespace Umbraco.Web.PublishedModels
 		public string EventUrl => this.Value<string>("eventUrl");
 
 		///<summary>
-		/// Host
+		/// Host Name
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("host")]
-		public global::Umbraco.Core.Models.Blocks.BlockListModel Host => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("host");
+		[ImplementPropertyType("hostName")]
+		public string HostName => this.Value<string>("hostName");
+
+		///<summary>
+		/// Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("image")]
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Image => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("image");
+
+		///<summary>
+		/// Price: Keep this field short. Ex: Free | $100 | $75-$200
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("price")]
+		public string Price => this.Value<string>("price");
+
+		///<summary>
+		/// Start Time
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("startTime")]
+		public global::System.DateTime StartTime => this.Value<global::System.DateTime>("startTime");
+
+		///<summary>
+		/// State
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("state")]
+		public string State => this.Value<string>("state");
 	}
 }

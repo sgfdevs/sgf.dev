@@ -70,7 +70,7 @@ namespace Umbraco.Web.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("presenter")]
-		public global::Umbraco.Core.Models.Blocks.BlockListModel Presenter => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("presenter");
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Presenter => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("presenter");
 
 		///<summary>
 		/// Skill Tags

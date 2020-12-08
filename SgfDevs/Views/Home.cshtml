@@ -1,18 +1,43 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Web.PublishedModels;
+@using Member = Umbraco.Web.PublishedModels.Member;
+@using SgfDevs.Dev;
+@using SgfDevs.ViewModels;
+
 @{
     Layout = "_Layout.cshtml";
-    var devNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
+    var mapper = AutoMapperConfig.Configure();
+    var nextDevNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
+    var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
+    var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
+    var allUpcomingEvents = new List<EventViewModel>();
+
+    var companies = Model.Descendants<Company>().ToList();
+
+    if (nextDevNight != null)
+    {
+        upcomingDevNights.Remove(nextDevNight);
+    }
+
+    if(upcomingDevNights.Any())
+    {
+        allUpcomingEvents.AddRange(mapper.Map<List<Event>, List<EventViewModel>>(upcomingDevNights));
+    }
+
+    if (communityEvents.Any())
+    {
+        allUpcomingEvents.AddRange(mapper.Map<List<CommunityEvent>, List<EventViewModel>>(communityEvents));
+    }
 }
 
-@if (devNight != null)
+@if (nextDevNight != null)
 {
-    var presentations = devNight.Children<Presentation>();
+    var presentations = nextDevNight.Children<Presentation>();
 
     if (presentations.Any())
     {
         <section class="dev_night_banner">
-            <time datetime="@devNight.Date.ToString("MM-dd-yyyy HH:mm:ss")"><span>@devNight.Date.ToString("MMM d, yyyy")</span></time>
+            <time datetime="@nextDevNight.Date.ToString("MM-dd-yyyy HH:mm:ss")"><span>@nextDevNight.Date.ToString("MMM d, yyyy")</span></time>
             <div class="headline">
                 <img src="/images/headlines/dev_night.svg" alt="Dev Night">
             </div>
@@ -21,18 +46,18 @@
                 @foreach (var presentation in presentations)
                 {
                     var group = presentation.Group;
-                    //var presenter = (Member)presentation.Presenter;
+                    var presenter = (Member)presentation.Presenter;
 
                     <li>
                         <figure>
-                            <img src="/images/members/tim_franklin.jpg" alt="Tim Franklin">
+                            <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
                         </figure>
 
                         <h3>@presentation.Name</h3>
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="#">Tim Franklin</a></dd>
+                            <dd><a href="#">@presenter.Name</a></dd>
                         </dl>
 
                         <dl>
@@ -45,3 +70,205 @@
         </section>
     }
 }
+
+@if (allUpcomingEvents != null)
+{
+    <section class="upcoming_events">
+        <header>
+            <span>Upcoming</span>
+            <img src="/images/headlines/events.svg" alt="Upcoming Events">
+        </header>
+
+        <div class="scroll_list">
+            <ul>
+                @foreach (var _event in allUpcomingEvents)
+                {
+                    var image = _event.Image != null ? _event.Image.GetCropUrl(width: 168) : "/images/need_a_default_image.jpg";
+
+                    if(_event.IsDevNight)
+                    {
+                        image = "/images/event_method.png";
+                    }
+
+                    <li>
+                        <a href="#">
+                            @if (image != null)
+                            {
+                                <figure>
+                                    <img src="@image" alt="@_event.Name">
+                                </figure>
+                            }
+
+                            <div class="content">
+                                <div class="details">
+                                    <h3>@_event.Name</h3>
+                                    <h4>@_event.Location</h4>
+                                    <time datetime="@_event.StartTime.ToString("M-dd-yyyy")">@_event.StartTime.ToString("MMM") <span>@_event.StartTime.ToString("dd")</span></time>
+                                </div>
+
+                                <footer>
+                                    <div class="host">By <span>@_event.Host</span></div>
+                                    <div class="price">@_event.Price</div>
+                                </footer>
+                            </div>
+                        </a>
+                    </li>
+
+                }
+            </ul>
+        </div>
+
+        <footer>
+            <a href="#">See All Events</a>
+        </footer>
+    </section>
+}
+
+<section class="directory_preview">
+    <header>
+        <section>
+            <img src="/images/headlines/directory.svg" alt="Directory">
+            <span>Find the Best Agencies and Professionals </span>
+        </section>
+
+        <section>
+            <span>
+                <strong>642</strong> Members
+            </span>
+
+            <a href="#" class="button outline dark">Join Us</a>
+        </section>
+    </header>
+
+    <div class="cards inline">
+        <a href="#" class="scroll_trigger scroll_left">
+            <i class="far fa-chevron-left"></i>
+        </a>
+
+        <a href="#" class="scroll_trigger scroll_right">
+            <i class="far fa-chevron-right"></i>
+        </a>
+
+
+        <div class="scroll">
+            <div class="card intro_card">
+                <dl>
+                    <dt>Professional Directory</dt>
+                    <dd>
+                        Find the <strong>best agencies</strong> and <strong>talented professionals</strong> in Southwest Missouri
+                    </dd>
+                </dl>
+
+                <p>
+                    342 profiles found
+                </p>
+
+                <footer>
+                    <a href="#" class="button outline">Explore</a>
+                </footer>
+            </div>
+
+            @foreach(var company in companies)
+            {
+                <div class="card company_card">
+                    <figure>
+                        <img src="@company.Image.Url()" alt="@company.Name">
+                        <figcaption style="display: none;">
+                            <div>Platinum Sponsor</div>
+                            <div>Founding Sponsor</div>
+                        </figcaption>
+                    </figure>
+
+                    <div class="content">
+                        <dl>
+                            <dt>@company.Name</dt>
+                            <dd>@company.Location</dd>
+                        </dl>
+
+                        <footer>
+                            <div class="members">
+                                @for (int i = 1; i < 5; i++)
+                                {
+                                    var imagePath = "/images/members/member_0" + i + ".jpeg";
+                                    <a href="#">
+                                        <img src="@imagePath" alt="">
+                                    </a>
+                                }
+                            </div>
+
+                            <a class="button outline small" href="#">Job Listings</a>
+                        </footer>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="sponsors_highlight">
+    <header>
+        <section>
+            <img src="/images/headlines/sponsor.svg" alt="Sponsors">
+            <span>We are proudly supported by these companies & brands</span>
+        </section>
+
+        <div class="circuit_graphic"></div>
+
+        <section>
+            <a href="#" class="button blue">See All Sponsors</a>
+        </section>
+    </header>
+
+    <div class="cards grid">
+        <div class="card intro_card">
+            <dl>
+                <dt>Sponsorship Opportunities</dt>
+                <dd>
+                    Connect with the developer community in Springfield
+                </dd>
+            </dl>
+
+            <footer>
+                <a href="#" class="button outline black">Become a Sponsor</a>
+            </footer>
+        </div>
+
+        @foreach (var company in companies)
+        {
+            <div class="card sponsor_card">
+                <figure>
+                    <img src="@company.Image.Url()" alt="@company.Name">
+                    <figcaption>
+                        <div>Platnium Sponsor</div>
+                        <div>Founding Sponsor</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>@company.Name</dt>
+                        <dd><a href="@company.WebsiteUrl" target="_blank">@company.WebsiteUrl.Replace("https://", "").Replace("/", "").Replace("www.", "")</a></dd>
+                    </dl>
+
+                    <footer>
+                        <a class="button outline small gray" href="#">Job Listings</a>
+                    </footer>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="about_banner">
+    <div class="container">
+        <div class="content">
+            <h3>Educating, inspiring and supporting developers, agencies and professionals in the Greater Springfield, Mo area.</h3>
+            <p>
+                Lorem ipsum  sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.
+            </p>
+            <p>
+                <a href="#" class="button">Things We Hold True</a>
+            </p>
+        </div>
+    </div>
+</section>
