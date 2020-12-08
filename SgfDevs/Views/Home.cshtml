@@ -1,20 +1,43 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Web.PublishedModels;
 @using Member = Umbraco.Web.PublishedModels.Member;
+@using SgfDevs.Dev;
+@using SgfDevs.ViewModels;
 
 @{
     Layout = "_Layout.cshtml";
-    var devNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
+    var mapper = AutoMapperConfig.Configure();
+    var nextDevNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
+    var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
+    var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
+    var allUpcomingEvents = new List<EventViewModel>();
+
+    var companies = Model.Descendants<Company>().ToList();
+
+    if (nextDevNight != null)
+    {
+        upcomingDevNights.Remove(nextDevNight);
+    }
+
+    if(upcomingDevNights.Any())
+    {
+        allUpcomingEvents.AddRange(mapper.Map<List<Event>, List<EventViewModel>>(upcomingDevNights));
+    }
+
+    if (communityEvents.Any())
+    {
+        allUpcomingEvents.AddRange(mapper.Map<List<CommunityEvent>, List<EventViewModel>>(communityEvents));
+    }
 }
 
-@if (devNight != null)
+@if (nextDevNight != null)
 {
-    var presentations = devNight.Children<Presentation>();
+    var presentations = nextDevNight.Children<Presentation>();
 
     if (presentations.Any())
     {
         <section class="dev_night_banner">
-            <time datetime="@devNight.Date.ToString("MM-dd-yyyy HH:mm:ss")"><span>@devNight.Date.ToString("MMM d, yyyy")</span></time>
+            <time datetime="@nextDevNight.Date.ToString("MM-dd-yyyy HH:mm:ss")"><span>@nextDevNight.Date.ToString("MMM d, yyyy")</span></time>
             <div class="headline">
                 <img src="/images/headlines/dev_night.svg" alt="Dev Night">
             </div>
@@ -48,45 +71,58 @@
     }
 }
 
-<section class="upcoming_events">
-    <header>
-        <span>Upcoming</span>
-        <img src="/images/headlines/events.svg" alt="Upcoming Events">
-    </header>
+@if (allUpcomingEvents != null)
+{
+    <section class="upcoming_events">
+        <header>
+            <span>Upcoming</span>
+            <img src="/images/headlines/events.svg" alt="Upcoming Events">
+        </header>
 
-    <div class="scroll_list">
-        <ul>
-            @for (int i = 0; i < 4; i++)
-            {
-                <li>
-                    <a href="#">
-                        <figure>
-                            <img src="/images/event_method.png" alt="Method">
-                        </figure>
+        <div class="scroll_list">
+            <ul>
+                @foreach (var _event in allUpcomingEvents)
+                {
+                    var image = _event.Image != null ? _event.Image.GetCropUrl(width: 168) : "/images/need_a_default_image.jpg";
 
-                        <div class="content">
-                            <div class="details">
-                                <h3>Method Conf 2021</h3>
-                                <h4>Springfield, MO</h4>
-                                <time datetime="04-28-2020">Oct <span>28</span></time>
+                    if(_event.IsDevNight)
+                    {
+                        image = "/images/event_method.png";
+                    }
+
+                    <li>
+                        <a href="#">
+                            @if (image != null)
+                            {
+                                <figure>
+                                    <img src="@image" alt="@_event.Name">
+                                </figure>
+                            }
+
+                            <div class="content">
+                                <div class="details">
+                                    <h3>@_event.Name</h3>
+                                    <h4>@_event.Location</h4>
+                                    <time datetime="@_event.StartTime.ToString("M-dd-yyyy")">@_event.StartTime.ToString("MMM") <span>@_event.StartTime.ToString("dd")</span></time>
+                                </div>
+
+                                <footer>
+                                    <div class="host">By <span>@_event.Host</span></div>
+                                    <div class="price">@_event.Price</div>
+                                </footer>
                             </div>
+                        </a>
+                    </li>
 
-                            <footer>
-                                <div class="host">By <span>Springfield Devs</span></div>
-                                <div class="price">$100</div>
-                            </footer>
-                        </div>
-                    </a>
-                </li>
+                }
+            </ul>
+        </div>
 
-            }
-        </ul>
-    </div>
-
-    <footer>
-        <a href="#">See All Events</a>
-    </footer>
-</section>
+        <footer>
+            <a href="#">See All Events</a>
+        </footer>
+    </section>
+}
 
 <section class="directory_preview">
     <header>
@@ -132,12 +168,12 @@
                 </footer>
             </div>
 
-            @for (int cc = 0; cc < 4; cc++)
+            @foreach(var company in companies)
             {
                 <div class="card company_card">
                     <figure>
-                        <img src="/images/cards/business.jpg" alt="">
-                        <figcaption>
+                        <img src="@company.Image.Url()" alt="@company.Name">
+                        <figcaption style="display: none;">
                             <div>Platinum Sponsor</div>
                             <div>Founding Sponsor</div>
                         </figcaption>
@@ -145,8 +181,8 @@
 
                     <div class="content">
                         <dl>
-                            <dt>Marlin Network</dt>
-                            <dd>Springfield, MO</dd>
+                            <dt>@company.Name</dt>
+                            <dd>@company.Location</dd>
                         </dl>
 
                         <footer>
@@ -161,36 +197,6 @@
                             </div>
 
                             <a class="button outline small" href="#">Job Listings</a>
-                        </footer>
-                    </div>
-                </div>
-
-                <div class="card company_card">
-                    <figure>
-                        <img src="/images/cards/mostly_serious.jpg" alt="">
-                        <figcaption>
-                            <div>Founding Sponsor</div>
-                        </figcaption>
-                    </figure>
-
-                    <div class="content">
-                        <dl>
-                            <dt>Mostly Serious</dt>
-                            <dd>Springfield, MO</dd>
-                        </dl>
-
-                        <footer>
-                            <div class="members">
-                                @for (int i = 1; i < 5; i++)
-                                {
-                                    var imagePath = "/images/members/member_0" + i + ".jpeg";
-                                    <a href="#">
-                                        <img src="@imagePath" alt="">
-                                    </a>
-                                }
-                            </div>
-
-                            <a class="button outline small" href="#">Hire Us</a>
                         </footer>
                     </div>
                 </div>
@@ -227,11 +233,11 @@
             </footer>
         </div>
 
-        @for (int i = 0; i < 5; i++)
+        @foreach (var company in companies)
         {
             <div class="card sponsor_card">
                 <figure>
-                    <img src="/images/cards/hearo.jpg" alt="">
+                    <img src="@company.Image.Url()" alt="@company.Name">
                     <figcaption>
                         <div>Platnium Sponsor</div>
                         <div>Founding Sponsor</div>
@@ -240,48 +246,8 @@
 
                 <div class="content">
                     <dl>
-                        <dt>Hearo</dt>
-                        <dd><a href="https://hearo.ai/" target="_blank">hearo.ai</a></dd>
-                    </dl>
-
-                    <footer>
-                        <a class="button outline small gray" href="#">Job Listings</a>
-                    </footer>
-                </div>
-            </div>
-
-            <div class="card sponsor_card">
-                <figure>
-                    <img src="/images/cards/marlin.jpg" alt="">
-                    <figcaption>
-                        <div>Founding Sponsor</div>
-                    </figcaption>
-                </figure>
-
-                <div class="content">
-                    <dl>
-                        <dt>Marlin</dt>
-                        <dd><a href="https://marlinco.com/" target="_blank">marlinco.com</a></dd>
-                    </dl>
-
-                    <footer>
-                        <a class="button outline small gray" href="#">Job Listings</a>
-                    </footer>
-                </div>
-            </div>
-
-            <div class="card sponsor_card">
-                <figure>
-                    <img src="/images/cards/tap.jpg" alt="">
-                    <figcaption>
-                        <div>Founding Sponsor</div>
-                    </figcaption>
-                </figure>
-
-                <div class="content">
-                    <dl>
-                        <dt>The Alchemedia Project</dt>
-                        <dd><a href="https://marlinco.com/" target="_blank">marlinco.com</a></dd>
+                        <dt>@company.Name</dt>
+                        <dd><a href="@company.WebsiteUrl" target="_blank">@company.WebsiteUrl.Replace("https://", "").Replace("/", "").Replace("www.", "")</a></dd>
                     </dl>
 
                     <footer>
