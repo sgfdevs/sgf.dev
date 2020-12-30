@@ -1,0 +1,79 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@using SgfDevs.Dev;
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<div class="filter_bar">
+    <header>
+        <section>
+            <img src="/images/headlines/directory.svg" alt="Directory">
+            <span>Find the Best Agencies and Professionals </span>
+        </section>
+
+        <section>
+            <span>
+                <strong>642</strong> Members
+            </span>
+
+            <a href="#" class="button inverse outline light_blue">Join Us</a>
+        </section>
+    </header>
+
+    <nav>
+        <ul>
+            <li><i class="fal fa-filter"></i></li>
+            <li>Type</li>
+            <li>Category</li>
+            <li class="active">Skills <span>3</span></li>
+            <li>Location</li>
+        </ul>
+
+        <div class="filters">
+            <ul>
+                @foreach (var skillsTag in DirectoryHelper.GetSkills())
+                {
+                    var tagName = string.IsNullOrEmpty(skillsTag.DisplayName) ? skillsTag.Name : skillsTag.DisplayName;
+                    <li data-id="@skillsTag.UrlSegment()">@tagName</li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="cards grid">
+        @for (int cc = 0; cc < 20; cc++)
+        {
+            <div class="card company_card">
+                <figure>
+                    <img src="/images/cards/mostly_serious.jpg" alt="">
+                    <figcaption>
+                        <div>Founding Sponsor</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>Mostly Serious</dt>
+                        <dd>Springfield, MO</dd>
+                    </dl>
+
+                    <footer>
+                        <div class="members">
+                            @for (int i = 1; i < 5; i++)
+                            {
+                                var imagePath = "/images/members/member_0" + i + ".jpeg";
+                                <a href="#">
+                                    <img src="@imagePath" alt="">
+                                </a>
+                            }
+                        </div>
+
+                        <a class="button outline small" href="#">Hire Us</a>
+                    </footer>
+                </div>
+            </div>
+        }
+    </div>
+</div>

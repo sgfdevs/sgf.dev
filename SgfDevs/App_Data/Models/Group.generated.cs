@@ -91,7 +91,7 @@ namespace Umbraco.Web.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("leaders")]
-		public global::Umbraco.Core.Models.Blocks.BlockListModel Leaders => this.Value<global::Umbraco.Core.Models.Blocks.BlockListModel>("leaders");
+		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> Leaders => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("leaders");
 
 		///<summary>
 		/// LinkedIn Url
