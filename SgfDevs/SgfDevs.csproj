@@ -357,6 +357,7 @@
     <Compile Include="App_Data\Models\IntroVideo.generated.cs" />
     <Compile Include="App_Data\Models\Job.generated.cs" />
     <Compile Include="App_Data\Models\Leader.generated.cs" />
+    <Compile Include="App_Data\Models\Leadership.generated.cs" />
     <Compile Include="App_Data\Models\ManualEntryHost.generated.cs" />
     <Compile Include="App_Data\Models\Markdown.generated.cs" />
     <Compile Include="App_Data\Models\Member.generated.cs" />
@@ -368,6 +369,8 @@
     <Compile Include="App_Data\Models\TagGroup.generated.cs" />
     <Compile Include="App_Data\Models\Tags.generated.cs" />
     <Compile Include="Dev\AutoMapperConfig.cs" />
+    <Compile Include="Dev\DirectoryHelper.cs" />
+    <Compile Include="Dev\WebAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
   </ItemGroup>
@@ -413,6 +416,9 @@
     <Content Include="Views\Partials\Grid\Editors\Rte.cshtml" />
     <Content Include="Views\Partials\Grid\Editors\Textstring.cshtml" />
     <Content Include="Views\Presentation.cshtml" />
+    <Content Include="Views\About.cshtml" />
+    <Content Include="Views\Leadership.cshtml" />
+    <Content Include="Views\Directory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

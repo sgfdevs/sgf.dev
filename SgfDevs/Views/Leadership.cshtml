@@ -1,0 +1,92 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Leadership>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using Member = Umbraco.Web.PublishedModels.Member;
+@{
+    Layout = "_Layout.cshtml";
+    var officers = Model.Officers;
+    var board = Model.BoardOfDirectors;
+    var history = Model.History;
+}
+
+<header class="leadership_header">
+    <div class="container">
+        <h1>Leadership</h1>
+    </div>
+</header>
+
+<div class="container clamp">
+
+    @if (officers != null)
+    {
+        <div class="leader_grid officers">
+            <ul>
+                @foreach (Member member in officers)
+                {
+                    <li>
+                        <figure>
+                            <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                        </figure>
+                        <h2><a href="#">@member.Name</a></h2>
+                        <h3>@member.OfficerTitle</h3>
+                        <p>
+                            @Html.Raw(member.OfficerBio)
+                        </p>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (board != null)
+    {
+        <div class="leader_grid">
+            <header>
+                <h2>Board Of Directors</h2>
+            </header>
+
+            <ul>
+                @foreach (Member member in board)
+                {
+                    <li>
+                        <a href="#">
+                            <figure>
+                                <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                            </figure>
+                            <h4>@member.Name</h4>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (history != null)
+    {
+        <div class="leader_grid history">
+            <header>
+                <img src="/images/headlines/history.svg" alt="History">
+                <h2>2019</h2>
+            </header>
+
+            <ul>
+                @foreach (Member member in history)
+                {
+                    var title = string.IsNullOrEmpty(member.OfficerTitle) ? "Board Member" : member.OfficerTitle;
+
+                    <li>
+                        <a href="#">
+                            <figure>
+                                <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                            </figure>
+                            <h4>@member.Name</h4>
+
+                            <p>
+                                <strong>@title</strong>
+                            </p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

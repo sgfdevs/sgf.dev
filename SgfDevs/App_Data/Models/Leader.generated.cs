@@ -45,11 +45,32 @@ namespace Umbraco.Web.PublishedModels
 		// properties
 
 		///<summary>
+		/// Date End: Start and End date used for Leadership History section
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("dateEnd")]
+		public global::System.DateTime DateEnd => this.Value<global::System.DateTime>("dateEnd");
+
+		///<summary>
+		/// Date Start: Start and End date used for Leadership History section
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("dateStart")]
+		public global::System.DateTime DateStart => this.Value<global::System.DateTime>("dateStart");
+
+		///<summary>
 		/// Member
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("member")]
 		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Member => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("member");
+
+		///<summary>
+		/// Short Bio: Used for officers
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("shortBio")]
+		public global::System.Web.IHtmlString ShortBio => this.Value<global::System.Web.IHtmlString>("shortBio");
 
 		///<summary>
 		/// Title
