@@ -370,8 +370,10 @@
     <Compile Include="App_Data\Models\Tags.generated.cs" />
     <Compile Include="Dev\AutoMapperConfig.cs" />
     <Compile Include="Dev\DirectoryHelper.cs" />
+    <Compile Include="Dev\SGFMemberIndexComposer.cs" />
     <Compile Include="Dev\WebAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\DirectoryResult.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
