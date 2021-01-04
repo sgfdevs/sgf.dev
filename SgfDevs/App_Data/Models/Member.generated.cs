@@ -80,6 +80,13 @@ namespace Umbraco.Web.PublishedModels
 		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent Company => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("company");
 
 		///<summary>
+		/// End Date: Start and End date used for logic in the History section
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("endDate")]
+		public global::System.DateTime EndDate => this.Value<global::System.DateTime>("endDate");
+
+		///<summary>
 		/// Facebook URL
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -143,6 +150,20 @@ namespace Umbraco.Web.PublishedModels
 		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> MemberTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("memberTags");
 
 		///<summary>
+		/// Officer Bio: Short bio
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("officerBio")]
+		public global::System.Web.IHtmlString OfficerBio => this.Value<global::System.Web.IHtmlString>("officerBio");
+
+		///<summary>
+		/// Officer Title: If no officer title is supplied it will be inferred that this is a board member when this member is selected on the Leadership page
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("officerTitle")]
+		public string OfficerTitle => this.Value<string>("officerTitle");
+
+		///<summary>
 		/// Profile Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -155,6 +176,13 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("skillsTags")]
 		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> SkillsTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("skillsTags");
+
+		///<summary>
+		/// Start Date: Start and End date used for logic in the History section
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("startDate")]
+		public global::System.DateTime StartDate => this.Value<global::System.DateTime>("startDate");
 
 		///<summary>
 		/// State

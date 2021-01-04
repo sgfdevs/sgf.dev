@@ -1,0 +1,138 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@using SgfDevs.Dev;
+@{
+    Layout = "_Layout.cshtml";
+}
+
+@section TopScripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+}
+
+@section Scripts {
+    <script>
+        var app = new Vue({
+            el: '#directory_app',
+            data: {
+                results: [],
+                skillFilters: [],
+                totalMembers: 0,
+            },
+            methods: {
+                filterClick: function (filter) {
+                    filter.isActive = !filter.isActive;
+
+                    if (filter.name == "Blockchain" && filter.isActive) {
+                        console.log("Done it ! .. finally got gRPC and protobuff compd’ .. now I can access Hedera nodes from Studio AND Eclipse.. see HBAR balances.. now to build the wallet..    android and lite gRPC transport dependencies.. a real pain tho to config in gradle builds. - John D. Allen");
+                    }
+
+                    var activeSkillsFilters = this.activeSkillsFilters;
+                    var skillsParam = Array.prototype.map.call(activeSkillsFilters, function (item) { return item.id; }).join(",");
+
+                    if (!activeSkillsFilters.length) {
+                        this.getAllMembers();
+                        return;
+                    }
+
+                    fetch('/api/directory/search/?skills=' + skillsParam).then(response => response.json()).then(data => {
+                        if (data) {
+                            this.results = data;
+                        } else {
+                            this.results = [];
+                        }
+                    });
+                },
+
+                // Need to revamp this to return all the filter sets
+                getSkillsFilters: function () {
+                    fetch('/api/directory/filters/skills').then(response => response.json()).then(data => this.skillFilters = data);
+                },
+
+                getAllMembers: function () {
+                    fetch('/api/directory/search').then(response => response.json()).then(data => {
+                        this.results = data;
+                        this.totalMembers = data.length;
+                    });
+                }
+            },
+            computed: {
+                activeSkillsFilters: function () {
+                    return this.skillFilters.filter(({ isActive }) => isActive == true);
+                }
+            },
+            beforeMount() {
+                this.getAllMembers();
+                this.getSkillsFilters();
+            }
+        });
+    </script>
+}
+
+<div id="directory_app">
+    <div class="filter_bar">
+        <header>
+            <section>
+                <img src="/images/headlines/directory.svg" alt="Directory">
+                <span>Find the Best Agencies and Professionals </span>
+            </section>
+
+            <section>
+                <span>
+                    <strong>{{ this.totalMembers }}</strong> Members
+                </span>
+
+                <a href="#" class="button inverse outline light_blue">Join Us</a>
+            </section>
+        </header>
+
+        <nav>
+            <ul>
+                <li><i class="fal fa-filter"></i></li>
+                <li>Type</li>
+                <li>Category</li>
+                <li class="active">Skills <span v-if="activeSkillsFilters.length">{{ activeSkillsFilters.length }}</span></li>
+                <li>Location</li>
+            </ul>
+
+            <div class="filters">
+                <ul>
+                    <li v-for="(skill, index) in skillFilters" v-on:click="filterClick(skill)" v-bind:class="{ active: skill.isActive }">{{ skill.name }}</li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="cards grid" v-if="this.results.length">
+            <div class="card company_card" v-for="(member, index) in results">
+                <figure>
+                    <img :src="member.Image" alt="">
+                    <figcaption>
+                        <div>Founding Member</div>
+                    </figcaption>
+                </figure>
+
+                <div class="content">
+                    <dl>
+                        <dt>{{ member.Name }}</dt>
+                        <dd>{{ member.Location }}</dd>
+                    </dl>
+
+                    <footer>
+                        <div class="members">
+                            @for (int i = 1; i < 5; i++)
+                            {
+                                var imagePath = "/images/members/member_0" + i + ".jpeg";
+                                <a href="#">
+                                    <img src="@imagePath" alt="">
+                                </a>
+                            }
+                        </div>
+
+                        <a class="button outline small" href="#">Hire Us</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
