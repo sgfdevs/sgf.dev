@@ -1,6 +1,11 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
 @using Umbraco.Web;
-@using ClientDependency.Core.Mvc
+@using ClientDependency.Core.Mvc;
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Web;
+@using Member = Umbraco.Web.PublishedModels.Member;
 
 <!DOCTYPE html>
 <html>
@@ -14,9 +19,9 @@
     @RenderSection("TopScripts", required: false)
 
 
+
 </head>
 <body>
-
     <header class="site_header">
         <div class="container">
             <div class="logo">
