@@ -47,17 +47,20 @@
                 {
                     var group = presentation.Group;
                     var presenter = (Member)presentation.Presenter;
+                    var member = Services.MemberService.GetById(presenter.Id);
 
                     <li>
-                        <figure>
-                            <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
-                        </figure>
+                        <a href="/member/@member.Username" title="@presenter.Name">
+                            <figure>
+                                <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
+                            </figure>
+                        </a>
 
                         <h3>@presentation.Name</h3>
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="#">@presenter.Name</a></dd>
+                            <dd><a href="/member/@member.Username">@presenter.Name</a></dd>
                         </dl>
 
                         <dl>

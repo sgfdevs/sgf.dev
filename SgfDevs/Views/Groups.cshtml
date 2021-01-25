@@ -39,9 +39,13 @@
                         <dt>Group Leaders</dt>
                         @foreach (Member leader in group.Leaders)
                         {
+                            var member = Services.MemberService.GetById(leader.Id);
+
                             <dd>
-                                <img src="@leader.ProfileImage.Url()" alt="@leader.Name">
-                                <span>@leader.FirstName @leader.LastName.Substring(0, 1).</span>
+                                <a href="/member/@member.Username">
+                                    <img src="@leader.ProfileImage.Url()" alt="@leader.Name">
+                                    <span>@leader.FirstName @leader.LastName.Substring(0, 1).</span>
+                                </a>
                             </dd>
                         }
                     </dl>

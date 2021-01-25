@@ -337,6 +337,16 @@
     <Content Include="config\Lang\zh-CN.user.xml" />
     <Content Include="config\logviewer.searches.config.js" />
     <Content Include="Global.asax" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +368,7 @@
     <Compile Include="App_Data\Models\Job.generated.cs" />
     <Compile Include="App_Data\Models\Leader.generated.cs" />
     <Compile Include="App_Data\Models\Leadership.generated.cs" />
+    <Compile Include="App_Data\Models\Login.generated.cs" />
     <Compile Include="App_Data\Models\ManualEntryHost.generated.cs" />
     <Compile Include="App_Data\Models\Markdown.generated.cs" />
     <Compile Include="App_Data\Models\Member.generated.cs" />
@@ -365,13 +376,21 @@
     <Compile Include="App_Data\Models\Page.generated.cs" />
     <Compile Include="App_Data\Models\Presentation.generated.cs" />
     <Compile Include="App_Data\Models\PresenterPicker.generated.cs" />
+    <Compile Include="App_Data\Models\Profile.generated.cs" />
+    <Compile Include="App_Data\Models\Register.generated.cs" />
     <Compile Include="App_Data\Models\Tag.generated.cs" />
     <Compile Include="App_Data\Models\TagGroup.generated.cs" />
     <Compile Include="App_Data\Models\Tags.generated.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Dev\AutoMapperConfig.cs" />
     <Compile Include="Dev\DirectoryHelper.cs" />
+    <Compile Include="Dev\RegisterMemberProfileRouteComponent.cs" />
     <Compile Include="Dev\SGFMemberIndexComposer.cs" />
+    <Compile Include="Dev\UmbracoVirtualNodeByUrlRouteHandler.cs" />
     <Compile Include="Dev\WebAPI.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DirectoryResult.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
@@ -421,6 +440,16 @@
     <Content Include="Views\About.cshtml" />
     <Content Include="Views\Leadership.cshtml" />
     <Content Include="Views\Directory.cshtml" />
+    <Content Include="Views\Member\MemberProfile.cshtml" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Views\Login.cshtml" />
+    <Content Include="Views\Profile.cshtml" />
+    <Content Include="Views\Register.cshtml" />
+    <Content Include="Views\Partials\ProfileEdit.cshtml" />
+    <Content Include="Views\Partials\Register.cshtml" />
+    <Content Include="Views\Partials\Login.cshtml" />
+    <Content Include="Views\Partials\LoginStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

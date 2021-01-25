@@ -1,0 +1,11 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Login>
+@using ContentModels = Umbraco.Web.PublishedModels
+@using SgfDevs.Models
+
+@{
+    Layout = "_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("Partials/Login", new LoginModel());
+}

@@ -8,7 +8,7 @@ using Umbraco.Web.PublishedModels;
 
 namespace SgfDevs.ViewModels
 {
-    public class EventViewModel : Profile
+    public class EventViewModel : AutoMapper.Profile
     {
         public string Name { get; set; }
         public IPublishedContent Image { get; set; }

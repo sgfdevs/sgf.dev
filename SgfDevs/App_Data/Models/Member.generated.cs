@@ -132,8 +132,8 @@ namespace Umbraco.Web.PublishedModels
 		/// LinkedIn URL
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
-		[ImplementPropertyType("linkedinUrl")]
-		public string LinkedinUrl => this.Value<string>("linkedinUrl");
+		[ImplementPropertyType("linkedInUrl")]
+		public string LinkedInUrl => this.Value<string>("linkedInUrl");
 
 		///<summary>
 		/// Meetup URL
@@ -267,5 +267,26 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("umbracoMemberPasswordRetrievalQuestion")]
 		public string UmbracoMemberPasswordRetrievalQuestion => this.Value<string>("umbracoMemberPasswordRetrievalQuestion");
+
+		///<summary>
+		/// Username: This is automatically generated from the member registration process.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("username")]
+		public string Username => this.Value<string>("username");
+
+		///<summary>
+		/// Website URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("websiteUrl")]
+		public string WebsiteUrl => this.Value<string>("websiteUrl");
+
+		///<summary>
+		/// YouTube URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("youTubeUrl")]
+		public string YouTubeUrl => this.Value<string>("youTubeUrl");
 	}
 }

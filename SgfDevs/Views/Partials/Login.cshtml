@@ -1,0 +1,30 @@
+﻿@model SgfDevs.Models.LoginModel
+@using System.Web.Mvc.Html
+@using Umbraco.Web
+@using SgfDevs.Controllers
+
+<div class="container">
+    @using (Html.BeginUmbracoForm<AccountController>("Login"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <ul class="form">
+            <li>
+                @Html.LabelFor(model => model.Username)
+                @Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)
+            </li>
+
+            <li>
+                @Html.LabelFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </li>
+
+            <li>
+                <button>Submit</button>
+            </li>
+        </ul>
+    }
+</div>

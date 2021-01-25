@@ -1,0 +1,136 @@
+﻿@model Umbraco.Web.PublishedModels.Member
+@using Tag = Umbraco.Web.PublishedModels.Tag;
+
+@{
+    ViewBag.Title = "MemberProfile";
+    Layout = "~/Views/_Layout.cshtml";
+
+    var name = Model.FirstName + " " + Model.LastName;
+}
+
+
+
+<main class="profile">
+
+    <header class="profile-header">
+        <div class="information">
+            <h1>@name</h1>
+            <h2>Tagline goes here.</h2>
+
+            <a href="#" class="button">Visit Site</a>
+            <a href="#" class="button outline">Hire Me</a>
+        </div>
+
+        <div class="image">
+            <img src="@Model.ProfileImage.Url()" alt="@name" />
+        </div>
+    </header>
+
+    <section class="profile-content tabs">
+        <input name="tabs" type="radio" id="tab-1" checked="checked" class="tab" />
+        <label for="tab-1" class="label">About</label>
+        <div class="panel about" style="width: 100%;">
+            <div class="col-1">
+                <div class="metadata">
+                    <div class="flag">
+                        <!-- TODO modularize with the figcaption? -->
+                        <div>Founding Member</div>
+                    </div>
+
+                    <div class="location">
+                        <i class="icon fas fa-map-marker-alt"></i>
+                        @Model.City, @Model.State
+                    </div>
+
+                    <div class="member-since">
+                        <i class="icon fas fa-calendar-alt"></i>
+                        Member since DATE HERE
+                    </div>
+                </div>
+
+                <div class="socials">
+                    <h3>Social</h3>
+
+                    <ul>
+                        @if (Model.HasValue("WebsiteUrl"))
+                        {
+                            <li class="social website">
+                                <a href="@Model.WebsiteUrl"><i class="icon fa fa-globe"></i> @Model.WebsiteUrl</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("TwitterUrl"))
+                        {
+                            <li class="social twitter">
+                                <a href="@Model.TwitterUrl"><i class="icon fab fa-twitter"></i> Twitter</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("LinkedInUrl"))
+                        {
+                            <li class="social linkedin">
+                                <a href="@Model.LinkedInUrl"><i class="icon fab fa-linkedin"></i> LinkedIn</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("FacebookUrl"))
+                        {
+                            <li class="social facebook">
+                                <a href="@Model.FacebookUrl"><i class="icon fab fa-facebook"></i> Facebook</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("InstagramUrl"))
+                        {
+                            <li class="social instagram">
+                                <a href="@Model.InstagramUrl"><i class="icon fab fa-instagram"></i> Instagram</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("YouTubeUrl"))
+                        {
+                            <li class="social youtube">
+                                <a href="@Model.YouTubeUrl"><i class="icon fab fa-youtube"></i> Youtube</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="bio">
+                    <h3>Biography</h3>
+                    @Html.Raw(Model.AboutText)
+                </div>
+
+                @if (Model.HasValue("SkillsTags"))
+                {
+                    <div class="skills">
+                        <h3>Skills</h3>
+
+                        <div class="skill-list">
+                            @foreach (Tag skill in Model.SkillsTags)
+                            {
+                                var skillName = string.IsNullOrEmpty(skill.DisplayName) ? skill.Name : skill.DisplayName;
+                                <a href="/directory/?skill=@skill.UrlSegment" class="button outline skill">@skillName @*<span class="count">(0)</span>*@</a>
+
+                                // Directory does not yet support any querystrings params but just plugging
+                                // something here for the heck of it. - Myke
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <input name="tabs" type="radio" id="tab-2" class="tab" />
+        <label for="tab-2" class="label">Archive <span>0</span></label>
+        <div class="panel archive" style="width: 100%;">
+            <h3>Archive</h3>
+            <p>
+                Member video archive feature is coming soon
+            </p>
+        </div>
+
+    </section>
+</main>

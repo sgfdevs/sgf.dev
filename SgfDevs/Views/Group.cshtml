@@ -1,5 +1,265 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Group>
 @using ContentModels = Umbraco.Web.PublishedModels;
+@using Tag = Umbraco.Web.PublishedModels.Tag;
+@using Member = Umbraco.Web.PublishedModels.Member;
+
 @{
-	Layout = null;
+    Layout = "_Layout.cshtml";
+    var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
 }
+
+<main class="group">
+
+    <header class="group-header">
+
+        <div class="information">
+
+            <p class="category">Group</p>
+            <h1>@Model.Name</h1>
+
+            @if (Model.HasValue("WebsiteUrl"))
+            {
+                <a href="@Model.WebsiteUrl" class="button">Visit Site</a>
+            }
+
+        </div>
+        <!-- /.information -->
+
+        <div class="video">
+
+            <iframe src="https://www.youtube.com/embed/3a5mR5xoUbc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        </div>
+        <!-- /.video -->
+
+    </header>
+    <!-- /.group-header -->
+    <!-- Tabbed sections -->
+    <section class="group-content tabs">
+
+        <input name="tabs" type="radio" id="tab-1" checked="checked" class="tab" />
+        <!-- /.tab -->
+        <label for="tab-1" class="label">About</label>
+        <!-- /.label -->
+        <div class="panel about">
+
+            <div class="col-1">
+
+                <div class="metadata">
+                    @if (Model.HasValue("Location"))
+                    {
+                        <div class="location">
+                            <i class="icon fas fa-map-marker-alt"></i>
+                            @Model.Location
+                        </div>
+                    }
+
+                    @if (Model.HasValue("EstablishedText"))
+                    {
+                        <div class="member-since">
+                            <i class="icon fas fa-calendar-alt"></i>
+                            @Model.EstablishedText
+                        </div>
+                    }
+                </div>
+
+                @if (Model.HasValue("GroupImage"))
+                {
+                    <div class="image">
+                        <img src="@Model.GroupImage.Url()" alt="@Model.Name" />
+                    </div>
+                }
+
+                <div class="socials">
+
+                    <h3>Social</h3>
+
+                    <ul>
+                        @if (Model.HasValue("WebsiteUrl"))
+                        {
+                            <li class="social website">
+                                <a href="@Model.WebsiteUrl"><i class="icon fa fa-globe"></i> @Model.WebsiteUrl</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("TwitterUrl"))
+                        {
+                            <li class="social twitter">
+                                <a href="@Model.TwitterUrl"><i class="icon fab fa-twitter"></i> Twitter</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("LinkedInUrl"))
+                        {
+                            <li class="social linkedin">
+                                <a href="@Model.LinkedInUrl"><i class="icon fab fa-linkedin"></i> LinkedIn</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("FacebookUrl"))
+                        {
+                            <li class="social facebook">
+                                <a href="@Model.FacebookUrl"><i class="icon fab fa-facebook"></i> Facebook</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("InstagramUrl"))
+                        {
+                            <li class="social instagram">
+                                <a href="@Model.InstagramUrl"><i class="icon fab fa-instagram"></i> Instagram</a>
+                            </li>
+                        }
+
+                        @if (Model.HasValue("YouTubeUrl"))
+                        {
+                            <li class="social youtube">
+                                <a href="@Model.YouTubeUrl"><i class="icon fab fa-youtube"></i> Youtube</a>
+                            </li>
+                        }
+                    </ul>
+
+
+                    <!-- <div class="social website">
+                    <a href="#"><i class="icon fas fa-globe"></i> website</a>
+                </div> -->
+                    <!-- /.website -->
+                    <!-- <div class="social twitter">
+                    <a href="#"><i class="icon fab fa-twitter"></i> twitter</a>
+                </div> -->
+                    <!-- /.twitter -->
+                    <!-- <div class="social instagram">
+                    <a href="#"><i class="icon fab fa-instagram"></i> instagram</a>
+                </div> -->
+                    <!-- /.instagram -->
+
+                </div>
+                <!-- /.social -->
+
+            </div>
+
+            <div class="col-2">
+
+                <div class="bio">
+                    <h3>Biography</h3>
+                    @Html.Raw(Model.AboutText)
+                </div>
+                <!-- /.bio -->
+
+                @if (Model.HasValue("SkillTags"))
+                {
+                    <div class="skills">
+                        <h3>Skills</h3>
+
+                        <div class="skill-list">
+                            @foreach (Tag skill in Model.SkillTags)
+                            {
+                                var skillName = string.IsNullOrEmpty(skill.DisplayName) ? skill.Name : skill.DisplayName;
+                                <a href="/directory/?skill=@skill.UrlSegment" class="button outline skill">@skillName @*<span class="count">(0)</span>*@</a>
+
+                                // Directory does not yet support any querystrings params but just plugging
+                                // something here for the heck of it. - Myke
+                            }
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+        <!-- /.panel -->
+        @*Dont have a specific design for these subsequent tabs so just temp reusing other components -Myke*@
+        @if (upcomingPresentations.Any())
+        {
+            <input name="tabs" type="radio" id="tab-2" class="tab" />
+            <label for="tab-2" class="label">Upcoming Events <span>@upcomingPresentations.Count()</span></label>
+            <div class="panel archive" style="width: 100%;">
+                <h3>Events</h3>
+                <div class="cards grid">
+                    @foreach (Presentation presentation in upcomingPresentations)
+                    {
+                        var parentEvent = presentation.Parent<Event>();
+                        var presenter = presentation.Presenter as Member;
+
+                        <div class="card company_card">
+                            <figure>
+                                <img src="@presenter.ProfileImage.GetCropUrl(width: 960)" alt="@presenter.Name">
+                                <figcaption>
+                                    <div>Founding Member</div>
+                                </figcaption>
+                            </figure>
+                            <div class="content">
+                                <dl>
+                                    <dt>@presentation.Name</dt>
+                                    <dd>@presenter.Name</dd>
+                                    <dd>@parentEvent.Name</dd>
+                                </dl>
+                                <footer>
+                                    <a href="#" class="button outline small">Details</a>
+                                </footer>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (Model.Leaders.Any())
+        {
+            <input name="tabs" type="radio" id="tab-3" class="tab" />
+            <label for="tab-3" class="label">Leaders <span>@Model.Leaders.Count()</span></label>
+            <div class="panel archive" style="width: 100%;">
+                <h3>Leaders</h3>
+
+                <div class="cards grid">
+                    @foreach (Member leader in Model.Leaders)
+                    {
+                        <div class="card company_card">
+                            <figure>
+                                <img src="@leader.ProfileImage.GetCropUrl(width: 960)" alt="@leader.Name">
+                                <figcaption>
+                                    <div>Founding Member</div>
+                                </figcaption>
+                            </figure>
+                            <div class="content">
+                                <dl>
+                                    <dt>@leader.Name</dt>
+                                    <dd>@leader.City, @leader.State</dd>
+                                </dl>
+                                <footer>
+                                    <a href="#" class="button outline small">Profile</a>
+                                </footer>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        }
+
+        @*<input name="tabs" type="radio" id="tab-4" class="tab" />
+        <label for="tab-4" class="label">Members <span>29</span></label>
+        <div class="panel archive">
+
+            <h3>Members</h3>
+            <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum, sed vero molestias dolor minus placeat ad harum a cumque facere. Aspernatur sint ratione vel sapiente corrupti accusamus dicta laudantium. Ipsam? Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus in, ea corporis sint sunt vel nostrum, earum saepe aliquam veritatis exercitationem asperiores quis doloribus. Rerum dignissimos dolorum sint veniam est.
+            </p>
+
+        </div>
+
+        <input name="tabs" type="radio" id="tab-5" class="tab" />
+        <label for="tab-5" class="label">Archive <span>62</span></label>
+        <div class="panel archive">
+
+            <h3>Archive</h3>
+            <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum, sed vero molestias dolor minus placeat ad harum a cumque facere. Aspernatur sint ratione vel sapiente corrupti accusamus dicta laudantium. Ipsam? Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus in, ea corporis sint sunt vel nostrum, earum saepe aliquam veritatis exercitationem asperiores quis doloribus. Rerum dignissimos dolorum sint veniam est.
+            </p>
+
+        </div>*@
+
+    </section>
+    <!-- /.group-content -->
+
+</main>
+<!-- /.group -->

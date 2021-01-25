@@ -106,7 +106,9 @@
         <div class="cards grid" v-if="this.results.length">
             <div class="card company_card" v-for="(member, index) in results">
                 <figure>
-                    <img :src="member.Image" alt="">
+                    <a :href="member.Url">
+                        <img :src="member.Image" alt="">
+                    </a>
                     <figcaption>
                         <div>Founding Member</div>
                     </figcaption>
