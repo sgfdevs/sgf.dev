@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Profile>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using Member = Umbraco.Web.PublishedModels.Member;
+@{
+    Layout = "_Layout.cshtml";
+    var member = (Member)Members.GetCurrentMember();
+}
+
+<div class="container">
+    <h1>@member.FirstName @member.LastName</h1>
+    @if (member.ProfileImage != null)
+    {
+        <img src="@member.ProfileImage.Url()" style="width: 500px;" />
+    }
+</div>
+
+@Html.Partial("ProfileEdit")

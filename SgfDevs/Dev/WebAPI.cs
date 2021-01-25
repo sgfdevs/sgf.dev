@@ -9,6 +9,7 @@ using Examine;
 using SgfDevs.ViewModels;
 using Member = Umbraco.Web.PublishedModels.Member;
 using Umbraco.Web;
+using Umbraco.Core.Services;
 
 namespace SgfDevs.Dev.WebAPI
 {
@@ -43,6 +44,7 @@ namespace SgfDevs.Dev.WebAPI
         public IHttpActionResult GetSearch()
         {
             var memberResults = new List<DirectoryResult>();
+            IMemberService memberService = Services.MemberService;
 
             // This is pretty much one massive brainstorm clustrer eff at this point. Psh.
             if (ExamineManager.Instance.TryGetIndex(Constants.UmbracoIndexes.MembersIndexName, out var index))
@@ -59,7 +61,7 @@ namespace SgfDevs.Dev.WebAPI
                     foreach (var member in allMembers.OrderBy(m => m.CreateDate))
                     {
                         var node = Umbraco.Member(member.Id) as Member;
-                        var url = "/member/" + node.Name.ToLower().Replace(" ", "-");
+                        var url = "/member/" + member.Username;
                         var location = node.City + ", " + node.State;
 
                         memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = node.ProfileImage.Url(), Url = url });
@@ -78,8 +80,9 @@ namespace SgfDevs.Dev.WebAPI
                 {
                     foreach (var result in results)
                     {
+                        var member = memberService.GetById(int.Parse(result.Id));
                         var node = Umbraco.Member(result.Id) as Member;
-                        var url = "/member/" + node.Name.ToLower().Replace(" ", "-");
+                        var url = "/member/" + member.Username;
                         var location = node.City + ", " + node.State;
 
                         memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = node.ProfileImage.Url(), Url = url });
