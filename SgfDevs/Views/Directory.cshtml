@@ -121,17 +121,7 @@
                     </dl>
 
                     <footer>
-                        <div class="members">
-                            @for (int i = 1; i < 5; i++)
-                            {
-                                var imagePath = "/images/members/member_0" + i + ".jpeg";
-                                <a href="#">
-                                    <img src="@imagePath" alt="">
-                                </a>
-                            }
-                        </div>
-
-                        <a class="button outline small" href="#">Hire Us</a>
+                        <a class="button outline small" :href="member.Url">Profile</a>
                     </footer>
                 </div>
             </div>

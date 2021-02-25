@@ -9,22 +9,34 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        <ul class="form">
-            <li>
+        <div class="form">
+            <div class="field">
                 @Html.LabelFor(model => model.Username)
                 @Html.EditorFor(model => model.Username)
                 @Html.ValidationMessageFor(model => model.Username)
-            </li>
+            </div>
 
-            <li>
+            <div class="field">
                 @Html.LabelFor(model => model.Password)
                 @Html.PasswordFor(model => model.Password)
                 @Html.ValidationMessageFor(model => model.Password)
-            </li>
+            </div>
 
-            <li>
-                <button>Submit</button>
-            </li>
-        </ul>
+            <footer>
+                <button class="button tall wide" type="submit">Login</button>
+            </footer>
+
+            <div class="mt_25"></div>
+
+            <footer>
+                <p>
+                    Forgot your password? <br />
+                    Gonna have to hang tight. Password reset coming soon. <br />
+                    Ping an admin in Discord for a manual reset for now.
+                </p>
+            </footer>
+        </div>
     }
 </div>
+
+<div class="mt_75"></div>

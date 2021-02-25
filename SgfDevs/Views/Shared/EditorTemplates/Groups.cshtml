@@ -1,0 +1,33 @@
+﻿@using SgfDevs.Dev
+
+@{ 
+    var groups = DirectoryHelper.GetGroups();
+    var currentGroups = ViewData.TemplateInfo.FormattedModelValue.ToString();
+    var inputName = ViewData.TemplateInfo.HtmlFieldPrefix;
+}
+
+<div class="checkbox_list">
+    <div class="label">Groups</div>
+    <ul>
+        @foreach (var group in groups)
+        {
+            var udi = new GuidUdi("document", group.Key).ToString();
+            var groupName = group.Name;
+            var isCurrentGroup = currentGroups.Contains(udi);
+
+            <li>
+                <label>
+                    @if (isCurrentGroup)
+                    {
+                        <input type="checkbox" name="skills" value="@udi" checked /> @groupName
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="skills" value="@udi" /> @groupName
+                    }
+                </label>
+            </li>
+        }
+    </ul>
+    <input class="values" type="hidden" value="@currentGroups" name="@inputName" />
+</div>

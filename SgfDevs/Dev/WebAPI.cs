@@ -10,6 +10,10 @@ using SgfDevs.ViewModels;
 using Member = Umbraco.Web.PublishedModels.Member;
 using Umbraco.Web;
 using Umbraco.Core.Services;
+using System;
+using System.Net.Http;
+using System.Net;
+using Umbraco.Core;
 
 namespace SgfDevs.Dev.WebAPI
 {
@@ -58,13 +62,14 @@ namespace SgfDevs.Dev.WebAPI
                     var allMembers = DirectoryHelper.GetAllMembers();
 
 
-                    foreach (var member in allMembers.OrderBy(m => m.CreateDate))
+                    foreach (var member in allMembers)
                     {
                         var node = Umbraco.Member(member.Id) as Member;
                         var url = "/member/" + member.Username;
                         var location = node.City + ", " + node.State;
+                        var image = node.ProfileImage != null ? node.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
 
-                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = node.ProfileImage.Url(), Url = url });
+                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = image, Url = url });
                     }
 
                     return Ok(memberResults);
@@ -84,8 +89,9 @@ namespace SgfDevs.Dev.WebAPI
                         var node = Umbraco.Member(result.Id) as Member;
                         var url = "/member/" + member.Username;
                         var location = node.City + ", " + node.State;
+                        var image = node.ProfileImage != null ? node.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
 
-                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = node.ProfileImage.Url(), Url = url });
+                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = image, Url = url });
                     }
 
                     return Ok(memberResults.OrderBy(m => m.Name));
@@ -93,6 +99,42 @@ namespace SgfDevs.Dev.WebAPI
             }
 
             return Ok(memberResults);
+        }
+
+        [Route("api/profile/image-process")]
+        [HttpPost]
+        [MemberAuthorize]
+        public IHttpActionResult UploadProfileImage()
+        {
+            var member = (Member)Members.GetCurrentMember();
+
+            var request = HttpContext.Current.Request;
+            if (request.Files.Count > 0)
+            {
+                var file = request.Files[0];
+
+                if(file != null && file.ContentLength > 0)
+                {
+                    var filesExtension = System.IO.Path.GetExtension(file.FileName);
+                    var newFileName = member.Username + filesExtension;
+                    var mediaService = Services.MediaService;
+                    var membersMediaFolder = mediaService.GetRootMedia().FirstOrDefault(x => x.Name.InvariantEquals("Members"));
+
+                    // Need to explore and see if mediaService.SetMediaFileContent will work to
+                    // update an item if it already exists instead of always creating a new one.
+                    // For now, just create dupes!
+                    // - Myke
+                    var media = mediaService.CreateMedia(member.Username, membersMediaFolder, Constants.Conventions.MediaTypes.Image);
+                    media.SetValue(Services.ContentTypeBaseServices, Constants.Conventions.Media.File, newFileName, file.InputStream);
+                    mediaService.Save(media);
+
+                    var imageUdi = new GuidUdi("media", media.Key).ToString();
+
+                    return Ok(imageUdi);
+                }
+            }
+            
+            return BadRequest();
         }
     }
 

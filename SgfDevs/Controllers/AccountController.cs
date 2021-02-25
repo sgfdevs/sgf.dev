@@ -66,7 +66,7 @@ namespace SgfDevs.Controllers
 
             Members.Login(model.Username, model.Password);
 
-            return Redirect("/");
+            return Redirect("/account");
         }
     }
 }
