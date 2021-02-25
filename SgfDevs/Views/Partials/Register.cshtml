@@ -7,42 +7,56 @@
     @using (Html.BeginUmbracoForm<AccountController>("Register"))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+        
 
-        <ul class="form">
-            <li>
+        <div class="form">
+            <header>
+                <h1>Get started with your account</h1>
+                <p>
+                    Meet your peers. Engage with experts. Iron sharpening iron, you get it. Do it all with a membership to Springfield Devs. Already have an account? <a href="/login">Log in</a>
+                </p>
+
+                @Html.ValidationSummary(true)
+            </header>
+
+            <div class="field">
                 @Html.LabelFor(model => model.FirstName)
                 @Html.EditorFor(model => model.FirstName)
                 @Html.ValidationMessageFor(model => model.FirstName)
-            </li>
+            </div>
 
-            <li>
+            <div class="field">
                 @Html.LabelFor(model => model.LastName)
                 @Html.EditorFor(model => model.LastName)
                 @Html.ValidationMessageFor(model => model.LastName)
-            </li>
+            </div>
 
-            <li>
+            <div class="field">
                 @Html.LabelFor(model => model.Email)
                 @Html.EditorFor(model => model.Email)
                 @Html.ValidationMessageFor(model => model.Email)
-            </li>
+            </div>
 
-            <li>
+            <div class="field">
                 @Html.LabelFor(model => model.Username)
                 @Html.EditorFor(model => model.Username)
                 @Html.ValidationMessageFor(model => model.Username)
-            </li>
+            </div>
 
-            <li>
+            <div class="field">
                 @Html.LabelFor(model => model.Password)
                 @Html.PasswordFor(model => model.Password)
                 @Html.ValidationMessageFor(model => model.Password)
-            </li>
+            </div>
 
-            <li>
-                <button>Submit</button>
-            </li>
-        </ul>
+            <footer>
+                <button class="button tall wide" type="submit">Get Started!</button>
+                <p>
+                    By clicking the “get started” button, you are creating a Springfield Devs account, and you agree to Springfield Devs  <a href="#">Code of Conduct</a>.
+                </p>
+            </footer>
+        </div>
     }
 </div>
+
+<div class="mt_75"></div>

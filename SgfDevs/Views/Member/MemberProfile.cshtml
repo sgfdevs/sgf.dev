@@ -6,6 +6,7 @@
     Layout = "~/Views/_Layout.cshtml";
 
     var name = Model.FirstName + " " + Model.LastName;
+    var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
 }
 
 
@@ -15,14 +16,21 @@
     <header class="profile-header">
         <div class="information">
             <h1>@name</h1>
-            <h2>Tagline goes here.</h2>
+            <h2>@Model.JobTitle</h2>
 
-            <a href="#" class="button">Visit Site</a>
-            <a href="#" class="button outline">Hire Me</a>
+            @if (Model.HasValue("WebsiteUrl"))
+            {
+                <a href="@Model.WebsiteUrl" class="button">Visit Site</a>
+            }
+
+            @if (Model.AvailableForContractWork || Model.AvailableForHire)
+            {
+                <a href="#" class="button outline">Hire Me</a>
+            }
         </div>
 
         <div class="image">
-            <img src="@Model.ProfileImage.Url()" alt="@name" />
+            <img src="@image" alt="@name" />
         </div>
     </header>
 

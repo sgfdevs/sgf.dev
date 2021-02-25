@@ -11,6 +11,7 @@
     var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
     var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
     var allUpcomingEvents = new List<EventViewModel>();
+    var members = DirectoryHelper.GetAllMembers();
 
     var companies = Model.Descendants<Company>().ToList();
 
@@ -28,6 +29,8 @@
     {
         allUpcomingEvents.AddRange(mapper.Map<List<CommunityEvent>, List<EventViewModel>>(communityEvents));
     }
+
+    var loginStatusModel = Members.GetCurrentLoginStatus();
 }
 
 @if (nextDevNight != null)
@@ -121,7 +124,7 @@
             </ul>
         </div>
 
-        <footer>
+        <footer style="display: none;">
             <a href="#">See All Events</a>
         </footer>
     </section>
@@ -136,10 +139,13 @@
 
         <section>
             <span>
-                <strong>642</strong> Members
+                <strong>@members.Count()</strong> Members
             </span>
 
-            <a href="#" class="button outline dark">Join Us</a>
+            @if (!loginStatusModel.IsLoggedIn)
+            {
+                <a href="/register" class="button outline dark">Join Us</a>
+            }
         </section>
     </header>
 
@@ -163,19 +169,24 @@
                 </dl>
 
                 <p>
-                    342 profiles found
+                    @members.Count() profiles found
                 </p>
 
                 <footer>
-                    <a href="#" class="button outline">Explore</a>
+                    <a href="/directory/" class="button outline">Explore</a>
                 </footer>
             </div>
 
-            @foreach(var company in companies)
+            @foreach(var _member in members)
             {
+                var member = Umbraco.Member(_member.Id) as Member;
+                var url = "/member/" + member.Username;
+                var location = member.City + ", " + member.State;
+                var image = member.ProfileImage != null ? member.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
+
                 <div class="card company_card">
                     <figure>
-                        <img src="@company.Image.Url()" alt="@company.Name">
+                        <a href="@url"><img src="@image" alt="@member.Name"></a>
                         <figcaption style="display: none;">
                             <div>Platinum Sponsor</div>
                             <div>Founding Sponsor</div>
@@ -184,22 +195,12 @@
 
                     <div class="content">
                         <dl>
-                            <dt>@company.Name</dt>
-                            <dd>@company.Location</dd>
+                            <dt><a href="@url">@member.Name</a></dt>
+                            <dd>@location</dd>
                         </dl>
 
                         <footer>
-                            <div class="members">
-                                @for (int i = 1; i < 5; i++)
-                                {
-                                    var imagePath = "/images/members/member_0" + i + ".jpeg";
-                                    <a href="#">
-                                        <img src="@imagePath" alt="">
-                                    </a>
-                                }
-                            </div>
-
-                            <a class="button outline small" href="#">Job Listings</a>
+                            <a class="button outline small" href="@url">Profile</a>
                         </footer>
                     </div>
                 </div>
@@ -217,7 +218,7 @@
 
         <div class="circuit_graphic"></div>
 
-        <section>
+        <section style="display: none;">
             <a href="#" class="button blue">See All Sponsors</a>
         </section>
     </header>
@@ -232,7 +233,7 @@
             </dl>
 
             <footer>
-                <a href="#" class="button outline black">Become a Sponsor</a>
+                <a href="/about/sponsorship/" class="button outline black">Become a Sponsor</a>
             </footer>
         </div>
 
@@ -253,9 +254,9 @@
                         <dd><a href="@company.WebsiteUrl" target="_blank">@company.WebsiteUrl.Replace("https://", "").Replace("/", "").Replace("www.", "")</a></dd>
                     </dl>
 
-                    <footer>
+                    @*<footer>
                         <a class="button outline small gray" href="#">Job Listings</a>
-                    </footer>
+                    </footer>*@
                 </div>
             </div>
         }

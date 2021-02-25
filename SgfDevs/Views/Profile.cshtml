@@ -6,12 +6,117 @@
     var member = (Member)Members.GetCurrentMember();
 }
 
-<div class="container">
-    <h1>@member.FirstName @member.LastName</h1>
-    @if (member.ProfileImage != null)
+@section TopScripts {
+    <style>
+        .form {
+            padding: 0 15px;
+        }
+
+        .filepond--root {
+            max-width: 300px;
+        }
+
+        .filepond--credits {
+            display: none;
+        }
+
+        .filepond--file-info {
+            display: none !important;
+        }
+    </style>
+
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+}
+
+
+<div class="form">
+    <header>
+        <h1>Edit your profile</h1>
+    </header>
+
+    @if (member.HasValue("ProfileImage"))
     {
-        <img src="@member.ProfileImage.Url()" style="width: 500px;" />
+        <div class="field">
+            <img src="@member.ProfileImage.GetCropUrl(width: 200, height: 200)" />
+        </div>
     }
+
+    @Html.Partial("ProfileEdit")
+
+    <div class="mt_75"></div>
 </div>
 
-@Html.Partial("ProfileEdit")
+@section scripts {
+    <script>
+        //const inputElement = document.querySelector('input[type="file"]');
+        //const pond = FilePond.create(inputElement);
+        FilePond.registerPlugin(
+            FilePondPluginFileValidateType,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginImagePreview,
+            FilePondPluginImageCrop,
+            FilePondPluginImageResize,
+            FilePondPluginImageTransform,
+        );
+
+        // Select the file input and use
+        // create() to turn it into a pond
+        FilePond.create(
+            document.querySelector('input[type="file"]'),
+            {
+
+                labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
+                imagePreviewHeight: 300,
+                imageCropAspectRatio: '1:1',
+                //imageResizeTargetWidth: 300,
+                //imageResizeTargetHeight: 300,
+                //stylePanelLayout: 'compact circle',
+                stylePanelLayout: 'compact',
+                styleLoadIndicatorPosition: 'center bottom',
+                styleProgressIndicatorPosition: 'right bottom',
+                styleButtonRemoveItemPosition: 'center bottom',
+                styleButtonProcessItemPosition: 'right bottom',
+                onprocessfile: function (error, file) {
+                    if (file.serverId) {
+                        var umbPath = file.serverId.replace(/"/g, "");
+                        document.getElementById('profile_image_path').value = umbPath;
+                    }
+                },
+                //files: [
+                //    {
+                //        // the server file reference
+                //        source: '132',
+                //        options: {
+                //            type: 'local'
+                //        }
+                //    }
+                //],
+                dropOnPage: true
+
+                // Use Doka.js as image editor
+                //imageEditEditor: Doka.create({
+                //    utils: ['crop', 'filter', 'color']
+                //})
+            }
+        );
+
+        FilePond.setOptions({
+            server: {
+                process: '/api/profile/image-process',
+                load: '/api/profile/image-load'
+            }
+        });
+    </script>
+}

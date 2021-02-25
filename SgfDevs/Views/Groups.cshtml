@@ -15,10 +15,10 @@
     </div>
 </div>
 
-<div class="group_listing">
+<section class="group_listing">
     @foreach (var group in groups)
     {
-        <div class="group">
+        <section>
             @if(group.GroupImage != null)
             {
                 <div class="image">
@@ -51,6 +51,6 @@
                     </dl>
                 }
             </div>
-        </div>
+        </section>
     }
 </div>

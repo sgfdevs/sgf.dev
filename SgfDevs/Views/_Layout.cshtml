@@ -15,6 +15,7 @@
     <title>@Model.Name</title>
 
     <link rel="stylesheet" href="/css/styles.css" asp-append-version="true" />
+    @RenderSection("Head", required: false)
 
     @RenderSection("TopScripts", required: false)
 
@@ -32,12 +33,23 @@
 
             <nav class="main">
                 <ul>
-                    <li><a href="/about">About <i class="fas fa-chevron-down"></i></a></li>
-                    <li><a href="#">Events</a></li>
-                    <li><a href="/groups">Groups</a></li>
-                    <li><a href="/directory">Directory</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">Archives</a></li>
+                    <li>
+                        <a href="/about/">About <i class="fas fa-chevron-down"></i></a>
+                        <nav>
+                            <ul>
+                                <li><a href="/about/">Springfield Devs</a></li>
+                                <li><a href="/about/leadership/">Leadership</a></li>
+                                <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
+                                <li><a href="/about/sponsorship/">Sponsorship</a></li>
+                                @*<li><a href="#">Contact</a></li>*@
+                            </ul>
+                        </nav>
+                    </li>
+                    @*<li><a href="/events/">Events</a></li>*@
+                    <li><a href="/groups/">Groups</a></li>
+                    <li><a href="/directory/">Directory</a></li>
+                    <li><a href="/jobs/">Jobs</a></li>
+                    <li><a href="/archives/">Archives</a></li>
                     <li class="mobile"><a href="#">Login</a></li>
                     <li class="mobile"><a href="#">Signup</a></li>
                 </ul>
@@ -46,14 +58,16 @@
             <nav class="user">
                 <ul>
                     <li class="mobile_nav_trigger"><a href="#"><i class="far fa-bars"></i> <span>Menu</span></a></li>
-                    <li><a href="#"><i class="far fa-search"></i></a></li>
+                    <li class="search"><a href="#"><i class="far fa-search"></i></a></li>
                     @Html.Partial("LoginStatus")
                 </ul>
             </nav>
         </div>
     </header>
 
-    @RenderBody()
+    <div class="site_content">
+        @RenderBody()
+    </div>
 
     <footer class="site_footer">
         <div class="container">
@@ -65,23 +79,23 @@
                 </div>
 
                 <nav>
-                    <a href="/about">About</a>
-                    <a href="#">Directory <span>3</span></a>
-                    <a href="#">Jobs <span>1</span></a>
-                    <a href="#">Chapters</a>
-                    <a href="#">Sponsors</a>
+                    <a href="/about/">About</a>
+                    <a href="/directory/">Directory</a>
+                    <a href="/jobs/">Jobs</a>
+                    <a href="/groups/">Chapters</a>
+                    @*<a href="#">Sponsors</a>*@
                 </nav>
             </div>
 
             <div class="other_links">
                 <nav>
-                    <a href="#">Twitch</a>
-                    <a href="#">YouTube</a>
-                    <a href="#">GitHub</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">Slack</a>
+                    <a href="https://www.twitch.tv/sgfdevs">Twitch</a>
+                    <a href="https://www.youtube.com/channel/UC09Jd4ouiP_BUc7REYhC2kw">YouTube</a>
+                    <a href="https://github.com/sgfdevs">GitHub</a>
+                    <a href="https://www.facebook.com/sgfdevs">Facebook</a>
+                    <a href="https://twitter.com/sgfdevs/">Twitter</a>
+                    <a href="https://www.instagram.com/sgfdevs/">Instagram</a>
+                    @*<a href="#">Discord</a>*@
                 </nav>
 
                 <nav>

@@ -35,4 +35,25 @@ $(function() {
         
         return false;
     });
+
+    $('.checkbox_list input').change(function () {
+        let parent = $(this).closest('.checkbox_list');
+        let checkboxName = parent.data('name');
+
+        var checkedItems = $('input:checked', parent).map(function (i, e) {
+            return $(e).val();
+        }).get();
+
+        $('.values', parent).val(checkedItems.join(','));
+    });
+
+    $('.sgf_toggle input').change(function () {
+        let toggle = $(this);
+
+        if (toggle.is(':checked')) {
+            toggle.val('1');
+        } else {
+            toggle.val('0');
+        }
+    });
 });
