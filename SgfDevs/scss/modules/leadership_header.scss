@@ -1,0 +1,29 @@
+.leadership_header
+{
+    background: $dark_blue;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 27px;
+    padding: 105px 0 247px 0;
+    
+    h1 {
+        font-size: 60px;
+        line-height: 137px;
+        margin: 0 auto;
+        background: $dark_blue url("/images/headlines/leadership_bg.svg") no-repeat center;
+        background-size: 100% auto;
+        max-width: 1284px;
+    }
+    
+    @include mq-lt-medium
+    {
+        padding: 25px 0 247px 0;
+        
+        h1 {
+            font-size: 45px;
+            letter-spacing: 4.5px;
+            background-image: url("/images/headlines/leadership_bg_3.svg");
+        }
+    }
+}

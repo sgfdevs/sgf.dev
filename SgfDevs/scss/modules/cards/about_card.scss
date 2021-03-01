@@ -1,0 +1,40 @@
+.about_card {
+    background: $light_blue;
+    color: #ffffff;
+    padding: 28px 23px;
+    font-size: 14px;
+    display: flex !important;
+    flex-direction: column;
+    min-height: 300px;
+
+    dl {
+        margin: 0;
+        text-align: left;
+
+        dt {
+            font-weight: bold;
+            font-size: 14px;
+            color: $dark_blue;
+            margin-bottom: 15px;
+            padding-bottom: 1rem;
+        }
+
+        dd {
+            margin: 0;
+            font-weight: bold;
+            font-size: 27px;
+            letter-spacing: -0.32px;
+            line-height: 34px;
+            color: #ffffff;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    footer {
+        margin-top: auto;
+        padding-top: 5rem;
+    }
+}

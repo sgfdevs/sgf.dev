@@ -55,6 +55,7 @@ namespace SgfDevs.Controllers
             catch (Exception e)
             {
                 ModelState.AddModelError("", "Password too weak");
+                return CurrentUmbracoPage();
             }
 
             memberService.AssignRole(member.Id, "SGF Devs");

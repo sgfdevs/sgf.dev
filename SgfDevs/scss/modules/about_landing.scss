@@ -1,0 +1,80 @@
+.about_landing {
+    padding: 102px 0 102px 50px;
+    position: relative;
+    overflow-x: hidden;
+    color: #ffffff;
+    border-radius: 20px;
+
+    background: url("/images/circuitry/circuit_graphic.svg") center right
+            no-repeat,
+        #153558;
+    background-size: 700px 450px;
+    background-position: 52vw center;
+
+    min-height: 353px;
+
+    h1 {
+        line-height: 43px;
+    }
+    .content {
+        //max-width: 1200px;
+        max-width: 49%;
+    }
+
+    @include mq-desktop {
+        padding: 50px 0 96px 0;
+        background-position: 57vw center;
+
+        .content {
+            max-width: 58ch;
+        }
+    }
+
+    @include mq-medium {
+        padding: 130px 0 70px 0;
+
+        .content {
+            max-width: 795px;
+        }
+
+        p {
+            max-width: 450px;
+        }
+
+        background-position: 65vw 80%;
+        background-size: 568px 257px;
+    }
+
+    @include mq-lt-medium {
+        background-image: none;
+        position: relative;
+
+        padding: 170px 0 40px 0;
+
+        &:after {
+            position: absolute;
+            top: -23px;
+            left: 0;
+            content: "";
+            background: url("/images/circuitry/circuit_graphic.svg") right
+                bottom no-repeat;
+            height: 180px;
+            width: 100%;
+            background-size: 120%;
+        }
+
+        .container {
+            padding: 0 15px;
+        }
+
+        .content,
+        p {
+            max-width: 100%;
+        }
+
+        h1 {
+            font-size: 20px;
+            line-height: 30px;
+        }
+    }
+}

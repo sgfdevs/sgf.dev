@@ -1,0 +1,53 @@
+.about_content {
+    margin: 0 auto;
+    max-width: 90ch;
+    padding-top: 0;
+
+    h2 {
+        font-size: 32px;
+        letter-spacing: 0;
+        line-height: 40px;
+        margin-bottom: 0;
+        color: $dark_blue;
+    }
+
+    p {
+        padding-bottom: 1rem;
+    }
+
+    ol {
+        li {
+            padding-bottom: 1rem;
+        }
+    }
+
+    @include mq-desktop {
+        padding-top: 20px;
+    }
+
+    @include mq-medium {
+        padding-top: 20px;
+
+        p {
+            max-width: 450px;
+        }
+    }
+
+    @include mq-lt-medium {
+        padding-top: 30px;
+
+        p {
+            max-width: 100%;
+        }
+
+        h2 {
+            font-size: 20px;
+            line-height: 30px;
+        }
+    }
+
+    @include mq-large-mobile {
+        margin: 0 auto;
+        padding: 28px 23px;
+    }
+}

@@ -49,10 +49,16 @@
                 @Html.ValidationMessageFor(model => model.Password)
             </div>
 
+            <div class="field">
+                <label for="ChallengeQuestion">Null Check <span>(What is the Springfield, MO Airport Code?)</span> <span class="null_check_hint">Need Help?</span> </label>
+                @Html.EditorFor(model => model.ChallengeQuestion)
+                @Html.ValidationMessageFor(model => model.ChallengeQuestion)
+            </div>
+
             <footer>
                 <button class="button tall wide" type="submit">Get Started!</button>
                 <p>
-                    By clicking the “get started” button, you are creating a Springfield Devs account, and you agree to Springfield Devs  <a href="#">Code of Conduct</a>.
+                    By clicking the "get started" button, you are creating a Springfield Devs account, and you agree to Springfield Devs  <a href="/about/code-of-conduct/">Code of Conduct</a>.
                 </p>
             </footer>
         </div>

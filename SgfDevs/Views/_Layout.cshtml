@@ -89,16 +89,16 @@
 
             <div class="other_links">
                 <nav>
-                    <a href="https://www.twitch.tv/sgfdevs">Twitch</a>
-                    <a href="https://www.youtube.com/channel/UC09Jd4ouiP_BUc7REYhC2kw">YouTube</a>
-                    <a href="https://github.com/sgfdevs">GitHub</a>
-                    <a href="https://www.facebook.com/sgfdevs">Facebook</a>
-                    <a href="https://twitter.com/sgfdevs/">Twitter</a>
-                    <a href="https://www.instagram.com/sgfdevs/">Instagram</a>
-                    @*<a href="#">Discord</a>*@
+                    <a target="_blank" href="https://www.twitch.tv/sgfdevs">Twitch</a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UC09Jd4ouiP_BUc7REYhC2kw">YouTube</a>
+                    <a target="_blank" href="https://github.com/sgfdevs">GitHub</a>
+                    <a target="_blank" href="https://www.facebook.com/sgfdevs">Facebook</a>
+                    <a target="_blank" href="https://twitter.com/sgfdevs/">Twitter</a>
+                    <a target="_blank" href="https://www.instagram.com/sgfdevs/">Instagram</a>
+                    <a target="_blank" href="https://discord.com/invite/JHdwkBfk">Discord</a>
                 </nav>
 
-                <nav>
+                <nav style="display: none;">
                     <a href="#">Contact</a>
                     <a href="#">Code of Conduct</a>
                     <a href="#">Cookie Policy</a>
@@ -113,10 +113,10 @@
                     Subscribe to our newsletter and be the first to know about exciting events, exclusive offers from sponsors and what’s happening in our dev community.
                 </p>
 
-                <form action="#" method="post">
+                <form action="https://hooks.zapier.com/hooks/catch/5643689/o317nvx/" method="post" id="updates_subscribe">
                     <div class="material_input">
-                        <label for="">Email</label>
-                        <input type="text" placeholder="laurie.bream@raviga.com">
+                        <label for="email">Email</label>
+                        <input type="text" placeholder="laurie.bream@raviga.com" name="email" id="email">
                     </div>
 
                     <button class="button">Sign Up</button>
@@ -126,8 +126,8 @@
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/js/plugins.js" asp-append-version="true"></script>
-    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/plugins.js?cb=2021.2.28"></script>
+    <script src="~/js/main.js?cb=2021.2.28"></script>
 
     @RenderSection("Scripts", required: false)
     @Html.RenderJsHere()

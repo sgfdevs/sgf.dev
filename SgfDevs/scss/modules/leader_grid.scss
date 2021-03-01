@@ -1,0 +1,128 @@
+.leader_grid
+{
+    margin-bottom: 105px;
+    
+    ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 33px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    figure {
+        margin: 0;
+        padding: 0;
+        
+        img {
+            border-radius: 27px;
+            min-height: 200px;
+            object-fit: cover;
+            width: 100%;
+            filter: grayscale(100%);
+        }
+    }
+
+    &.officers {
+        margin-top: -187px;
+        //transform: translateY(-187px);
+        
+        ul {
+            grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
+        }
+        
+        figure {
+            img {
+                min-height: 305px;
+            }
+        }
+    }
+    
+    h2, h3, h4, h5 {
+        margin: 0;
+    }
+    
+    h2 {
+        font-size: 36px;
+        color: #153558;
+        letter-spacing: 0;
+        line-height: 40px;
+        
+        a {
+            color: #153558;
+        }
+    }
+    
+    h3 {
+        font-weight: normal;
+        font-size: 16px;
+        color: #619ECE;
+        letter-spacing: 1.78px;
+        line-height: 30px;
+        text-transform: uppercase;
+    }
+    
+    h4 {
+        font-size: 18px;
+        color: #153558;
+        letter-spacing: 0;
+        line-height: 40px;
+        
+        a {
+            color: #153558;
+        }
+    }
+    
+    p {
+        font-size: 16px;
+        color: #000;
+        letter-spacing: 0;
+        line-height: 24px;
+        
+        a {
+            color: #000;
+            text-decoration: underline;
+        }
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 42px;
+
+        h2 {
+            font-size: 24px;
+            color: #619ECE;
+            letter-spacing: 2.4px;
+            line-height: 43px;
+            text-transform: uppercase;
+        }
+    }
+    
+    &.history {
+        P:first-of-type {
+            margin-top: 0;
+        }
+
+        p:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        header {
+            text-align: left;
+            margin-bottom: 36px;
+            display: flex;
+            
+            img {
+                margin-right: 6px;
+            }
+            
+            h2 {
+                font-weight: 900;
+                font-size: 51px;
+                color: #153557;
+                letter-spacing: 0;
+                line-height: 43px;
+            }
+        }
+    }
+}

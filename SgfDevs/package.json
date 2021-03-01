@@ -1,0 +1,21 @@
+{
+  "name": "sgfdevs",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "browser-sync": "^2.26.14",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "npx": "^10.2.2",
+    "node-sass": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "npm-run-all --parallel css browsersync",
+    "css": "nodemon -e scss -x \"npm run build\"",
+    "build": "npx node-sass scss/styles.scss css/styles.css --output-style compressed",
+    "browsersync": "browser-sync start --config \"browsersync.js\""
+  },
+  "author": "",
+  "license": "ISC"
+}

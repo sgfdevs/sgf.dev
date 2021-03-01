@@ -172,7 +172,7 @@
         {
             <input name="tabs" type="radio" id="tab-2" class="tab" />
             <label for="tab-2" class="label">Upcoming Events <span>@upcomingPresentations.Count()</span></label>
-            <div class="panel archive" style="width: 100%;">
+            <div class="panel archive">
                 <h3>Events</h3>
                 <div class="cards grid">
                     @foreach (Presentation presentation in upcomingPresentations)
@@ -207,7 +207,7 @@
         {
             <input name="tabs" type="radio" id="tab-3" class="tab" />
             <label for="tab-3" class="label">Leaders <span>@Model.Leaders.Count()</span></label>
-            <div class="panel archive" style="width: 100%;">
+            <div class="panel archive">
                 <h3>Leaders</h3>
 
                 <div class="cards grid">

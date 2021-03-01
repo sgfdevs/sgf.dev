@@ -1,0 +1,20 @@
+.company_card
+{
+    footer {
+        img {
+            filter: grayscale(100%);
+        }
+        
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .members {
+        img {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+.circuit_header
+{
+    background-color: $dark_blue;
+    padding-top: 90px;
+    border-radius: 27px;
+
+    min-height: 440px;
+    background-image: url("/images/circuitry/header.svg");
+    background-repeat: no-repeat;
+    background-position: 112%;
+    
+    .container {
+        //min-height: 440px;
+        //background-image: url("/images/circuitry/header.svg");
+        //background-repeat: no-repeat;
+        //background-position: 100%;
+    }
+}

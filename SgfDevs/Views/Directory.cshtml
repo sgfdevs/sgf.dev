@@ -81,17 +81,17 @@
                     <strong>{{ this.totalMembers }}</strong> Members
                 </span>
 
-                <a href="#" class="button inverse outline light_blue">Join Us</a>
+                <a href="/register" class="button inverse outline light_blue">Join Us</a>
             </section>
         </header>
 
         <nav>
             <ul>
                 <li><i class="fal fa-filter"></i></li>
-                <li>Type</li>
-                <li>Category</li>
+                @*<li>Type</li>
+                <li>Category</li>*@
                 <li class="active">Skills <span v-if="activeSkillsFilters.length">{{ activeSkillsFilters.length }}</span></li>
-                <li>Location</li>
+                @*<li>Location</li>*@
             </ul>
 
             <div class="filters">

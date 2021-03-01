@@ -1,0 +1,294 @@
+.profile {
+    margin: 0 5vmax;
+
+    .profile-header {
+        align-items:center;
+        background: url("/images/circuitry/circuit_graphic.svg") 0% -30% no-repeat;
+        color:#000;
+        display: flex;
+        flex-flow:column wrap;
+        padding:2rem 0;
+        text-align:center;
+
+        @media (min-width:1024px) {
+            background-position:60% -35%;
+            flex-flow: row nowrap;
+            padding:4rem 0 2rem;
+            text-align:left;
+        }
+
+        &>* {
+            flex: 1 1 auto;
+        }
+
+        h1 {
+            font-size:4rem;
+            line-height:1;
+        }
+
+        .information {
+            order:2;
+            width:100%;
+
+            @media (min-width:1024px) {
+                order:initial;
+                width: 33%;
+            }
+        }
+
+        .image {
+            width:75%;
+
+            @media (min-width:1024px) {
+                width:40%;
+            }
+
+            img {
+                border-radius: 2rem;
+            }
+
+            &::after {
+                background:$dark_blue;
+                content:"";
+                display:block;
+                height:200px;
+                position:absolute;
+                top:125px;
+                right:0;
+                width:300px;
+                z-index:-1;
+
+                @media (min-width:767px) {
+                    height:340px;
+                    width:440px;
+                }
+
+                @media (min-width:1024px) {
+                    width:400px;
+                    width:30%;
+                }
+
+                @media (min-width:1800px) {
+                    width:600px;
+                    width:30%;
+                }
+            }
+
+        }
+    }
+
+    .profile-content {
+        width: 100%;
+
+        .icon {
+            color: $dark_blue;
+        }
+
+    }
+
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:center;
+
+        @media (min-width: 1024px) {
+            justify-content:flex-start;
+        }
+
+        .tab {
+            position: absolute;
+            opacity: 0;
+
+            &:focus + .label {
+                z-index: 1;
+            }
+
+            &:checked + .label {
+                background:transparent;
+                color:inherit;
+                
+                & + .panel {
+                    display:flex; // Shows the panel when active.
+
+                    @media (min-width:1024px) {
+                    }
+                }
+            }
+        }
+
+        .label {
+            color:#6e6d7a;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 20px 30px;
+            transition: background 0.1s, color 0.1s;
+            width: 100%;
+
+            span {
+                font-weight:normal;
+                margin-left:.2rem;
+            }
+
+            @media (min-width: 600px) {
+                width: auto;
+            }
+        }
+    }
+
+    .panel {
+        border-top:2px solid $light_gray;
+        display: none; // Hide when not active.
+        flex-direction:column;
+        padding:2rem 0;
+        width: 100%;
+
+        @media (min-width: 1024px) {
+            flex-direction:row;
+        }
+
+        &.archive {
+            flex-direction:column;
+
+            & > * {
+                width:100%;
+            }
+        }
+
+        &:first-of-type .col > *:not(.break) {
+            flex: 1 1 auto;
+        }
+
+        @media (min-width: 600px) {
+            order: 99;
+        }
+    }
+
+    [class*="col"] {
+        display:flex;
+        flex-flow:row wrap;
+        width:100%;
+
+        @media (min-width:768px) {
+        }
+
+        @media (min-width:1024px) {
+            flex-flow:column wrap;
+        }
+
+        @media (min-width:1200px) {
+        }
+
+        &[class*="-1"] {
+
+            @media (min-width:768px) {
+                flex-wrap:nowrap;
+            }
+
+            @media (min-width:1024px) {
+                flex-wrap:wrap;
+                order:2;
+                width:33%;
+            }
+        }
+
+        &[class*="-2"] {
+
+            @media (min-width:1024px) {
+                padding-right:2rem;
+                width:66%;
+            }
+        }
+
+        & > * {
+            width:100%;
+        }
+    }
+
+    a:not(.button) {
+        color: $dark_blue;
+        font-weight: 500;
+
+        &:visited {
+            color: inherit;
+        }
+
+        &:hover {
+            color: $light_blue;
+        }
+    }
+
+    .icon {
+        font-size:1.8rem;
+        line-height:inherit;
+        line-height:1.4;
+        margin-right:.5rem;
+        vertical-align:middle;
+    }
+
+    .bio {
+    }
+
+    .metadata {
+        background: $gray;
+        border-radius: 2rem;
+        height:10rem;
+        padding:2rem;
+
+        @media (min-width:768px) {
+            order: 2;
+        }
+
+        @media (min-width:1024px) {
+            order: initial;
+        }
+
+        &>* {
+        margin:.5rem 0;
+        }
+
+        .flag {
+            position: absolute;
+            right:5vmax;
+    
+            @media (min-width:1024px) {
+                right:6vmax;
+            }
+    
+            div {
+                background:$light_blue;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 7px 50%);
+                color: #fff;
+                font-size: 14px;
+                font-weight: 400;
+                letter-spacing: 0;
+                line-height: 23px;
+                margin-bottom: 8px;
+                padding: 0 5px 0 14px;
+            }
+        }
+    }
+
+    .skills {
+
+        .skill {
+            color: black;
+            border-color: $gray;
+
+            .count {
+                color: lighten($color: #000000, $amount: 40);
+                margin-left: 0.25rem;
+            }
+        }
+    }
+
+    .socials {
+
+        .social {
+            margin:.5rem 0;
+        }
+
+        .icon {
+            color: $light_blue;
+        }
+    }
+}

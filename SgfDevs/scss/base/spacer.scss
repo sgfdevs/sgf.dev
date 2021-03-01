@@ -1,0 +1,47 @@
+@mixin spacingGenerator($amount) {
+    .mt_#{$amount} { margin-top: $amount * 1px !important; }
+    .mb_#{$amount} { margin-bottom: $amount * 1px !important; }
+    .m_y_#{$amount} { margin-top: $amount * 1px !important; margin-bottom: $amount * 1px !important; }
+
+    .pt_#{$amount} { padding-top: $amount * 1px !important; }
+    .pb_#{$amount} { padding-bottom: $amount * 1px !important; }
+    .p_y_#{$amount} { padding-top: $amount * 1px !important; padding-bottom: $amount * 1px !important; }
+}
+
+@mixin spacingGeneratorSmall($amount) {
+    @include mq-lt-medium
+    {
+        .small_mt_#{$amount} { margin-top: $amount * 1px !important; }
+        .small_mb_#{$amount} { margin-bottom: $amount * 1px !important; }
+        .small_m_y_#{$amount} { margin-top: $amount * 1px !important; margin-bottom: $amount * 1px !important; }
+
+        .small_pt_#{$amount} { padding-top: $amount * 1px !important; }
+        .small_pb_#{$amount} { padding-bottom: $amount * 1px !important; }
+        .small_p_y_#{$amount} { padding-top: $amount * 1px !important; padding-bottom: $amount * 1px !important; }
+    }
+}
+
+@include spacingGenerator(0);
+@include spacingGenerator(5);
+@include spacingGenerator(10);
+@include spacingGenerator(15);
+@include spacingGenerator(20);
+@include spacingGenerator(25);
+@include spacingGenerator(30);
+@include spacingGenerator(35);
+@include spacingGenerator(40);
+@include spacingGenerator(45);
+@include spacingGenerator(50);
+@include spacingGenerator(55);
+@include spacingGenerator(60);
+@include spacingGenerator(65);
+@include spacingGenerator(70);
+@include spacingGenerator(75);
+@include spacingGenerator(100);
+@include spacingGenerator(150);
+
+@include spacingGeneratorSmall(10);
+@include spacingGeneratorSmall(15);
+@include spacingGeneratorSmall(20);
+@include spacingGeneratorSmall(25);
+@include spacingGeneratorSmall(30);

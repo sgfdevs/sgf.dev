@@ -1,0 +1,97 @@
+.group_listing
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(554px, 1fr));
+    grid-gap: 60px;
+    max-width: 1230px;
+    margin: -200px auto 50px auto;
+    padding: 0 30px;
+    
+    h2 {
+        font-size: 36px;
+        color: #153558;
+        letter-spacing: 0;
+        line-height: 40px;
+        margin-bottom: 0;
+    }
+    
+    h3 {
+        font-weight: normal;
+        font-size: 16px;
+        color: #619ECE;
+        letter-spacing: 1.78px;
+        line-height: 30px;
+        text-transform: uppercase;
+    }
+    
+    
+    p {
+        color: #000;
+        
+        a {
+            color: #000;
+            text-decoration: underline;
+        }
+    }
+    
+    
+    .image {
+        img {
+            border-radius: 27px;
+        }
+    }
+    
+    dl {
+        margin: 14px 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        
+        dt {
+            width: 100%;
+            flex-shrink: 0;
+            font-size: 16px;
+            color: #619ECE;
+            letter-spacing: 1.78px;
+            line-height: 30px;
+            text-transform: uppercase;
+        }
+        
+        dd {
+            margin: 0 16px 0 0;
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+        
+        img {
+            filter: grayscale(100);
+            border-radius: 27px;
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+        }
+        
+        span {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            color: #153558;
+            letter-spacing: 0;
+            line-height: 21px;
+        }
+    }
+    
+    @include mq-medium
+    {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+    
+    @include mq-lt-medium
+    {
+        padding: 0;
+        
+        .content {
+            padding: 0 30px;
+        }
+    }
+}

@@ -1,0 +1,74 @@
+.card {
+    border-radius: 27px;
+    max-width: 316px;
+    border: 1px solid #f5f7f7;
+    
+    a {
+        text-decoration: none;
+    }
+
+    figure {
+        position: relative;
+        height: 228px;
+        border-top-left-radius: 27px;
+        border-top-right-radius: 27px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        figcaption {
+            position: absolute;
+            bottom: 16px;
+            right: 0;
+
+            div {
+                background: #6f9dca;
+                color: #fff;
+                padding: 0 5px 0 14px;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 7px 50%);
+                line-height: 23px;
+                font-weight: 400;
+                font-size: 14px;
+                letter-spacing: 0;
+                margin-bottom: 8px;
+            }
+        }
+    }
+
+    dl {
+        color: #153557;
+        text-align: center;
+        margin: 0;
+
+        dt,
+        dd {
+            margin: 0;
+            line-height: 1.5em;
+        }
+
+        dt, dt a {
+            font-weight: 600;
+            color: #153557;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        dd {
+            font-size: 15px;
+        }
+    }
+
+    footer {
+        margin-top: 20px;
+    }
+
+    .content {
+        padding: 14px 16px 13px 16px;
+        background: #fff;
+        border-radius: 0 0 27px 27px;
+    }
+}

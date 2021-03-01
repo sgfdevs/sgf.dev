@@ -241,7 +241,7 @@
         {
             <div class="card sponsor_card">
                 <figure>
-                    <img src="@company.Image.Url()" alt="@company.Name">
+                    <a href="@company.Url()"><img src="@company.Image.Url()" alt="@company.Name"></a>
                     <figcaption>
                         <div>Platnium Sponsor</div>
                         <div>Founding Sponsor</div>
@@ -250,7 +250,7 @@
 
                 <div class="content">
                     <dl>
-                        <dt>@company.Name</dt>
+                        <dt><a href="@company.Url()">@company.Name</a></dt>
                         <dd><a href="@company.WebsiteUrl" target="_blank">@company.WebsiteUrl.Replace("https://", "").Replace("/", "").Replace("www.", "")</a></dd>
                     </dl>
 

@@ -1,0 +1,92 @@
+/*
+- Base - Core/global element styling -- Normalize, Typography, Forms, Images, Tables, Global(rando shit), Grids/global layout containers/wrappers
+- Utilities - Tools/helpers/variables/mixins/functions
+- Vendor - 3rd party styling(fancybox, twitter bootstrap, foundaiton, sliders, animate.css, select 2, etc)
+- Animations - main animations file as default. Split into multiples as needed.
+- Pages - High level - page specific styling. Named tightly to the page name/type
+- Modules - Most things will live here. each of a set of standardized parts or independent units that can be used to construct a more complex structure, such as an item of furniture or a building.
+- Deprecated - Use this as needed on a per project basis. Example: move old things here that still need to live, Backup old items here that don’t need compiled but you want to keep around for a historical reasons, etc
+*/
+
+
+* { box-sizing: border-box; }
+
+html {
+    
+}
+
+body {
+    //font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Sans Variable', 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.666em;
+    font-weight: 400;
+    color: #254151;
+
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+img {
+    max-width: 100%;
+}
+
+.site_content {
+    flex: 1;
+}
+
+a, a:visited, a:active, a:hover {
+    text-decoration: none;
+    outline: none !important;
+    border: none;
+    color: $light_blue;
+}
+
+a {
+    
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    //max-width: 1500px;
+    margin: 0 auto; 
+    padding: 0 50px;
+    position: relative;
+
+    &.wide { max-width: 1600px; }
+    
+    &.no_right_padding {
+        padding-right: 0;
+    }
+
+    @include mq-lt-large-tablet
+    {
+        padding: 0 30px;
+    }
+    
+    &.clamp {
+        max-width: 1500px;
+    }
+
+    &.medium_clamp {
+        max-width: 1200px;
+        padding: 0;
+
+        @include mq-lt-large-tablet
+        {
+            padding: 0 30px;
+        }
+    }
+    
+    
+}

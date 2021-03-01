@@ -56,4 +56,29 @@ $(function() {
             toggle.val('0');
         }
     });
+
+    $('#updates_subscribe').on('submit', function (e) {
+        var emailAddress = $('#email').val();
+
+        if (validateEmail(emailAddress)) {
+            $.post($(this).attr('action'), $(this).serialize()).done(function (data) {
+                $('#email').val('');
+                swal('You Are Awesome', "Thanks for signing up for updates. You'll be hearing from us soon!", 'success');
+            });
+        } else {
+            swal('Whoops', 'Something went wrong... Please double check that your email address is valid. And if so, yell at us on the Twitter and tell us our stuff is broken.', 'error');
+        }
+
+        //e.preventDefault();
+        return false;
+    });
+
+    $('.null_check_hint').on('click', function () {
+        swal('The answer is SGF', "This is an attempt to crack down on spam submissions. Hopefully it works and you are not a robot sniffing out the answer to this riddle. Welp. See ya later.", 'success');
+    });
+
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
 });

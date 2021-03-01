@@ -1,0 +1,153 @@
+.upcoming_events
+{
+    background: #619ECE;
+    padding: 60px 0 94px 0;
+    position: relative;
+    
+    a {
+        text-decoration: none;
+    }
+
+    &:before {
+        position: absolute;
+        z-index: 1;
+        top: -30px;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background: #619ECE;
+        content: '';
+    }
+    
+    header, footer {
+        padding: 0 50px;
+    }
+    
+    header {
+        span {
+            display: block;
+            font-weight: 600;
+            font-size: 18px;
+            color: #000;
+        }
+    }
+    
+    footer {
+        margin-top: 40px;
+        
+        a {
+            color: #FFF;
+            text-decoration: underline;
+        }
+    }
+    
+    .scroll_list {
+        overflow-x: auto;
+        margin-top: 32px;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    
+    ul {
+        padding: 0 50px;
+        display: flex;
+        scroll-snap-type: x mandatory;
+        
+        li {
+            scroll-snap-align: end;
+            background: #FFF;
+            border-radius: 27px;
+            min-width: 550px;
+            max-width: 700px;
+            margin-right: 50px;
+            
+            a {
+                display: flex;
+            }
+            
+            figure {
+                margin-right: 24px;
+                
+                img {
+                    width: 168px;
+                    height: 100%;
+                    border-radius: 27px 0 0 27px;
+                    object-fit: cover;
+                }
+            }
+            
+            .content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .details {
+                display: grid;
+                grid-template-areas:
+                    "title date"
+                    "location date";
+                grid-column-gap: 20px;
+            }
+            
+            h3 {
+                margin: 0;
+                padding-top: 17px;
+                font-weight: 600;
+                font-size: 30px;
+                color: #153557;
+                grid-area: title;
+            }
+            
+            h4 {
+                margin: 0;
+                font-weight: normal;
+                font-size: 15px;
+                color: #619ECE;
+                grid-area: location;
+            }
+            
+            time {
+                font-weight: 300;
+                font-size: 24px;
+                color: #FFF;
+                background: #153557;
+                grid-area: date;
+                border-radius: 0 27px 0 27px;
+                padding: 0 20px;
+                display: flex;
+                height: 60px;
+                line-height: 60px;
+                justify-content: center;
+                
+                span {
+                    font-weight: bold;
+                    margin-left: 5px;
+                }
+            }
+            
+            .host {
+                font-size: 14px;
+                color: #153557;
+                
+                span {
+                    font-weight: 700;
+                }
+            }
+            
+            .price {
+                font-size: 15px;
+                color: #619ECE;
+            }
+            
+            footer {
+                margin-top: auto;
+                display: flex;
+                justify-content: space-between;
+                padding: 0 14px 14px 0;
+            }
+        }
+    }
+}

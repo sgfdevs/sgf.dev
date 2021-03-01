@@ -1,0 +1,27 @@
+// Font Mixins
+
+// @mixin merriweather-bold() {
+//     font-family: 'Merriweather', serif;
+//     font-weight: 700;
+// }
+
+
+@font-face{
+    font-family: 'Source Sans Variable';
+    font-weight: 200 900;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('/css/fonts/WOFF2/VAR/SourceSansVariable-Roman.ttf.woff2') format('woff2'),
+    url('/css/fonts/WOFF/VAR/SourceSansVariable-Roman.ttf.woff') format('woff'),
+    url('/css/fonts/VAR/SourceSansVariable-Roman.ttf') format('truetype');
+}
+
+@font-face{
+    font-family: 'Source Sans Variable';
+    font-weight: 200 900;
+    font-style: italic;
+    font-stretch: normal;
+    src: url('/css/fonts/WOFF2/VAR/SourceSansVariable-Italic.ttf.woff2') format('woff2'),
+    url('/css/fonts/WOFF/VAR/SourceSansVariable-Italic.ttf.woff') format('woff'),
+    url('/css/fonts/VAR/SourceSansVariable-Italic.ttf') format('truetype');
+}
