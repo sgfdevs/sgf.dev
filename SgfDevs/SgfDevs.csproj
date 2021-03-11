@@ -60,6 +60,9 @@
     <Reference Include="CSharpTest.Net.Collections, Version=14.906.1403.1082, Culture=neutral, PublicKeyToken=06aee00cce822474, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="DataAnnotationsExtensions, Version=5.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataAnnotationsExtensions.5.0.1.27\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Examine, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Examine.1.0.2\lib\net452\Examine.dll</HintPath>
     </Reference>
@@ -524,6 +527,7 @@
     <Compile Include="App_Data\Models\Member.generated.cs" />
     <Compile Include="App_Data\Models\NonMemberPresenter.generated.cs" />
     <Compile Include="App_Data\Models\Page.generated.cs" />
+    <Compile Include="App_Data\Models\PasswordReset.generated.cs" />
     <Compile Include="App_Data\Models\Presentation.generated.cs" />
     <Compile Include="App_Data\Models\PresenterPicker.generated.cs" />
     <Compile Include="App_Data\Models\Profile.generated.cs" />
@@ -544,6 +548,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DirectoryResult.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\imageprocessor\security.config" />
@@ -673,6 +678,9 @@
     <Content Include="scss\vendor\_fancybox.scss" />
     <Content Include="scss\vendor\_index.scss" />
     <Content Include="scss\_shame.scss" />
+    <Content Include="Views\ForgottenPassword.cshtml" />
+    <Content Include="Views\ResetPassword.cshtml" />
+    <Content Include="Views\Partials\ResetPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -5,6 +5,7 @@ using System.Web;
 using Umbraco.Web.Mvc;
 using System.Web.Mvc;
 using SgfDevs.Models;
+using SgfDevs.ViewModels;
 
 namespace SgfDevs.Controllers
 {
@@ -68,6 +69,60 @@ namespace SgfDevs.Controllers
             Members.Login(model.Username, model.Password);
 
             return Redirect("/account");
+        }
+
+        /// <summary>
+        /// Renders the Forgotten Password view
+        /// @Html.Action("RenderForgottenPassword","AuthSurface");
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RenderForgottenPassword()
+        {
+            return PartialView("ForgottenPassword", new ResetPasswordViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult HandleForgottenPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("ForgottenPassword", model);
+            }
+
+            var memberService = Services.MemberService;
+            //Find the member with the email address
+            var member = memberService.GetByEmail(model.EmailAddress);
+
+            if (member != null)
+            {
+                //Set expiry date to 48 hours from now
+                DateTime expiryTime = DateTime.Now.AddHours(48);
+
+                //update the resetPasswordToken property for the member
+                var token = GenerateUniqueCode();
+                member.SetValue("resetPasswordToken",token );
+                member.SetValue("resetPasswordExpireDate", expiryTime.ToString("ddMMyyyyHHmmssFFFF"));
+
+                //Save the member with the up[dated property value
+                memberService.Save(member);
+
+                //Send user an email to reset password with token in it
+                //EmailHelper email = new EmailHelper();
+                //email.SendResetPasswordEmail(findMember.Email, expiryTime.ToString("ddMMyyyyHHmmssFFFF"));
+            }
+            else
+            {
+                ModelState.AddModelError("ForgottenPasswordForm.", "No member found");
+                return PartialView("ForgottenPassword", model);
+            }
+
+            return PartialView("ForgottenPassword", model);
+        }
+
+        private object GenerateUniqueCode()
+        {
+            throw new NotImplementedException();
         }
     }
 }
