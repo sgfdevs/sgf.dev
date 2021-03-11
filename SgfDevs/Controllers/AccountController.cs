@@ -78,7 +78,7 @@ namespace SgfDevs.Controllers
         /// <returns></returns>
         public ActionResult RenderForgottenPassword()
         {
-            return PartialView("ForgottenPassword", new ResetPasswordViewModel());
+            return PartialView("ResetPassword", new ResetPasswordViewModel());
         }
 
         [HttpPost]
@@ -86,9 +86,8 @@ namespace SgfDevs.Controllers
         public ActionResult HandleForgottenPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return PartialView("ForgottenPassword", model);
-            }
+                ModelState.AddModelError("ForgottenPasswordForm.", "Model State Invalid");
+                return CurrentUmbracoPage();
 
             var memberService = Services.MemberService;
             //Find the member with the email address
@@ -113,11 +112,11 @@ namespace SgfDevs.Controllers
             }
             else
             {
-                ModelState.AddModelError("ForgottenPasswordForm.", "No member found");
-                return PartialView("ForgottenPassword", model);
+                //ModelState.AddModelError("ForgottenPasswordForm.", "No member found");
+                return PartialView("Home");
             }
 
-            return PartialView("ForgottenPassword", model);
+            return PartialView("ResetPassword", model);
         }
 
         private object GenerateUniqueCode()
