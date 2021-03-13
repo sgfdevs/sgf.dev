@@ -511,6 +511,7 @@
     <Compile Include="App_Data\Models\Events.generated.cs" />
     <Compile Include="App_Data\Models\File.generated.cs" />
     <Compile Include="App_Data\Models\Folder.generated.cs" />
+    <Compile Include="App_Data\Models\ForgottenPassword.generated.cs" />
     <Compile Include="App_Data\Models\Group.generated.cs" />
     <Compile Include="App_Data\Models\GroupHost.generated.cs" />
     <Compile Include="App_Data\Models\Groups.generated.cs" />
@@ -531,6 +532,7 @@
     <Compile Include="App_Data\Models\PresenterPicker.generated.cs" />
     <Compile Include="App_Data\Models\Profile.generated.cs" />
     <Compile Include="App_Data\Models\Register.generated.cs" />
+    <Compile Include="App_Data\Models\ResetPassword.generated.cs" />
     <Compile Include="App_Data\Models\Tag.generated.cs" />
     <Compile Include="App_Data\Models\TagGroup.generated.cs" />
     <Compile Include="App_Data\Models\Tags.generated.cs" />
@@ -542,13 +544,13 @@
     <Compile Include="Dev\SGFMemberIndexComposer.cs" />
     <Compile Include="Dev\UmbracoVirtualNodeByUrlRouteHandler.cs" />
     <Compile Include="Dev\WebAPI.cs" />
+    <Compile Include="Models\ForgottenPasswordModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DirectoryResult.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
-    <Compile Include="ViewModels\ForgottenPasswordViewModel.cs" />
-    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\imageprocessor\security.config" />

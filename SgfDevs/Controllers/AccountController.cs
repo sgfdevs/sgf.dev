@@ -78,12 +78,12 @@ namespace SgfDevs.Controllers
         /// <returns></returns>
         public ActionResult RenderForgottenPassword()
         {
-            return PartialView("ResetPassword", new ResetPasswordViewModel());
+            return PartialView("ForgottenPasswordPassword", new ForgottenPasswordModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleForgottenPassword(ResetPasswordViewModel model)
+        public ActionResult HandleForgottenPassword(ForgottenPasswordModel model)
         {
             if (!ModelState.IsValid)
                 ModelState.AddModelError("ForgottenPasswordForm.", "Model State Invalid");
@@ -116,7 +116,7 @@ namespace SgfDevs.Controllers
                 return PartialView("Home");
             }
 
-            return PartialView("ResetPassword", model);
+            return PartialView("ForgottenPassword", model);
         }
 
         private object GenerateUniqueCode()

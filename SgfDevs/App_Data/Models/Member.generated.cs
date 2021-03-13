@@ -171,6 +171,20 @@ namespace Umbraco.Web.PublishedModels
 		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent ProfileImage => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("profileImage");
 
 		///<summary>
+		/// resetPasswordExpireDate
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("resetPasswordExpireDate")]
+		public global::System.DateTime ResetPasswordExpireDate => this.Value<global::System.DateTime>("resetPasswordExpireDate");
+
+		///<summary>
+		/// resetPasswordToken
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("resetPasswordToken")]
+		public string ResetPasswordToken => this.Value<string>("resetPasswordToken");
+
+		///<summary>
 		/// Skills Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
