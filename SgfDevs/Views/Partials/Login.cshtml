@@ -4,6 +4,10 @@
 @using SgfDevs.Controllers
 
 <div class="container">
+    <p>@ViewData["Login"]</p>
+    <p>@ViewData["invalid"]</p>
+    <p>@ViewData["LoginInvalid"]</p>
+    <p>@ViewData["loginWorked"]</p>
     @using (Html.BeginUmbracoForm<AccountController>("Login"))
     {
         @Html.AntiForgeryToken()
@@ -29,11 +33,7 @@
             <div class="mt_25"></div>
 
             <footer>
-                <p>
-                    Forgot your password? <br />
-                    Gonna have to hang tight. Password reset coming soon. <br />
-                    Ping an admin in Discord for a manual reset for now.
-                </p>
+                <p><a href="/forgotten-password">Forgot your password?</a></p>
             </footer>
         </div>
     }

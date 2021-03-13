@@ -540,6 +540,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Dev\AutoMapperConfig.cs" />
     <Compile Include="Dev\DirectoryHelper.cs" />
+    <Compile Include="Dev\EmailHelper.cs" />
     <Compile Include="Dev\RegisterMemberProfileRouteComponent.cs" />
     <Compile Include="Dev\SGFMemberIndexComposer.cs" />
     <Compile Include="Dev\UmbracoVirtualNodeByUrlRouteHandler.cs" />

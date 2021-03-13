@@ -105,16 +105,84 @@ namespace SgfDevs.Controllers
             }
             else
             {
-                return Redirect("/about");
+                return CurrentUmbracoPage();
 
             }
 
-            //return CurrentUmbracoPage();
-            }
+        }
 
-            private object GenerateUniqueCode()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult HandleResetPassword(ResetPasswordModel model)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return PartialView("ResetPassword", model);
+            }
+
+            //Get the querystring token
+            var token = Request.QueryString["token"];
+
+            //Ensure we have a vlaue in query string
+            if (!string.IsNullOrEmpty(token))
+            {
+                var memberService = Services.MemberService;
+                //Find the member with the email address
+                var members = memberService.GetMembersByPropertyValue("ResetPasswordToken", token);
+                var member = members.FirstOrDefault();
+                //Ensure we have that member
+                if (member != null)
+                {
+                    //See if the QS matches the value on the member property
+                    if (member.GetValue("ResetPasswordToken").ToString() == token)
+                    {
+
+                        //Got a match, now check to see if the 15min window hasnt expired
+                        DateTime expiryTime = member.GetValue<DateTime>("ResetPasswordExpireDate");
+
+                        //Check the current time is less than the expiry time
+                        DateTime currentTime = DateTime.Now;
+
+                        //Check if date has NOT expired (been and gone)
+                        if (currentTime.CompareTo(expiryTime) < 0)
+                        {
+
+                            try
+                            {
+                                memberService.SavePassword(member, model.Password);
+                            }
+                            catch (Exception e)
+                            {
+                                return CurrentUmbracoPage();
+                            }
+
+                            return Redirect("/login");
+                        }
+                        else
+                        {
+                            //ERROR: Reset token has expired
+                            // todo: send message to reset page to show an explaination why they got there.
+                            return CurrentUmbracoPage();
+                        }
+                    }
+                    else
+                    {
+                        //ERROR: query string does not match what is stored on member property
+                        //Invalid token
+                        ModelState.AddModelError("ResetPasswordForm.", "Invalid Token");
+                        return CurrentUmbracoPage();
+                    }
+                }
+                else
+                {
+                    //ERROR: No query present
+                    //Invalid Token
+                    ModelState.AddModelError("ResetPasswordForm.", "Invalid Token");
+                    return CurrentUmbracoPage();
+                }
+            }
+
+            return PartialView("ResetPassword", model);
         }
     }
 }
