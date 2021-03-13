@@ -11,6 +11,7 @@ namespace SgfDevs.Controllers
 {
     public class AccountController : SurfaceController
     {
+
         public ActionResult Login(LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -71,55 +72,47 @@ namespace SgfDevs.Controllers
             return Redirect("/account");
         }
 
-        /// <summary>
-        /// Renders the Forgotten Password view
-        /// @Html.Action("RenderForgottenPassword","AuthSurface");
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult RenderForgottenPassword()
-        {
-            return PartialView("ForgottenPasswordPassword", new ForgottenPasswordModel());
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult HandleForgottenPassword(ForgottenPasswordModel model)
         {
             if (!ModelState.IsValid)
-                ModelState.AddModelError("ForgottenPasswordForm.", "Model State Invalid");
                 return CurrentUmbracoPage();
 
             var memberService = Services.MemberService;
             //Find the member with the email address
             var member = memberService.GetByEmail(model.EmailAddress);
-
-            if (member != null)
+            
+            if (member.Username != null)
             {
+               
                 //Set expiry date to 48 hours from now
                 DateTime expiryTime = DateTime.Now.AddHours(48);
 
                 //update the resetPasswordToken property for the member
-                var token = GenerateUniqueCode();
-                member.SetValue("resetPasswordToken",token );
-                member.SetValue("resetPasswordExpireDate", expiryTime.ToString("ddMMyyyyHHmmssFFFF"));
+                var token = Guid.NewGuid();
+                member.SetValue("ResetPasswordToken", token);
+                member.SetValue("ResetPasswordExpireDate", expiryTime);
 
-                //Save the member with the up[dated property value
+                //    //Save the member with the up[dated property value
                 memberService.Save(member);
+                ViewData["Saved"] = "saved";
 
-                //Send user an email to reset password with token in it
-                //EmailHelper email = new EmailHelper();
-                //email.SendResetPasswordEmail(findMember.Email, expiryTime.ToString("ddMMyyyyHHmmssFFFF"));
+                //    //Send user an email to reset password with token in it
+                //    //EmailHelper email = new EmailHelper();
+                //    //email.SendResetPasswordEmail(findMember.Email, expiryTime.ToString("ddMMyyyyHHmmssFFFF"));
+                return CurrentUmbracoPage();
             }
             else
             {
-                //ModelState.AddModelError("ForgottenPasswordForm.", "No member found");
-                return PartialView("Home");
+                return Redirect("/about");
+
             }
 
-            return PartialView("ForgottenPassword", model);
-        }
+            //return CurrentUmbracoPage();
+            }
 
-        private object GenerateUniqueCode()
+            private object GenerateUniqueCode()
         {
             throw new NotImplementedException();
         }

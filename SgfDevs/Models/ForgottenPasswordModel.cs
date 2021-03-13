@@ -9,11 +9,15 @@ namespace SgfDevs.Models
 {
     public class ForgottenPasswordModel
     {
-        [DisplayName("Email address")]
-        [Required(ErrorMessage = "Please enter your email address")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        //[DisplayName("Email address")]
+        //[Required(ErrorMessage = "Please enter your email address")]
+        //[EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        //public string EmailAddress { get; set; }
+
+        [Required]
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
-        public string ErrorMessage { get; set; }
+
     }
 }

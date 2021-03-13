@@ -683,6 +683,7 @@
     <Content Include="Views\ForgottenPassword.cshtml" />
     <Content Include="Views\ResetPassword.cshtml" />
     <Content Include="Views\Partials\ResetPassword.cshtml" />
+    <Content Include="Views\Partials\ForgottenPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
