@@ -60,6 +60,9 @@
     <Reference Include="CSharpTest.Net.Collections, Version=14.906.1403.1082, Culture=neutral, PublicKeyToken=06aee00cce822474, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpTest.Net.Collections.14.906.1403.1082\lib\net40\CSharpTest.Net.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="DataAnnotationsExtensions, Version=5.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataAnnotationsExtensions.5.0.1.27\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Examine, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Examine.1.0.2\lib\net452\Examine.dll</HintPath>
     </Reference>
@@ -508,6 +511,7 @@
     <Compile Include="App_Data\Models\Events.generated.cs" />
     <Compile Include="App_Data\Models\File.generated.cs" />
     <Compile Include="App_Data\Models\Folder.generated.cs" />
+    <Compile Include="App_Data\Models\ForgottenPassword.generated.cs" />
     <Compile Include="App_Data\Models\Group.generated.cs" />
     <Compile Include="App_Data\Models\GroupHost.generated.cs" />
     <Compile Include="App_Data\Models\Groups.generated.cs" />
@@ -528,6 +532,7 @@
     <Compile Include="App_Data\Models\PresenterPicker.generated.cs" />
     <Compile Include="App_Data\Models\Profile.generated.cs" />
     <Compile Include="App_Data\Models\Register.generated.cs" />
+    <Compile Include="App_Data\Models\ResetPassword.generated.cs" />
     <Compile Include="App_Data\Models\Tag.generated.cs" />
     <Compile Include="App_Data\Models\TagGroup.generated.cs" />
     <Compile Include="App_Data\Models\Tags.generated.cs" />
@@ -535,12 +540,15 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Dev\AutoMapperConfig.cs" />
     <Compile Include="Dev\DirectoryHelper.cs" />
+    <Compile Include="Dev\EmailHelper.cs" />
     <Compile Include="Dev\RegisterMemberProfileRouteComponent.cs" />
     <Compile Include="Dev\SGFMemberIndexComposer.cs" />
     <Compile Include="Dev\UmbracoVirtualNodeByUrlRouteHandler.cs" />
     <Compile Include="Dev\WebAPI.cs" />
+    <Compile Include="Models\ForgottenPasswordModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DirectoryResult.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
@@ -673,6 +681,10 @@
     <Content Include="scss\vendor\_fancybox.scss" />
     <Content Include="scss\vendor\_index.scss" />
     <Content Include="scss\_shame.scss" />
+    <Content Include="Views\ForgottenPassword.cshtml" />
+    <Content Include="Views\ResetPassword.cshtml" />
+    <Content Include="Views\Partials\ResetPassword.cshtml" />
+    <Content Include="Views\Partials\ForgottenPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -681,6 +693,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Email\" />
     <Folder Include="Views\MacroPartials\" />
   </ItemGroup>
   <PropertyGroup>
