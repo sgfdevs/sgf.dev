@@ -16,6 +16,7 @@ namespace SgfDevs.Models
 
         [Required]
         [EmailAddress]
+        [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
 
 

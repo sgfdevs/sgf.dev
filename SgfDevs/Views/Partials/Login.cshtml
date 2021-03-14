@@ -11,9 +11,10 @@
     @using (Html.BeginUmbracoForm<AccountController>("Login"))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
 
         <div class="form">
+            @Html.ValidationSummary(true)
+
             <div class="field">
                 @Html.LabelFor(model => model.Username)
                 @Html.EditorFor(model => model.Username)
