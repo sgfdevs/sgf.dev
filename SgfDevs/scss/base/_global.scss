@@ -22,7 +22,7 @@ body {
     line-height: 1.666em;
     font-weight: 400;
     color: #254151;
-
+    overflow: visible;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
@@ -30,6 +30,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    &.fixed {
+        overflow: hidden;
+    }
 }
 
 img {

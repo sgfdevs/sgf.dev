@@ -428,6 +428,7 @@
     <Content Include="css\fonts\WOFF\VAR\SourceSansVariable-Roman.otf.woff" />
     <Content Include="css\fonts\WOFF\VAR\SourceSansVariable-Roman.ttf.woff" />
     <Content Include="package.json" />
+    <Content Include="package-lock.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="images\cards\agency.jpg" />
     <Content Include="images\cards\business.jpg" />
@@ -685,6 +686,7 @@
     <Content Include="Views\ResetPassword.cshtml" />
     <Content Include="Views\Partials\ResetPassword.cshtml" />
     <Content Include="Views\Partials\ForgottenPassword.cshtml" />
+    <Content Include="scss\modules\mobile_nav.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -81,4 +81,20 @@ $(function() {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+    $('#mobile-nav-toggle').click(function () {
+        $('.nav-icon').first().toggleClass('open');
+        $('#mobile_nav').toggleClass('nav-hidden');
+        $('body').toggleClass('fixed');
+    });
+
+    $('#mobile_nav_about').click(function () {
+        $('.mobile-nav__about').removeClass('nav-hidden');
+        $('#mobile-nav__about ul li:first-child').focus();
+    });
+
+    $('#mobile_nav_back').click(function () {
+        $('.mobile-nav__about').addClass('nav-hidden');
+        $('#mobile-nav ul li:first-child').focus();
+
+    });
 });

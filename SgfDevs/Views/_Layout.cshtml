@@ -7,6 +7,10 @@
 @using System.Web;
 @using Member = Umbraco.Web.PublishedModels.Member;
 
+@{ 
+    Random rand = new Random();
+    
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model.Name</title>
 
-    <link rel="stylesheet" href="/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/styles.css?data=@rand.Next()" asp-append-version="true" />
     @RenderSection("Head", required: false)
 
     @RenderSection("TopScripts", required: false)
@@ -31,7 +35,7 @@
                 </a>
             </div>
 
-            <nav class="main">
+            <nav id="desktop-nav" class="main" role="navigation" aria-label="Main">
                 <ul>
                     <li>
                         <a href="/about/">About <i class="fas fa-chevron-down"></i></a>
@@ -55,13 +59,48 @@
                 </ul>
             </nav>
 
-            <nav class="user">
+            <nav class="user" role="navigation" aria-label="User">
                 <ul>
-                    <li class="mobile_nav_trigger"><a href="#"><i class="far fa-bars"></i> <span>Menu</span></a></li>
                     <li class="search"><a href="#"><i class="far fa-search"></i></a></li>
                     @Html.Partial("LoginStatus")
                 </ul>
             </nav>
+            <div id="mobile-nav-toggle" class="mobile-nav__toggle">
+                <div class="nav-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Menu</span>
+            </div>
+            
+
+            <nav id="mobile_nav" class="mobile-nav nav-hidden" aria-hidden="true" role=navigation aria-label="Main">
+                <ul>
+                    <li><a id="mobile_nav_about" href="javascript:void(0);">About <i class="fas fa-chevron-right"></i></a></li>
+                    @*<li><a href="/events/">Events</a></li>*@
+                    <li><a href="/groups/">Groups</a></li>
+                    <li><a href="/directory/">Directory</a></li>
+                    <li><a href="/jobs/">Jobs</a></li>
+                    <li><a href="/archives/">Archives</a></li>
+                    <li class="mobile"><a href="#">Login</a></li>
+                    <li class="mobile"><a href="#">Signup</a></li>
+                </ul>
+                <div class="mobile-nav__about nav-hidden">
+                    <button id="mobile_nav_back"> <i class="fa fa-angle-left"></i>Back</button>
+                    <ul>
+                        <li><a href="/about/">Springfield Devs</a></li>
+                        <li><a href="/about/leadership/">Leadership</a></li>
+                        <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
+                        <li><a href="/about/sponsorship/">Sponsorship</a></li>
+                        @*<li><a href="#">Contact</a></li>*@
+                    </ul>
+                </div>
+            </nav>
+           
         </div>
     </header>
 
