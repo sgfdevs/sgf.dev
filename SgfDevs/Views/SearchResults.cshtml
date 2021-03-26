@@ -1,0 +1,50 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Page>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using Current = Umbraco.Web.Composing.Current;
+
+@{
+	Layout = "_Layout.cshtml";
+}
+<div class="container">
+	<div class="simple_content">
+		<header>
+			<h1>@Model.Name</h1>
+		</header>
+     @{
+        var searchQuery = Request.QueryString["query"];
+        var counter = 0;
+        <ul style="padding:0px">
+            @if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var results = Current.PublishedContentQuery.Search(searchQuery, string.Empty);
+                long resultCount = results != null && results.Any() ? results.Count() : 0;
+                <div class="searchresults">
+                    @if (resultCount > 0)
+                    {
+    
+                        foreach (var result in results)
+                        {
+    
+    
+    
+                            if (result.Content.ToString() == "Umbraco.Web.PublishedModels.Side")
+                            {
+                                counter++;
+    
+                                <strong>@counter. <a href="@result.Content.Url">@result.Content.Name</a></strong>
+                                <br><br>
+                            }
+                        }
+    
+                    }
+                </div>
+            }
+    
+            @if (counter == 0)
+            {
+                <p><strong>@searchQuery</strong> Did not return any results.</p>
+            }
+        </ul>
+    }
+    </div>
+ </div>

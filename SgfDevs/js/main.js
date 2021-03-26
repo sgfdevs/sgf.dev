@@ -97,4 +97,10 @@ $(function() {
         $('#mobile-nav ul li:first-child').focus();
 
     });
+
+    $('#search').click(function () {
+        console.log('clicked');
+        $('#search_box').toggleClass('hide');
+
+    });
 });

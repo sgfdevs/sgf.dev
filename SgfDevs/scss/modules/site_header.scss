@@ -123,9 +123,12 @@
                 margin-left: 0;
             }
         }
+    }
+    .search-box {
+        display: block;
+        &.hide {
+            display:none;
 
-        .search {
-            display: none;
         }
     }
 

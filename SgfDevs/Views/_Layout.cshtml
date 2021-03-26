@@ -6,10 +6,12 @@
 @using System.Linq;
 @using System.Web;
 @using Member = Umbraco.Web.PublishedModels.Member;
+@using Current = Umbraco.Web.Composing.Current;
+
 
 @{ 
     Random rand = new Random();
-    
+
 }
 <!DOCTYPE html>
 <html>
@@ -61,22 +63,29 @@
 
             <nav class="user" role="navigation" aria-label="User">
                 <ul>
-                    <li class="search"><a href="#"><i class="far fa-search"></i></a></li>
+                    <li class="search">
+                        <a id="search" href="javascript:void(0);"><i class="far fa-search"></i></a>
+                    </li>
+
                     @Html.Partial("LoginStatus")
                 </ul>
+                <div id="search_box" class="search-box hide">
+                    <form action="@Umbraco.Content(1272).Url" method="get">
+                        <input type="text" placeholder="Search" id="query" name="query" />
+                        <button>Search</button>
+                    </form>
+                </div>
             </nav>
+
             <div id="mobile-nav-toggle" class="mobile-nav__toggle">
                 <div class="nav-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span> <span></span>
+                    <span></span> <span></span>
+                    <span></span> <span></span>
                 </div>
                 <span>Menu</span>
             </div>
-            
+
 
             <nav id="mobile_nav" class="mobile-nav nav-hidden" aria-hidden="true" role=navigation aria-label="Main">
                 <ul>
@@ -100,7 +109,7 @@
                     </ul>
                 </div>
             </nav>
-           
+
         </div>
     </header>
 
@@ -170,6 +179,5 @@
 
     @RenderSection("Scripts", required: false)
     @Html.RenderJsHere()
-
 </body>
 </html>
