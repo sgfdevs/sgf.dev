@@ -15,18 +15,33 @@
     
         if (!string.IsNullOrEmpty(searchQuery))    
         {
-            <div class="searchresults">
-                <p>Your search results for <strong>@searchQuery</strong></p>
-                <ul>
+            <div class="search-results">
+            @{
+                var results = Umbraco.ContentQuery.Search(searchQuery);
+            }
+                @if (results.Count() > 0){
+                    <p>Your search results for <strong>@searchQuery</strong></p>
+                    <ul>
                     @foreach (var result in Umbraco.ContentQuery.Search(searchQuery))
                     {
                         <li>
                              <strong><a href="@result.Content.Url">@result.Content.Name</a></strong>
                         </li>
                     }
-                </ul>
+                    </ul>
+            
+                } else {
+                    <p> Sorry! Your search didn't return any results.</p>
+                    <p>Want to try again?</p>
+                     <div id="search_box" class="search-box hide">
+                        <form action="@Umbraco.Content(1272).Url" method="get">
+                            <input type="text" placeholder="Search" id="query" name="query" />
+                            <button class="submit-button" type="submit"><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+                }
             </div>
-         }
-    }
+            }
+        }
     </div>
  </div>
