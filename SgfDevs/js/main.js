@@ -99,8 +99,11 @@ $(function() {
     });
 
     $('#search').click(function () {
-        console.log('clicked');
         $('#search_box').toggleClass('hide');
-
+        if ($('#search_box').hasClass('hide')) {
+             $('#search').focus();
+        } else {
+            $('#search_box form input').focus();
+        }
     });
 });
