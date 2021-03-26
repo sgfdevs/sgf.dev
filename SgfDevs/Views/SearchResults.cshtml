@@ -12,39 +12,21 @@
 		</header>
      @{
         var searchQuery = Request.QueryString["query"];
-        var counter = 0;
-        <ul style="padding:0px">
-            @if (!string.IsNullOrWhiteSpace(searchQuery))
-            {
-                var results = Current.PublishedContentQuery.Search(searchQuery, string.Empty);
-                long resultCount = results != null && results.Any() ? results.Count() : 0;
-                <div class="searchresults">
-                    @if (resultCount > 0)
+    
+        if (!string.IsNullOrEmpty(searchQuery))    
+        {
+            <div class="searchresults">
+                <p>Your search results for <strong>@searchQuery</strong></p>
+                <ul>
+                    @foreach (var result in Umbraco.ContentQuery.Search(searchQuery))
                     {
-    
-                        foreach (var result in results)
-                        {
-    
-    
-    
-                            if (result.Content.ToString() == "Umbraco.Web.PublishedModels.Side")
-                            {
-                                counter++;
-    
-                                <strong>@counter. <a href="@result.Content.Url">@result.Content.Name</a></strong>
-                                <br><br>
-                            }
-                        }
-    
+                        <li>
+                             <strong><a href="@result.Content.Url">@result.Content.Name</a></strong>
+                        </li>
                     }
-                </div>
-            }
-    
-            @if (counter == 0)
-            {
-                <p><strong>@searchQuery</strong> Did not return any results.</p>
-            }
-        </ul>
+                </ul>
+            </div>
+         }
     }
     </div>
  </div>
