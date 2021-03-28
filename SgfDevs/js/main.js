@@ -80,12 +80,17 @@ $(function() {
     function validateEmail(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
-    }
-    $('#mobile-nav-toggle').click(function () {
+    };
+
+    function toggleMobileNav() {
         $('.nav-icon').first().toggleClass('open');
         $('#mobile_nav').toggleClass('nav-hidden');
+        $('.mobile-nav__background').toggleClass('nav-hidden');
         $('body').toggleClass('fixed');
-    });
+    }
+    $('#mobile-nav-toggle').click(toggleMobileNav);
+
+    $('#mobile-nav-background').click(toggleMobileNav);
 
     $('#mobile_nav_about').click(function () {
         $('.mobile-nav__about').removeClass('nav-hidden');
@@ -97,7 +102,7 @@ $(function() {
         $('#mobile-nav ul li:first-child').focus();
 
     });
-
+   
     $('#search').click(function () {
         $('#search_box').toggleClass('hide');
         if ($('#search_box').hasClass('hide')) {

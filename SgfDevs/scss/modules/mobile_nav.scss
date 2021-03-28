@@ -16,7 +16,7 @@
 }
 
     .mobile-nav__about {
-        display: block;
+        visibility: visible;
         position: absolute;
         background-color: #fff;
         top: 0;
@@ -25,7 +25,7 @@
         left: 0;
 
         &.nav-hidden {
-            display: none;
+            visibility: hidden;
             left: 100vw;
         }
     }
@@ -53,54 +53,137 @@
         }
     }
 
-    .mobile-nav__about, .mobile-nav ul {
-        padding-left: 3em;
+.mobile-nav__about, .mobile-nav ul {
+    padding-left: 0;
+    display: block;
+    width: 80%;
+    height: 62vh;
+    margin: 0 auto;
+    margin-left: auto;
+    max-height: 350px;
+    margin-left: 50px;
+    background-color: #fff;
+
+    li {
         display: block;
-        width: 100%;
-        height: 100%;
+        padding-bottom: .3em;
+        font-size: 20px;
 
-        li {
-            display: block;
-            padding-bottom: .67em;
-            font-size: 20px;
-
-            i {
-                font-size: 10px;
-                padding-left: 3px;
-            }
+        i {
+            font-size: 10px;
+            padding-left: 3px;
         }
     }
+}
+.mobile-nav__background {
+    position: fixed;
+    top: 125.5px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    visibility: visible;
+    opacity: .7;
+    -webkit-transition: opacity 0.4s;
+    -moz-transition: opacity 0.4s;
+    -o-transition: opacity 0.4s;
+    transition: opacity 0.4s;
+    z-index: 19;
 
-    .mobile-nav {
+    &.nav-hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+.mobile-nav {
+    visibility: visible;
+    background-color: #fff;
+    position: relative;
+    transition: all .3s ease;
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    max-width: 500px;
+    height: auto;
+    background-color: #fff;
+    z-index: 20;
+    opacity: 1;
+    padding: 2em;
+    box-shadow: 0px 20px 20px rgba(43, 156, 218, .25);
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+
+    &:before {
+        content: '';
         display: block;
-        position: relative;
-        transition: all .3s ease;
-        position: fixed;
-        right: 0;
-        top: 100px;
-        width: 100%;
-        min-height: calc(100vh - 100px);
-        max-width: 450px;
-        height: auto;
-        background-color: #fff;
-        z-index: 20;
-        opacity: 1;
-        padding: 2em;
+        position: absolute;
+        background-image: url('/images/circuitry/mobile_lines_top_left.svg');
+        width: 110px;
+        height: 55px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+    }
 
-        &.nav-hidden {
-            display: none;
-            right: -100vw;
-            opacity: 0;
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        background-image: url('/images/circuitry/mobile_lines_bottom_right.svg');
+        width: 33%;
+        height: 35px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        bottom: 10px;
+        right: 0
+    }
+
+    &.nav-hidden {
+        visibility: hidden;
+        right: -100vw;
+        opacity: 0;
+    }
+
+    > ul:not(.mobile-nav__about) {
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            background-image: url('/images/circuitry/mobile_lines_bottom_left.svg');
+            width: 115px;
+            height: 9px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            bottom: 20%;
+            left: 0;
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            background-image: url('/images/circuitry/mobile_lines_mid_right.svg');
+            width: 100px;
+            height: 56px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: calc(50% - 25px);
+            right: -3.6em;
         }
     }
 
     .mobile-nav__about {
         &.nav-hidden {
-            display: none;
+            visibility: hidden;
         }
     }
-
-
+}
     .nav-icon {
         width: 20px;
         height: 20px;
