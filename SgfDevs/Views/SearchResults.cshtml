@@ -3,7 +3,9 @@
 @using Current = Umbraco.Web.Composing.Current;
 
 @{
-	Layout = "_Layout.cshtml";
+    Layout = "_Layout.cshtml";
+    var contentQuery = Current.PublishedContentQuery;
+    var searchQuery = Request.QueryString["query"];
 }
 <div class="container">
 	<div class="simple_content">
@@ -11,21 +13,18 @@
 			<h1>@Model.Name</h1>
 		</header>
      @{
-        var searchQuery = Request.QueryString["query"];
-    
-        if (!string.IsNullOrEmpty(searchQuery))    
-        {
+         if (!string.IsNullOrEmpty(searchQuery))
+         {
+             var results = contentQuery.Search(searchQuery + "*");
+
             <div class="search-results">
-            @{
-                var results = Umbraco.ContentQuery.Search(searchQuery);
-            }
                 @if (results.Count() > 0){
                     <p>Your search results for <strong>@searchQuery</strong></p>
                     <ul>
-                    @foreach (var result in Umbraco.ContentQuery.Search(searchQuery))
+                    @foreach (var result in results)
                     {
                         <li>
-                             <strong><a href="@result.Content.Url">@result.Content.Name</a></strong>
+                             <strong><a href="@result.Content.Url()">@Services.ContentService.GetById(result.Content.Id).ContentType.Name - @result.Content.Name</a></strong>
                         </li>
                     }
                     </ul>
@@ -34,7 +33,7 @@
                     <p> Sorry! Your search didn't return any results.</p>
                     <p>Want to try again?</p>
                      <div id="search_box" class="search-box hide">
-                        <form action="@Umbraco.Content(1272).Url" method="get">
+                        <form action="/search-results/" method="get">
                             <input type="text" placeholder="Search" id="query" name="query" />
                             <button class="submit-button" type="submit"><i class="far fa-search"></i></button>
                         </form>
