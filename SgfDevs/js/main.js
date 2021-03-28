@@ -80,5 +80,35 @@ $(function() {
     function validateEmail(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
+    };
+
+    function toggleMobileNav() {
+        $('.nav-icon').first().toggleClass('open');
+        $('#mobile_nav').toggleClass('nav-hidden');
+        $('.mobile-nav__background').toggleClass('nav-hidden');
+        $('body').toggleClass('fixed');
     }
+    $('#mobile-nav-toggle').click(toggleMobileNav);
+
+    $('#mobile-nav-background').click(toggleMobileNav);
+
+    $('#mobile_nav_about').click(function () {
+        $('.mobile-nav__about').removeClass('nav-hidden');
+        $('#mobile-nav__about ul li:first-child').focus();
+    });
+
+    $('#mobile_nav_back').click(function () {
+        $('.mobile-nav__about').addClass('nav-hidden');
+        $('#mobile-nav ul li:first-child').focus();
+
+    });
+   
+    $('#search').click(function () {
+        $('#search_box').toggleClass('hide');
+        if ($('#search_box').hasClass('hide')) {
+             $('#search').focus();
+        } else {
+            $('#search_box form input').focus();
+        }
+    });
 });
