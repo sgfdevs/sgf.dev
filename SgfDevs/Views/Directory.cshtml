@@ -110,7 +110,7 @@
                         <img :src="member.Image" alt="">
                     </a>
                     <figcaption>
-                        <div>Founding Member</div>
+                        <div v-if="member.FoundingMember">Founding Member</div>
                     </figcaption>
                 </figure>
 

@@ -68,8 +68,9 @@ namespace SgfDevs.Dev.WebAPI
                         var url = "/member/" + member.Username;
                         var location = node.City + ", " + node.State;
                         var image = node.ProfileImage != null ? node.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
+                        var isFoundingMember = node.HasValue("MemberTags") ? node.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
 
-                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = image, Url = url });
+                        memberResults.Add(new DirectoryResult { Name = node.Name, Location = location, Image = image, Url = url, FoundingMember = isFoundingMember });
                     }
 
                     return Ok(memberResults);

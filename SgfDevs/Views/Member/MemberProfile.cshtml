@@ -7,6 +7,7 @@
 
     var name = Model.FirstName + " " + Model.LastName;
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
+    var isFoundingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
 }
 
 
@@ -42,7 +43,10 @@
                 <div class="metadata">
                     <div class="flag">
                         <!-- TODO modularize with the figcaption? -->
-                        <div>Founding Member</div>
+                        @if (isFoundingMember)
+                        {
+                            <div>Founding Member</div>
+                        }
                     </div>
 
                     <div class="location">
