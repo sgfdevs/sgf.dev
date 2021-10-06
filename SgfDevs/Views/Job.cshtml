@@ -1,5 +1,59 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Job>
 @using ContentModels = Umbraco.Web.PublishedModels;
+@using Tag = Umbraco.Web.PublishedModels.Tag
 @{
-	Layout = null;
+    Layout = "_Layout.cshtml";
+    var company = Model.Parent<Company>();
+    ViewData["PageTitle"] = Model.Name + " at " + company.Name;
 }
+
+@section Head {
+    <link rel="stylesheet" href="~/css/table.css" />
+
+    <style type="text/css">
+        .job_details ul {
+            list-style: disc;
+        }
+
+        .job_details ul li {
+            margin-left: 1em;
+        }
+    </style>
+}
+
+<div class="container job_details">
+    <h1>@company.Name</h1>
+    <h2>@Model.Name</h2>
+
+    <div>
+        @Model.Location | @Model.EmploymentType | @Model.Compensation
+    </div>
+
+    <div>
+        @Model.JobDescription
+    </div>
+
+    <div>
+        <a href="@Model.ApplyUrl" class="button" target="_blank">Apply Now</a>
+    </div>
+
+    @if (Model.SkillTags != null)
+    {
+        <div class="skills" style="margin: 50px 0;">
+            <h3>Skills</h3>
+            <div class="skill-list">
+                @foreach (Tag skill in Model.SkillTags)
+                {
+                    var skillName = skill.HasValue("DisplayName") ? skill.DisplayName : skill.Name;
+
+                    <a class="button outline skill">@skillName</a>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="margin-bottom: 50px;"></div>
+    }
+</div>
+

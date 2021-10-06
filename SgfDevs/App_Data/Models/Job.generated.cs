@@ -45,6 +45,20 @@ namespace Umbraco.Web.PublishedModels
 		// properties
 
 		///<summary>
+		/// Apply URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("applyURL")]
+		public string ApplyUrl => this.Value<string>("applyURL");
+
+		///<summary>
+		/// Banner Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("bannerImage")]
+		public global::Umbraco.Core.Models.PublishedContent.IPublishedContent BannerImage => this.Value<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>("bannerImage");
+
+		///<summary>
 		/// Compensation
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
@@ -52,11 +66,32 @@ namespace Umbraco.Web.PublishedModels
 		public string Compensation => this.Value<string>("compensation");
 
 		///<summary>
+		/// Employment Type
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("employmentType")]
+		public string EmploymentType => this.Value<string>("employmentType");
+
+		///<summary>
+		/// Job Description
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("jobDescription")]
+		public global::System.Web.IHtmlString JobDescription => this.Value<global::System.Web.IHtmlString>("jobDescription");
+
+		///<summary>
 		/// Job Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
 		[ImplementPropertyType("jobTags")]
 		public global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent> JobTags => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Core.Models.PublishedContent.IPublishedContent>>("jobTags");
+
+		///<summary>
+		/// Location
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.9.1")]
+		[ImplementPropertyType("location")]
+		public string Location => this.Value<string>("location");
 
 		///<summary>
 		/// Skill Tags

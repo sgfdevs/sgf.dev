@@ -1,0 +1,91 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Jobs>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+    Layout = "_Layout.cshtml";
+    var jobs = Model.Root().Descendants<Job>();
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/table.css" />
+
+    <style type="text/css">
+        .filter_bar section:first-child span {
+            position: relative;
+            top: -2px;
+            left: 5px;
+        }
+
+        tbody tr {
+            cursor: pointer;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('tbody tr').on('click', function () {
+                let url = $(this).data('href');
+                window.location.href = url;
+            });
+        });
+    </script>
+}
+
+<div class="filter_bar">
+    <header>
+        <section>
+            <img src="/images/headlines/jobs.svg" alt="Jobs">
+            <span>Filter features coming soon!</span>
+        </section>
+
+        <section>
+            <span>
+                <strong>@jobs.Count()</strong> Jobs
+            </span>
+
+            <a href="/about/sponsorship/" class="button inverse outline light_blue">Post a Job</a>
+        </section>
+    </header>
+
+    <nav>
+        <ul>
+            <li><i class="fal fa-filter"></i></li>
+            @*<li>Type</li>
+                <li>Category</li>*@
+            <li class="active">Skills</li>
+            @*<li>Location</li>*@
+        </ul>
+    </nav>
+</div>
+
+<div class="container" style="margin-top: 75px; margin-bottom: 75px;">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Position</th>
+                <th scope="col">Company</th>
+                <th scope="col">Location</th>
+                <th scope="col">Employment Type</th>
+                <th scope="col">Posted</th>
+                <th scope="col">Compensation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var job in jobs)
+            {
+                var company = job.Parent<Company>();
+                var companyImage = company.Image.Url();
+
+                <tr data-href="@job.Url()">
+                    <th scope="row">@job.Name</th>
+                    <td>@job.Parent.Name</td>
+                    <td>@job.Location</td>
+                    <td>@job.EmploymentType</td>
+                    <td>@job.CreateDate.ToString("MMMM d, yyyy")</td>
+                    <td>@job.Compensation</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

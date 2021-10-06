@@ -346,6 +346,7 @@
     <Content Include="css\fonts\fa-regular-400.svg" />
     <Content Include="css\fonts\fa-solid-900.svg" />
     <Content Include="css\styles.css" />
+    <Content Include="css\table.css" />
     <Content Include="Global.asax" />
     <Content Include="css\fonts\fa-brands-400.eot" />
     <Content Include="css\fonts\fa-brands-400.ttf" />
@@ -525,6 +526,7 @@
     <Compile Include="App_Data\Models\IntroImage.generated.cs" />
     <Compile Include="App_Data\Models\IntroVideo.generated.cs" />
     <Compile Include="App_Data\Models\Job.generated.cs" />
+    <Compile Include="App_Data\Models\Jobs.generated.cs" />
     <Compile Include="App_Data\Models\Leader.generated.cs" />
     <Compile Include="App_Data\Models\Leadership.generated.cs" />
     <Compile Include="App_Data\Models\Login.generated.cs" />
@@ -691,6 +693,7 @@
     <Content Include="Views\Partials\ResetPassword.cshtml" />
     <Content Include="Views\Partials\ForgottenPassword.cshtml" />
     <Content Include="scss\modules\mobile_nav.scss" />
+    <Content Include="Views\Jobs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

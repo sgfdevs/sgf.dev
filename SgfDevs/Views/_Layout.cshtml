@@ -11,16 +11,21 @@
 
 @{ 
     Random rand = new Random();
+    var pageTitle = "Springfield Devs - " + Model.Name;
 
+    if(ViewData["PageTitle"] != null)
+    {
+        pageTitle = "Springfield Devs - Jobs - " + ViewData["PageTitle"];
+    }
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Springfield Devs - @Model.Name</title>
+    <title>@pageTitle</title>
 
-    <link rel="stylesheet" href="/css/styles.css?data=@rand.Next()" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/styles.css?data=@rand.Next()" />
     @RenderSection("Head", required: false)
 
     @RenderSection("TopScripts", required: false)
