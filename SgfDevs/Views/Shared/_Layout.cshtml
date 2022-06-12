@@ -1,40 +1,197 @@
-﻿<!DOCTYPE html>
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@* @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Base> *@
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{ 
+    Random rand = new Random();
+    var pageTitle = "Springfield Devs - " + Model.Name;
+
+    if(ViewData["PageTitle"] != null)
+    {
+        pageTitle = "Springfield Devs - Jobs - " + ViewData["PageTitle"];
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle</title>
+
+    <link rel="stylesheet" href="/css/styles.css?data=@rand.Next()" />
+    @RenderSection("Head", required: false)
+
+    @RenderSection("TopScripts", required: false)
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y5BQE4F4YS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-Y5BQE4F4YS');
+    </script>
+    <style>
+        .dev_night_banner ul.presentations_1 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .dev_night_banner ul.presentations_1 li {
+            max-width: 575px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <header class="site_header">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="logo">
+                <a href="/">
+                    <img src="/images/logo.svg" alt="Springfield Devs Logo">
+                </a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+
+            <nav id="desktop-nav" class="main" role="navigation" aria-label="Main">
+                <ul>
+                    <li>
+                        <a href="/about/">About <i class="fas fa-chevron-down"></i></a>
+                        <nav>
+                            <ul>
+                                <li><a href="/about/">Springfield Devs</a></li>
+                                <li><a href="/about/leadership/">Leadership</a></li>
+                                <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
+                                <li><a href="/about/sponsorship/">Sponsorship</a></li>
+                                @*<li><a href="#">Contact</a></li>*@
+                            </ul>
+                        </nav>
+                    </li>
+                    @*<li><a href="/events/">Events</a></li>*@
+                    <li><a href="/groups">Groups</a></li>
+                    <li><a href="/directory">Directory</a></li>
+                    <li><a href="/jobs">Jobs</a></li>
+                    <li><a href="/archives">Archives</a></li>
+                    <li><a href="/discord">Discord</a></li>
+                    <li class="mobile"><a href="#">Login</a></li>
+                    <li class="mobile"><a href="#">Signup</a></li>
                 </ul>
+            </nav>
+
+            <nav class="user" role="navigation" aria-label="User">
+                <ul>
+                    <div id="mobile-nav-toggle" class="mobile-nav__toggle">
+                        <div class="nav-icon">
+                            <span></span> <span></span>
+                            <span></span> <span></span>
+                            <span></span> <span></span>
+                        </div>
+                        <span>Menu</span>
+                    </div>
+                    <li class="search" style="display: none">
+                        <a id="search" href="javascript:void(0);"><i class="far fa-search"></i></a>
+                        <div id="search_box" class="search-box hide">
+                            <form action="/search-results/" method="get">
+                                <input type="text" placeholder="Search" id="query" name="query" />
+                                <button class="submit-button" type="submit"><i class="far fa-search"></i></button>
+                            </form>
+                        </div>
+                    </li>
+
+                    @await Html.PartialAsync("LoginStatus")
+                </ul>
+            </nav>
+
+            <div id="mobile-nav-background" class="mobile-nav__background nav-hidden"></div>
+            <nav id="mobile_nav" class="mobile-nav nav-hidden" aria-hidden="true" role=navigation aria-label="Main">
+                <ul>
+                    <li><a id="mobile_nav_about" href="javascript:void(0);">About <i class="fas fa-chevron-right"></i></a></li>
+                    @*<li><a href="/events/">Events</a></li>*@
+                    <li><a href="/groups/">Groups</a></li>
+                    <li><a href="/directory/">Directory</a></li>
+                    <li><a href="/jobs/">Jobs</a></li>
+                    <li><a href="/archives/">Archives</a></li>
+                    <li class="mobile"><a href="#">Login</a></li>
+                    <li class="mobile"><a href="#">Signup</a></li>
+                </ul>
+                <ul class="mobile-nav__about nav-hidden">
+                    <button id="mobile_nav_back"> <i class="fa fa-angle-left"></i>Back</button>
+                    <ul>
+                        <li><a href="/about/">Springfield Devs</a></li>
+                        <li><a href="/about/leadership/">Leadership</a></li>
+                        <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
+                        <li><a href="/about/sponsorship/">Sponsorship</a></li>
+                        @*<li><a href="#">Contact</a></li>*@
+                    </ul>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <div class="site_content">
+        @RenderBody()
+    </div>
+
+    <footer class="site_footer">
+        <div class="container">
+            <div class="main">
+                <div class="logo">
+                    <a href="/">
+                        <img src="~/images/logo_short.svg" alt="SGF Devs">
+                    </a>
+                </div>
+
+                <nav>
+                    <a href="/about/">About</a>
+                    <a href="/directory/">Directory</a>
+                    <a href="/jobs/">Jobs</a>
+                    <a href="/groups/">Chapters</a>
+                    @*<a href="#">Sponsors</a>*@
+                </nav>
+            </div>
+
+            <div class="other_links">
+                <nav>
+                    <a target="_blank" href="https://www.twitch.tv/sgfdevs">Twitch</a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UC09Jd4ouiP_BUc7REYhC2kw">YouTube</a>
+                    <a target="_blank" href="https://github.com/sgfdevs">GitHub</a>
+                    <a target="_blank" href="https://www.facebook.com/sgfdevs">Facebook</a>
+                    <a target="_blank" href="https://twitter.com/sgfdevs/">Twitter</a>
+                    <a target="_blank" href="https://www.instagram.com/sgfdevs/">Instagram</a>
+                    <a target="_blank" href="https://discord.com/invite/JHdwkBfk">Discord</a>
+                </nav>
+
+                <nav style="display: none;">
+                    <a href="#">Contact</a>
+                    <a href="#">Code of Conduct</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">Legal Stuff</a>
+                    <a href="#">Privacy Policy</a>
+                </nav>
+            </div>
+
+            <div class="signup">
+                <h5>Never miss a thing</h5>
+                <p>
+                    Subscribe to our newsletter and be the first to know about exciting events, exclusive offers from sponsors and what’s happening in our dev community.
+                </p>
+
+                <form action="https://hooks.zapier.com/hooks/catch/5643689/o317nvx/" method="post" id="updates_subscribe">
+                    <div class="material_input">
+                        <label for="email">Email</label>
+                        <input type="text" placeholder="laurie.bream@raviga.com" name="email" id="email">
+                    </div>
+
+                    <button class="button">Sign Up</button>
+                </form>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/plugins.js?cb=2021.2.28"></script>
+    <script src="~/js/main.js?cb=2021.2.28"></script>
 
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("Scripts", required: false)
+    @* @Html.RenderJsHere() *@
 </body>
 </html>

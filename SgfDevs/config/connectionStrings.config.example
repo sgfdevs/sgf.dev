@@ -1,5 +1,0 @@
-﻿<?xml version="1.0"?>
-<connectionStrings>
-  <remove name="umbracoDbDSN" />
-  <add name="umbracoDbDSN" connectionString="" providerName="System.Data.SqlClient" />
-</connectionStrings>

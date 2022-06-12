@@ -1,10 +1,7 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Group>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@using Tag = Umbraco.Web.PublishedModels.Tag;
-@using Member = Umbraco.Web.PublishedModels.Member;
-
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Group>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
-    Layout = "_Layout.cshtml";
     var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
 }
 

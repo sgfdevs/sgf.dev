@@ -1,0 +1,64 @@
+@using SGFDevs.Controllers
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SGFDevs.Models.RegisterModel>
+
+
+<div class="container">
+    @using (Html.BeginUmbracoForm<AccountController>("Register"))
+    {
+        <div class="form">
+            <header>
+                <h1>Get started with your account</h1>
+                <p>
+                    Meet your peers. Engage with experts. Iron sharpening iron, you get it. Do it all with a membership to Springfield Devs. Already have an account? <a href="/login">Log in</a>
+                </p>
+
+                @Html.ValidationSummary(true)
+            </header>
+
+            <div class="field">
+                <label asp-for="FirstName"></label>
+                <input asp-for="@Model.FirstName" class="form-control" />
+                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label for="ChallengeQuestion">Null Check <span>(What is the Springfield, MO Airport Code?)</span> <span class="null_check_hint">Need Help?</span> </label>
+                <input asp-for="ChallengeQuestion" class="form-control" />
+                <span asp-validation-for="ChallengeQuestion" class="text-danger"></span>
+            </div>
+
+            <footer>
+                <button class="button tall wide" type="submit">Get Started!</button>
+                <p>
+                    By clicking the "get started" button, you are creating a Springfield Devs account, and you agree to Springfield Devs  <a href="/about/code-of-conduct/">Code of Conduct</a>.
+                </p>
+            </footer>
+        </div>
+    }
+</div>
+
+<div class="mt_75"></div>

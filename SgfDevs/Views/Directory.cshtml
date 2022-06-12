@@ -1,8 +1,6 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
-@using SgfDevs.Dev;
-@{
-    Layout = "_Layout.cshtml";
-}
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 @section TopScripts
 {
@@ -106,22 +104,22 @@
         <div class="cards grid" v-if="this.results.length">
             <div class="card company_card" v-for="(member, index) in results">
                 <figure>
-                    <a :href="member.Url">
-                        <img :src="member.Image" alt="">
+                    <a :href="member.url">
+                        <img :src="member.image" alt="">
                     </a>
                     <figcaption>
-                        <div v-if="member.FoundingMember">Founding Member</div>
+                        <div v-if="member.foundingMember">Founding Member</div>
                     </figcaption>
                 </figure>
 
                 <div class="content">
                     <dl>
-                        <dt>{{ member.Name }}</dt>
-                        <dd>{{ member.Location }}</dd>
+                        <dt>{{ member.name }}</dt>
+                        <dd>{{ member.location }}</dd>
                     </dl>
 
                     <footer>
-                        <a class="button outline small" :href="member.Url">Profile</a>
+                        <a class="button outline small" :href="member.url">Profile</a>
                     </footer>
                 </div>
             </div>

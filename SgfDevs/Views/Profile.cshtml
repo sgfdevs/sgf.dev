@@ -1,64 +1,303 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Profile>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@using Member = Umbraco.Web.PublishedModels.Member;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Profile>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using SGFDevs.Models
+@using Umbraco.Cms.Core.Security
+@using SGFDevs.Dev
+@using Smidge.TagHelpers
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Website.Controllers
+@inject IMemberManager _memberManager
+@inject DirectoryHelper _directoryHelper
+
 @{
-    Layout = "_Layout.cshtml";
-    var member = (Member)Members.GetCurrentMember();
+    var currentMember = await _memberManager.GetCurrentMemberAsync();
+    var memberById = await _memberManager.FindByIdAsync(currentMember.Id);
+    var member = _memberManager.AsPublishedMember(memberById) as Member;
+    var success = TempData["ProfileUpdateSuccess"] != null;
+
+    var skills = _directoryHelper.GetSkills();
+    var currentSkills = (member?.SkillsTags ?? Array.Empty<IPublishedContent>()).Select(x => x.Key.ToString()).ToList();
+
+    var groups = _directoryHelper.GetGroups();
+    var currentGroups = (member?.Groups ?? Array.Empty<IPublishedContent>()).Select(x => x.Key.ToString()).ToList();
+
+    var aboutText = "";
+    if(!string.IsNullOrEmpty(member.AboutText.ToString()))
+    {
+        var converter = new ReverseMarkdown.Converter();
+        aboutText = converter.Convert(member.AboutText.ToString());
+    }
 }
 
-@section TopScripts {
+@if(member != null)
+{
+    <div class="form">
+        <header>
+            <h1>Edit your profile</h1>
+        </header>
+
+        @if (member.HasValue("ProfileImage"))
+        {
+            <div class="field">
+                <img src="@member.ProfileImage.GetCropUrl(width: 200, height: 200)" />
+            </div>
+        }
+
+        @* @Html.Partial("ProfileEdit") *@
+        @if (success)
+       {
+           <p>Profile updated</p>
+       }
+       
+        <form asp-controller="Account" asp-action="ProfileUpdate" method="post">
+            <input type="hidden" id="MemberId" name="MemberId" value="@member.Id"/>
+            <input type="hidden" id="MemberKey" name="MemberKey" value="@member.Key"/>
+            
+            <div class="field">
+                <label for="member.Email">Email</label>
+                <input type="text" id="member.Email" name="email" class="form-control" value="@currentMember.Email"/>
+                <span asp-validation-for="@currentMember.Email" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.FirstName">First Name</label>
+                <input asp-for="@member.FirstName" name="FirstName" class="form-control"/>
+                <span asp-validation-for="@member.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.LastName">Last Name</label>
+                <input asp-for="@member.LastName" name="LastName" class="form-control"/>
+                <span asp-validation-for="@member.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="profile_image_upload">
+                <input type="hidden" name="ProfileImagePath" value="" id="profile_image_path"/>
+                <div class="field">
+                    <label>Update Profile Image</label>
+                    <div class="input" style="margin-top: 10px;">
+                        <input type="file" name="sgf_profile_image" accept="image/png, image/jpeg, image/gif"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field" style="display: block;">
+                <label asp-for="@member.AboutText">About Text</label>
+                <div style="margin-top: 0.5em">
+                    <textarea name="AboutText" id="AboutText" class="form-control">@aboutText</textarea>
+                </div>
+                <span asp-validation-for="@member.AboutText" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <div class="checkbox_list" data-name="skills">
+                    <div class="label">Skills</div>
+                    <ul>
+                        @foreach (var skill in skills)
+                        {
+                            //var udi = new GuidUdi("document", skill.Key).ToString();
+                            var udi = skill.Key.ToString();
+                            var skillName = string.IsNullOrEmpty(skill.DisplayName) ? skill.Name : skill.DisplayName;
+                            var isCurrentSkill = currentSkills.Contains(udi);
+
+                            <li>
+                                <label>
+                                    @if (isCurrentSkill)
+                                    {
+                                        <input type="checkbox" name="skill" value="@udi" checked/>
+                                        @skillName
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="skill" value="@udi"/>
+                                        @skillName
+                                    }
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                    <input class="values" type="hidden" value="@string.Join(",", currentSkills)" name="Skills"/>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="checkbox_list">
+                    <div class="label">Groups</div>
+                    <ul>
+                        @foreach (var group in groups)
+                        {
+                            var udi = group.Key.ToString();
+                            var groupName = group.Name;
+                            var isCurrentGroup = currentGroups.Contains(udi);
+
+                            <li>
+                                <label>
+                                    @if (isCurrentGroup)
+                                    {
+                                        <input type="checkbox" name="group" value="@udi" checked/>
+                                        @groupName
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="group" value="@udi"/>
+                                        @groupName
+                                    }
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                    <input class="values" type="hidden" value="@string.Join(",", currentGroups)" name="Groups"/>
+                </div>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.City">City</label>
+                <input asp-for="@member.City" name="City" class="form-control"/>
+                <span asp-validation-for="@member.City" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.State">State</label>
+                <input asp-for="@member.State" name="State" class="form-control"/>
+                <span asp-validation-for="@member.State" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label>Available For Hire</label>
+                <div class="sgf_toggle input">
+                    @if (member.AvailableForHire)
+                    {
+                        <input type="checkbox" name="AvailableForHire" id="AvailableForHire" value="true" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="AvailableForHire" id="AvailableForHire" value="false">
+                    }
+                    <label for="AvailableForHire">Available For Hire</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Available For Contract Work</label>
+                <div class="sgf_toggle input">
+                    @if (member.AvailableForContractWork)
+                    {
+                        <input type="checkbox" name="AvailableForContractWork" id="AvailableForContractWork" value="true" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="AvailableForContractWork" id="AvailableForContractWork" value="false">
+                    }
+                    <label for="AvailableForContractWork">Available For Contract Work</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.TwitterUrl">Twitter URL</label>
+                <input asp-for="@member.TwitterUrl" name="TwitterUrl" class="form-control"/>
+                <span asp-validation-for="@member.TwitterUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.TwitchUrl">Twitch URL</label>
+                <input asp-for="@member.TwitchUrl" name="TwitchUrl" class="form-control"/>
+                <span asp-validation-for="@member.TwitchUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.FacebookUrl">Facebook URL</label>
+                <input asp-for="@member.FacebookUrl" name="FacebookUrl" class="form-control"/>
+                <span asp-validation-for="@member.FacebookUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.InstagramUrl">Instagram URL</label>
+                <input asp-for="@member.InstagramUrl" name="InstagramUrl" class="form-control"/>
+                <span asp-validation-for="@member.InstagramUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.LinkedInUrl">LinkedIn URL</label>
+                <input asp-for="@member.LinkedInUrl" name="LinkedInUrl" class="form-control"/>
+                <span asp-validation-for="@member.LinkedInUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.MeetupUrl">Meetup URL</label>
+                <input asp-for="@member.MeetupUrl" name="MeetupUrl" class="form-control"/>
+                <span asp-validation-for="@member.MeetupUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.WebsiteUrl">Website URL</label>
+                <input asp-for="@member.WebsiteUrl" name="WebsiteUrl" class="form-control"/>
+                <span asp-validation-for="@member.WebsiteUrl" class="text-danger"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="@member.YouTubeUrl">YouTube URL</label>
+                <input asp-for="@member.YouTubeUrl" name="YouTubeUrl" class="form-control"/>
+                <span asp-validation-for="@member.YouTubeUrl" class="text-danger"></span>
+            </div>
+
+            <footer>
+                <button class="button tall wide" type="submit">Save</button>
+            </footer>
+        </form>
+        
+        <div class="mt_75"></div>
+    </div>
+}
+
+@section TopScripts
+{
     <style>
-        .form {
-            padding: 0 15px;
-        }
+            .form {
+                padding: 0 15px;
+            }
+    
+            .filepond--root {
+                max-width: 300px;
+            }
+    
+            .filepond--credits {
+                display: none;
+            }
+    
+            .filepond--file-info {
+                display: none !important;
+            }
+        </style>
+        
+        <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
+        <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+        <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet">
+    
+        <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+}
 
-        .filepond--root {
-            max-width: 300px;
-        }
-
-        .filepond--credits {
-            display: none;
-        }
-
-        .filepond--file-info {
-            display: none !important;
+@section Head
+{
+    <style>
+        .validation-summary-errors {
+            color: red;
+            font-weight: bold;
         }
     </style>
-
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet">
-
-    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 }
 
-
-<div class="form">
-    <header>
-        <h1>Edit your profile</h1>
-    </header>
-
-    @if (member.HasValue("ProfileImage"))
-    {
-        <div class="field">
-            <img src="@member.ProfileImage.GetCropUrl(width: 200, height: 200)" />
-        </div>
-    }
-
-    @Html.Partial("ProfileEdit")
-
-    <div class="mt_75"></div>
-</div>
-
-@section scripts {
+@section Scripts {
     <script>
         //const inputElement = document.querySelector('input[type="file"]');
         //const pond = FilePond.create(inputElement);
@@ -118,5 +357,14 @@
                 load: '/api/profile/image-load'
             }
         });
-    </script>
+        
+        let simplemde = new SimpleMDE({ 
+            element: document.getElementById("AboutText"),
+            autosave: {
+                enabled: true,
+                uniqueId: "Psh",
+                delay: 500,
+            },
+        });
+    </script>   
 }

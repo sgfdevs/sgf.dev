@@ -1,39 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Umbraco.Core.Services;
-using Umbraco.Web.Models;
-using Umbraco.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.Extensions.Logging;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common.Controllers;
+using Umbraco.Cms.Web.Common.PublishedModels;
+using Umbraco.Cms.Web.Common.Security;
 
-namespace SgfDevs.Controllers
+namespace SGFDevs.Controllers;
+
+public class MemberController : UmbracoPageController, IVirtualPageController
 {
-    public class MemberController : RenderMvcController
+    private MemberManager _memberManager;
+    private readonly IUmbracoContextAccessor _umbracoContextAccessor;
+    private ILogger<MemberController> _logger;
+
+    public MemberController(ILogger<MemberController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor, MemberManager memberManager) : base(logger, compositeViewEngine)
     {
-        private IMemberService _memberService;
+        _umbracoContextAccessor = umbracoContextAccessor;
+        _memberManager = memberManager;
+        _logger = logger;
+    }
 
-        public MemberController(IMemberService memberService)
-        {
-            _memberService = memberService;
-        }
-
-        public override ActionResult Index(ContentModel model)
-        {
-            return base.Index(model);
-        }
-
-        public ActionResult MemberProfile(ContentModel model, string username)
-        {
-            var iMember = _memberService.GetByUsername(username);
-
-            if(iMember != null)
-            {
-                var member = Umbraco.Member(iMember.Id) as Umbraco.Web.PublishedModels.Member;
-                return View(member);
-            }
-
-            return HttpNotFound();
-        }
+    public IPublishedContent FindContent(ActionExecutingContext actionExecutingContext)
+    {
+        return _umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext) ? umbracoContext.Content.GetByRoute("/member") : null;
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> MemberProfile(string username)
+    {
+        var iMember = _memberManager.FindByNameAsync(username);
+        if (iMember.Result == null) return NotFound();
+        
+        var memberById = await _memberManager.FindByIdAsync(iMember.Result.Id);
+        var member = _memberManager.AsPublishedMember(memberById) as Member;
+        return View(member);
     }
 }

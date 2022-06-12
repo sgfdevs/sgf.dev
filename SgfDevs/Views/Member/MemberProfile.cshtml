@@ -1,15 +1,10 @@
-﻿@model Umbraco.Web.PublishedModels.Member
-@using Tag = Umbraco.Web.PublishedModels.Tag;
+@model Umbraco.Cms.Web.Common.PublishedModels.Member
 
 @{
-    ViewBag.Title = "MemberProfile";
-    Layout = "~/Views/_Layout.cshtml";
-
     var name = Model.FirstName + " " + Model.LastName;
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
     var isFoundingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
 }
-
 
 
 <main class="profile">
@@ -56,7 +51,7 @@
 
                     <div class="member-since">
                         <i class="icon fas fa-calendar-alt"></i>
-                        Member since DATE HERE
+                        Member since @Model.CreateDate.ToString("MMMM yyyy")
                     </div>
                 </div>
 

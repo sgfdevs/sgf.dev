@@ -1,30 +1,32 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Page>
-@using ContentModels = Umbraco.Web.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Page>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 @{
-    Layout = "_Layout.cshtml";
+    
 }
 
 <section class="about_landing">
     <div class="container">
         <div class="content">
-            <h1>Educating, inspiring and supporting developers, agencies and professionals in the Greater Springfield, Mo area.</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, rerum placeat alias veritatis accusamus eum officia culpa, cupiditate atque tempora tempore voluptatem nihil consequatur libero fugiat quam reprehenderit fuga. Pariatur!</p>
-            <p><a href="#" class="button wide">Join Today</a></p>
+            <h1>Educating, inspiring and supporting developers, agencies and professionals in the Greater Springfield, MO area.</h1>
+            <p>Engage with your local tech community to share your passion and knowledge, grow your skills and network,  and discover interesting projects and innovations happening right here in southwest Missouri!</p>
+            <p><a href="/register" class="button wide">Join Today</a></p>
         </div>
     </div>
 </section>
 
 <section class="about_content">
-    <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus illo ut earum atque et cumque harum ab.</h2>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum voluptatibus mollitia architecto et saepe nam quia nesciunt, ratione vero officia porro debitis assumenda in magni pariatur veniam, dolor iusto perspiciatis?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt excepturi fugit, non impedit quisquam totam quae ipsa dolorum omnis aut, vel nobis provident, esse possimus doloremque. Animi totam facilis quo.</p>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab distinctio eos rerum quia iure. Iure, reiciendis aspernatur reprehenderit quia esse quisquam cumque placeat nihil modi illum id adipisci, odio incidunt?</p>
-    <ol>
-        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem inventore veritatis vitae doloribus maxime. Temporibus doloribus nulla animi dolorum ullam molestias delectus et praesentium, expedita, nam magni aut quaerat facere.</li>
-        <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</li>
-        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem voluptatem quam sit laudantium libero harum?</li>
-    </ol>
+    <h2>A place for everyone to connect, grow, and become part of their local tech community</h2>
+    <p>Whether you’re a seasoned professional, an up-and-coming junior developer, a student still learning the basics of your craft, or a hobbyist who loves to tinker and learn more—Springfield Devs is for you.</p>
+    <p>Development of all kinds—software, application, mobile, gaming, virtual reality, web—you name it, you’ll find common interests with people who would love to geek out with you and learn together.  Backend, frontend, full stack, cyber security, devops, data science, or whatever flavor gets your taste buds tingling, you’re in the right place.  Designers, project managers, scrum masters, instructors, analysts and anyone/everyone interested in tech and making cool things: welcome home!</p>
+    <p>Springfield Devs is a community hub for knowledge sharing, networking, employment opportunities, and good fun centered around learning and developing with technologies.</p>
+    
+    <h2>Inclusive and supportive, by design</h2>
+    <p>Everyone is welcome and encouraged to participate in our many activities, discussions, and events.  No matter your experience level, age, gender, race, creed, or favorite science fiction fandom--you are welcome here!  We strive to be a safe community, both online and in-person, and require everyone to abide by our Code of Conduct.  And we mean it.</p>
+    
+    <h2>Get involved</h2>
+    <p>Take the first step!  Join our <a href="/discord">Discord</a> to see what all the hubbub is about.  RSVP to our next meeting, either virtual or in-person, and see how low-key and easy it is to get connected (introverts welcome!).  Create a <a href="/register">profile</a> on our website and find job opportunities or seek out others with similar interests.</p>
 </section>
 
 <section class="cards about_grid">
@@ -37,7 +39,7 @@
         </dl>
 
         <footer>
-            <a href="#" class="button outline black">Become a Sponsor</a>
+            <a href="/media/prgasrsw/springfield_devs_sponsorship.pdf" class="button outline black">Become a Sponsor</a>
         </footer>
     </article>
     <article class="card about_card">
@@ -49,7 +51,7 @@
         </dl>
 
         <footer>
-            <a href="#" class="button inverse">Download Document</a>
+            <a href="/about/code-of-conduct/" class="button inverse">Read</a>
         </footer>
     </article>
     <article class="card about_card">

@@ -1,19 +1,13 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Login>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@using SgfDevs.Models;
-@using ClientDependency.Core.Mvc;
-@using System.Web.Mvc.Html;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Login>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 @{
-    Layout = "_Layout.cshtml";
-
-    Html.EnableClientValidation();
-    Html.EnableUnobtrusiveJavaScript();
-    Html.RequiresJs("https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js");
-    Html.RequiresJs("https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js");
+    
 }
 
-@section Head {
+@section Head
+{
     <style>
         .validation-summary-errors {
             color: red;
@@ -22,6 +16,9 @@
     </style>
 }
 
-@{
-    Html.RenderPartial("Partials/Login", new LoginModel());
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 }
+
+@await Component.InvokeAsync("Login")

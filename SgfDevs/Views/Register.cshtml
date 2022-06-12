@@ -1,19 +1,10 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Register>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@using System.Web.Mvc.Html
-@using ClientDependency.Core.Mvc
-@using SgfDevs.Models
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Register>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using SGFDevs.Models
 
-@{
-    Layout = "_Layout.cshtml";
-
-    Html.EnableClientValidation();
-    Html.EnableUnobtrusiveJavaScript();
-    Html.RequiresJs("https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js");
-    Html.RequiresJs("https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js");
-}
-
-@section Head {
+@section Head
+{
     <style>
         .validation-summary-errors {
             color: red;
@@ -22,6 +13,9 @@
     </style>
 }
 
-@{
-    Html.RenderPartial("Partials/Register", new RegisterModel());
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 }
+
+@await Component.InvokeAsync("Register")

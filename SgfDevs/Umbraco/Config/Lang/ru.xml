@@ -5,7 +5,7 @@
     <link>https://our.umbraco.com/documentation/Extending-Umbraco/Language-Files</link>
   </creator>
   <area alias="actions">
-    <key alias="assignDomain">Языки и домены</key>
+    <key alias="assigndomain">Языки и домены</key>
     <key alias="auditTrail">История исправлений</key>
     <key alias="browse">Просмотреть</key>
     <key alias="changeDocType">Изменить тип документа</key>
@@ -17,11 +17,11 @@
     <key alias="defaultValue">Значение по умолчанию</key>
     <key alias="delete">Удалить</key>
     <key alias="disable">Отключить</key>
-    <key alias="emptyRecycleBin">Очистить корзину</key>
+    <key alias="emptyrecyclebin">Очистить корзину</key>
     <key alias="enable">Включить</key>
     <key alias="export">Экспорт</key>
     <key alias="exportDocumentType">Экспортировать</key>
-    <key alias="importDocumentType">Импортировать</key>
+    <key alias="importdocumenttype">Импортировать</key>
     <key alias="importPackage">Импортировать пакет</key>
     <key alias="liveEdit">Править на месте</key>
     <key alias="logout">Выйти</key>
@@ -32,7 +32,6 @@
     <key alias="refreshNode">Обновить узлы</key>
     <key alias="rename" version="7.3.0">Переименовать</key>
     <key alias="republish">Опубликовать весь сайт</key>
-    <key alias="SetPermissionsForThePage">Установить разрешения для страницы '%0%'</key>
     <key alias="restore" version="7.3.0">Восстановить</key>
     <key alias="rights">Разрешения</key>
     <key alias="rollback">Откатить</key>
@@ -96,7 +95,7 @@
     <key alias="atViewingFor">Наблюдать за</key>
   </area>
   <area alias="blueprints">
-    <key alias="createBlueprintFrom">Создать новый шаблон содержимого из '%0%'</key>
+    <key alias="createBlueprintFrom"><![CDATA[Создать новый шаблон содержимого из <em>%0%</em>]]></key>
     <key alias="blankBlueprint">Пустой</key>
     <key alias="selectBlueprint">Выбрать шаблон содержимого</key>
     <key alias="createdBlueprintHeading">Шаблон содержимого создан</key>
@@ -151,7 +150,6 @@
     <key alias="save">Сохранить</key>
     <key alias="saveAndGenerateModels">Сохранить и построить модели</key>
     <key alias="saveAndPublish">Опубликовать</key>
-    <key alias="saveAndSchedule">Запланировать</key>
     <key alias="saveToPublish">Направить на публикацию</key>
     <key alias="saveListView">Сохранить список</key>
     <key alias="select">Выбрать</key>
@@ -162,27 +160,6 @@
     <key alias="styleShow">Показать стили</key>
     <key alias="tableInsert">Вставить таблицу</key>
     <key alias="undo">Отменить</key>
-  </area>
-  <area alias="changeDocType">
-    <key alias="changeDocTypeInstruction">Чтобы сменить тип документа для выбранного узла, сначала выберите тип из списка разрешенных для данного расположения.</key>
-    <key alias="changeDocTypeInstruction2">Затем подтвердите и/или исправьте сопоставление свойств текущего типа документа свойствам нового и нажмите "Сохранить".</key>
-    <key alias="contentRepublished">Документ переопубликован.</key>
-    <key alias="currentProperty">Текущее свойство</key>
-    <key alias="currentType">Текущий тип</key>
-    <key alias="docTypeCannotBeChanged">Тип документа не может быть изменен, так как для данного расположения нет разрешенных альтернатив.
-		Альтернативный тип станет доступным, если его разрешить как тип, пригодный для создания дочерних узлов внутри родительского узла данного документа.</key>
-    <key alias="docTypeChanged">Тип документа изменен</key>
-    <key alias="mapProperties">Сопоставление свойств</key>
-    <key alias="mapToProperty">Сопоставлено свойству</key>
-    <key alias="newTemplate">Новый шаблон</key>
-    <key alias="newType">Новый тип</key>
-    <key alias="none">нет</key>
-    <key alias="selectedContent">Узел</key>
-    <key alias="selectNewDocType">Выберите новый тип документа</key>
-    <key alias="successMessage">Тип документа выбранного узла успешно изменен на [new type] и следующие свойства были перенесены:</key>
-    <key alias="to">в</key>
-    <key alias="validationErrorPropertyWithMoreThanOneMapping">Невозможно закончить перенос свойств, так как одно или более свойства имеют больше чем одно сопоставление.</key>
-    <key alias="validDocTypesNote">Показаны только допустимые для данного расположения альтернативные типы.</key>
   </area>
   <area alias="colorpicker">
     <key alias="noColors">Вы не указали ни одного допустимого цвета</key>
@@ -241,7 +218,7 @@
     <key alias="removeDate">Очистить дату</key>
     <key alias="routeError">ВНИМАНИЕ: этот документ опубликован, но его URL вступает в противоречие с документом %0%</key>
     <key alias="scheduledPublishServerTime">Это время будет соответствовать следующему времени на сервере:</key>
-    <key alias="scheduledPublishDocumentation"><![CDATA[<a href="https://our.umbraco.com/documentation/Getting-Started/Data/Scheduled-Publishing/#timezones" target="_blank">Что это означает?</a>]]></key>
+    <key alias="scheduledPublishDocumentation"><![CDATA[<a href="https://our.umbraco.com/documentation/Getting-Started/Data/Scheduled-Publishing/#timezones" target="_blank" rel="noopener">Что это означает?</a>]]></key>
     <key alias="setDate">Задать дату</key>
     <key alias="sortDone">Порядок сортировки обновлен</key>
     <key alias="sortHelp">Для сортировки узлов просто перетаскивайте узлы или нажмите на заголовке столбца. Вы можете выбрать несколько узлов, удерживая клавиши "shift" или "ctrl" при пометке</key>
@@ -371,8 +348,8 @@
     <key alias="recycleBinDeleting">Все элементы в корзине сейчас удаляются. Пожалуйста, не закрывайте это окно до окончания процесса удаления</key>
     <key alias="recycleBinIsEmpty">Корзина пуста</key>
     <key alias="recycleBinWarning">Вы больше не сможете восстановить элементы, удаленные из корзины</key>
-    <key alias="regexSearchError"><![CDATA[Сервис <a target='_blank' href='http://regexlib.com'>regexlib.com</a> испытывает в настоящее время некоторые трудности, не зависящие от нас. Просим извинить за причиненные неудобства.]]></key>
-    <key alias="regexSearchHelp">Используйте поиск регулярных выражений для добавления сервиса проверки к полю Вашей формы. Например: 'email, 'zip-code', 'url'</key>
+    <key alias="regexSearchError"><![CDATA[Сервис <a target='_blank' rel='noopener' href='http://regexlib.com'>regexlib.com</a> испытывает в настоящее время некоторые трудности, не зависящие от нас. Просим извинить за причиненные неудобства.]]></key>
+    <key alias="regexSearchHelp">Используйте поиск регулярных выражений для добавления сервиса проверки к полю Вашей формы. Например: 'email, 'zip-code', 'URL'</key>
     <key alias="removeMacro">Удалить макрос</key>
     <key alias="requiredField">Обязательное поле</key>
     <key alias="sitereindexed">Сайт переиндексирован</key>
@@ -441,10 +418,6 @@
     <key alias="rteRelatedStylesheets">Сопоставленные стили CSS</key>
     <key alias="rteShowLabel">Показать метку</key>
     <key alias="rteWidthAndHeight">Ширина и высота</key>
-    <key alias="allPropTypes">ВСЕ типы свойств и данные в свойствах документов,</key>
-    <key alias="willBeDeleted">использующие этот тип данных, будут удалены безвозвратно, подтвердите их удаление</key>
-    <key alias="yesDelete">Да, можно удалить</key>
-    <key alias="andAllRelated">и все типы свойств и данные свойств, использующие этот тип данных</key>
     <key alias="selectFolder">Выберите папку, чтобы переместить в нее</key>
     <key alias="inTheTree">в структуре дерева ниже</key>
     <key alias="wasMoved">был перемещен в папку</key>
@@ -454,7 +427,6 @@
   </area>
   <area alias="errorHandling">
     <key alias="errorButDataWasSaved">Ваши данные сохранены, но для того, чтобы опубликовать этот документ, Вы должны сначала исправить следующие ошибки:</key>
-    <key alias="errorChangingProviderPassword">Текущий провайдер ролей пользователей не поддерживает изменение пароля (необходимо свойству EnablePasswordRetrieval в файле web.config присвоить значение true)</key>
     <key alias="errorExistsWithoutTab">%0% уже существует</key>
     <key alias="errorHeader">Обнаружены следующие ошибки:</key>
     <key alias="errorHeaderWithoutTab">Обнаружены следующие ошибки:</key>
@@ -645,7 +617,6 @@
     <key alias="gridLayouts">Шаблоны сетки</key>
     <key alias="gridLayoutsDetail">Шаблоны являются рабочим пространством для редактора сетки, обычно Вам понадобится не более одного или двух шаблонов</key>
     <key alias="insertControl">Вставить элемент</key>
-    <key alias="placeholderImageCaption">Заголовок для изображения...</key>
     <key alias="placeholderWriteHere">Напишите...</key>
     <key alias="rowConfigurations">Конфигурации строк</key>
     <key alias="rowConfigurationsDetail">Строки - это последовательности ячеек с горизонтальным расположением</key>
@@ -672,91 +643,49 @@
 		   3: Configuration file path
 	  -->
     <key alias="checkSuccessMessage">Для параметра установлено рекомендованное значение: '%0%'.</key>
-    <key alias="rectifySuccessMessage">Значение установлено в '%1%' для пути XPath '%2%' в файле конфигурации '%3%'.</key>
     <key alias="checkErrorMessageDifferentExpectedValue">Ожидаемое значение '%1%' для параметра '%2%' в файле конфигурации '%3%', найденное значение: '%0%'.</key>
     <key alias="checkErrorMessageUnexpectedValue">Найдено неожиданное значение '%0%' для параметра '%2%' в файле конфигурации '%3%'.</key>
     <!-- The following keys get these tokens passed in:
 	     0: Current value
 		   1: Recommended value
 	  -->
-    <key alias="customErrorsCheckSuccessMessage">Параметр 'CustomErrors' установлен в '%0%'.</key>
-    <key alias="customErrorsCheckErrorMessage">Параметр 'CustomErrors' сейчас установлен в '%0%'. Рекомендуется установить в '%1%' перед размещением сайта в сети.</key>
-    <key alias="customErrorsCheckRectifySuccessMessage">Параметр 'CustomErrors' успешно установлен в '%0%'.</key>
     <key alias="macroErrorModeCheckSuccessMessage">Параметр 'MacroErrors' установлен в '%0%'.</key>
     <key alias="macroErrorModeCheckErrorMessage">Параметр 'MacroErrors' установлен в '%0%', что может привести к неполной обработке части страниц или всех страниц сайта при наличии ошибок в макросах. Устранить это можно путем установки значения в '%1%'.</key>
-    <key alias="macroErrorModeCheckRectifySuccessMessage">Параметр 'MacroErrors' теперь установлен в '%0%'.</key>
     <!-- The following keys get these tokens passed in:
 	     0: Current value
 		   1: Recommended value
 		   2: Server version
 	  -->
-    <key alias="trySkipIisCustomErrorsCheckSuccessMessage">Параметр 'Try Skip IIS Custom Errors' установлен в '%0%' и Вы используете IIS версии '%1%'.</key>
-    <key alias="trySkipIisCustomErrorsCheckErrorMessage">Параметр 'Try Skip IIS Custom Errors' сейчас установлен в '%0%'. Рекомендуется установить в '%1%' для Вашего текущего IIS версии (%2%).</key>
-    <key alias="trySkipIisCustomErrorsCheckRectifySuccessMessage">Параметр 'Try Skip IIS Custom Errors' успешно установлен в '%0%'.</key>
     <!-- The following keys get predefined tokens passed in that are not all the same, like above -->
-    <key alias="configurationServiceFileNotFound">Файл не существует: '%0%'.</key>
-    <key alias="configurationServiceNodeNotFound"><![CDATA[Не найден параметр <strong>'%0%'</strong> в файле конфигурации <strong>'%1%'</strong>.]]></key>
-    <key alias="configurationServiceError">Обнаружена ошибка, для получения полной информации обратитесь к журналу: %0%.</key>
-    <key alias="healthCheckInvalidUrl">Ошибка проверки адреса URL %0% - '%1%'</key>
     <key alias="httpsCheckValidCertificate">Сертификат Вашего веб-сайта отмечен как проверенный.</key>
     <key alias="httpsCheckInvalidCertificate">Ошибка проверки сертификата: '%0%'</key>
     <key alias="httpsCheckIsCurrentSchemeHttps">Сейчас Вы %0% просматриваете сайт, используя протокол HTTPS.</key>
-    <key alias="httpsCheckConfigurationRectifyNotPossible">Параметр 'Umbraco.Core.UseHttps' в секции 'appSetting' установлен в 'false' в файле web.config. Если Вам необходим доступ к сайту по протоколу HTTPS, нужно установить данный параметр в 'true'.</key>
-    <key alias="httpsCheckConfigurationCheckResult">Параметр 'Umbraco.Core.UseHttps' в секции 'appSetting' в файле установлен в '%0%', значения cookies %1% маркированы как безопасные.</key>
-    <key alias="httpsCheckEnableHttpsError">Невозможно обновить значение параметра 'Umbraco.Core.UseHttps' в файле web.config. Ошибка: %0%</key>
     <!-- The following keys don't get tokens passed in -->
-    <key alias="httpsCheckEnableHttpsButton">Разрешить HTTPS</key>
-    <key alias="httpsCheckEnableHttpsDescription">Устанавливает значение параметра 'umbracoSSL' в 'true' в секции 'appSettings' файла web.config.</key>
-    <key alias="httpsCheckEnableHttpsSuccess">Параметр 'Umbraco.Core.UseHttps' в секции 'appSetting' файла web.config теперь установлен в 'true', значения cookies будут промаркированы как безопасные.</key>
-    <key alias="rectifyButton">Исправить</key>
-    <key alias="cannotRectifyShouldNotEqual">Невозможно исправление по результату проверки значения на 'ShouldNotEqual'.</key>
-    <key alias="cannotRectifyShouldEqualWithValue">Невозможно исправление по результату проверки значения на 'ShouldEqual' с предоставленным значением.</key>
-    <key alias="valueToRectifyNotProvided">Значение для исправления не предоставлено.</key>
     <key alias="compilationDebugCheckSuccessMessage">Режим компиляции с отладкой выключен.</key>
     <key alias="compilationDebugCheckErrorMessage">Режим компиляции с отладкой сейчас включен. Рекомендуется выключить перед размещением сайта в сети.</key>
-    <key alias="compilationDebugCheckRectifySuccessMessage">Режим компиляции с отладкой успешно выключен.</key>
-    <key alias="traceModeCheckSuccessMessage">Режим трассировки выключен.</key>
-    <key alias="traceModeCheckErrorMessage">Режим трассировки сейчас включен. Рекомендуется выключить перед размещением сайта в сети.</key>
-    <key alias="traceModeCheckRectifySuccessMessage">Режим трассировки успешно выключен.</key>
-    <key alias="folderPermissionsCheckMessage">Все папки имеют корректно установленные параметры безопасности.</key>
     <!-- The following keys get these tokens passed in:
 	    0: Comma delimitted list of failed folder paths
   	-->
-    <key alias="requiredFolderPermissionFailed"><![CDATA[Не получен доступ для установки корректных параметров безопасности к следующим папкам: <strong>%0%</strong>.]]></key>
-    <key alias="optionalFolderPermissionFailed"><![CDATA[Невозможно получить доступ для установки корректных параметров безопасности с целью корректного функционирования Umbraco к следующим папкам: <strong>%0%</strong>. Если в них не разрешена запись, не нужно предпринимать никаких действий.]]></key>
-    <key alias="filePermissionsCheckMessage">Все файлы имеют корректно установленные параметры безопасности.</key>
+    <!-- The following keys get these tokens passed in:
+	    0: Path to the file not found
+  	-->
     <!-- The following keys get these tokens passed in:
 	    0: Comma delimitted list of failed folder paths
   	-->
-    <key alias="requiredFilePermissionFailed"><![CDATA[Не получен доступ для установки корректных параметров безопасности к следующим файлам: <strong>%0%</strong>.]]></key>
-    <key alias="optionalFilePermissionFailed"><![CDATA[Невозможно получить доступ для установки корректных параметров безопасности с целью корректного функционирования Umbraco к следующим файлам: <strong>%0%</strong>. Если в них не разрешена запись, не нужно предпринимать никаких действий.]]></key>
     <key alias="clickJackingCheckHeaderFound"><![CDATA[Был обнаружен заголовок или мета-тэг <strong>X-Frame-Options</strong>, использующийся для управления возможностью помещать сайт в IFRAME на другом сайте.]]></key>
     <key alias="clickJackingCheckHeaderNotFound"><![CDATA[Заголовок или мета-тэг <strong>X-Frame-Options</strong>, использующийся для управления возможностью помещать сайт в IFRAME на другом сайте, не обнаружен.]]></key>
-    <key alias="clickJackingSetHeaderInConfigDescription">Добавляет значение в секцию 'httpProtocol/customHeaders' файла web.config, препятствующее возможному использованию этого сайта внутри IFRAME на другом сайте.</key>
-    <key alias="clickJackingSetHeaderInConfigSuccess">Значение, добавляющее заголовок, препятствующий использованию этого сайта внутри IFRAME другого сайта, успешно добавлено в файл web.config.</key>
-    <key alias="setHeaderInConfig">Установить заголовок в файле конфигурации</key>
-    <key alias="setHeaderInConfigError">Невозможно обновить файл web.config. Ошибка: %0%</key>
     <key alias="noSniffCheckHeaderFound"><![CDATA[Заголовок или мета-тэг <strong>X-Content-Type-Options</strong>, использующиеся для защиты от MIME-уязвимостей, обнаружены.]]></key>
     <key alias="noSniffCheckHeaderNotFound"><![CDATA[Заголовок или мета-тэг <strong>X-Content-Type-Options</strong>, использующиеся для защиты от MIME-уязвимостей, не найдены.]]></key>
-    <key alias="noSniffSetHeaderInConfigDescription">Добавляет значение в секцию httpProtocol/customHeaders файла web.config, препятствующее использованию MIME-уязвимостей.</key>
-    <key alias="noSniffSetHeaderInConfigSuccess">Значение, добавляющее заголовок, препятствующий использованию MIME-уязвимостей, успешно добавлено в файл web.config.</key>
     <key alias="hSTSCheckHeaderFound"><![CDATA[Заголовок <strong>Strict-Transport-Security</strong>, известный также как HSTS-header, обнаружен.]]></key>
     <key alias="hSTSCheckHeaderNotFound"><![CDATA[Заголовок <strong>Strict-Transport-Security</strong> не найден.]]></key>
-    <key alias="hSTSSetHeaderInConfigDescription">Добавляет заголовок 'Strict-Transport-Security' и его значение 'max-age=10886400' в секцию httpProtocol/customHeaders файла web.config. Применяйте этот способ только в случае, если доступ к Вашим сайтам будет осуществляться по протоколу https как минимум ближайшие 18 недель.</key>
-    <key alias="hSTSSetHeaderInConfigSuccess">Заголовок HSTS-header успешно добавлен в файл web.config.</key>
     <key alias="xssProtectionCheckHeaderFound"><![CDATA[Заголовок <strong>X-XSS-Protection</strong> обнаружен.]]></key>
     <key alias="xssProtectionCheckHeaderNotFound"><![CDATA[Заголовок <strong>X-XSS-Protection</strong> не найден.]]></key>
-    <key alias="xssProtectionSetHeaderInConfigDescription">Добавляет заголовок 'X-XSS-Protection' и его значение '1; mode=block' в секцию httpProtocol/customHeaders файла web.config. </key>
-    <key alias="xssProtectionSetHeaderInConfigSuccess">Заголовок X-XSS-Protection успешно добавлен в файл web.config.</key>
     <!-- The following key get these tokens passed in:
 	    0: Comma delimitted list of headers found
   	-->
     <key alias="excessiveHeadersFound"><![CDATA[Обнаружены следующие заголовки, позволяющие выяснить базовую технологию сайта: <strong>%0%</strong>.]]></key>
     <key alias="excessiveHeadersNotFound">Заголовки, позволяющие выяснить базовую технологию сайта, не обнаружены.</key>
-    <key alias="smtpMailSettingsNotFound">В файле Web.config, не обнаружено параметров работы с отправкой электронной почты (секция 'system.net/mailsettings').</key>
-    <key alias="smtpMailSettingsHostNotConfigured">В файле Web.config в секции 'system.net/mailsettings' не обнаружены настройки почтового хоста.</key>
     <key alias="smtpMailSettingsConnectionSuccess">Параметры отправки электронной почты (SMTP) настроены корректно, сервис работает как ожидается.</key>
-    <key alias="smtpMailSettingsConnectionFail">Сервер SMTP сконфигурирован на использование хоста '%0%' на порту '%1%', который в настоящее время недоступен. Пожалуйста, убедитесь, что настройки SMTP в файле Web.config в секции 'system.net/mailsettings' верны.</key>
     <key alias="notificationEmailsCheckSuccessMessage"><![CDATA[Адрес для отправки уведомлений установлен в <strong>%0%</strong>.]]></key>
     <key alias="notificationEmailsCheckErrorMessage"><![CDATA[Адрес для отправки уведомлений все еще установлен в значение по-умолчанию <strong>%0%</strong>.]]></key>
     <key alias="scheduledHealthCheckEmailBody"><![CDATA[<html><body><p>Зафиксированы следующие результаты автоматической проверки состояния Umbraco по расписанию, запущенной на %0% в %1%:</p>%2%</body></html>]]></key>
@@ -767,24 +696,15 @@
   </area>
   <area alias="imagecropper">
     <key alias="reset">Сбросить</key>
-    <key alias="saveCrop">Сохранить рамку</key>
-    <key alias="addCrop">Добавить новую рамку</key>
   </area>
   <area alias="installer">
     <key alias="databaseErrorCannotConnect">Программа установки не может установить подключение к базе данных.</key>
-    <key alias="databaseErrorWebConfig">Невозможно сохранить изменения в файл web.config. Пожалуйста, вручную измените настройки строки подключения к базе данных.</key>
     <key alias="databaseFound">База данных обнаружена и идентифицирована как</key>
     <key alias="databaseHeader">Конфигурация базы данных</key>
     <key alias="databaseInstall"><![CDATA[
 		Нажмите кнопку <strong>Установить</strong> чтобы установить базу данных Umbraco %0%
 		]]></key>
     <key alias="databaseInstallDone"><![CDATA[Ваша База данных сконфигурирована для работы Umbraco %0%. Нажмите кнопку <strong>Далее</strong> для продолжения.]]></key>
-    <key alias="databaseNotFound"><![CDATA[<p>База данных не найдена! Пожалуйста, проверьте настройки строки подключения ("connection string") в файле конфигурации "web.config"</p>
-		<p>Для настройки откройте файл "web.config" с помощью любого текстового редактора и добавьте нужную информацию в строку подключения (параметр "UmbracoDbDSN"),
-		затем сохраните файл.</p>
-		<p>Нажмите кнопку "Повторить" когда все будет готово<br />
-		<a href="https://our.umbraco.com/documentation/Using-Umbraco/Config-files/webconfig7"
-		target="_blank">Более подробно о внесении изменений в файл "web.config" рассказано здесь.</a></p>]]></key>
     <key alias="databaseText"><![CDATA[Для завершения данного шага Вам нужно располагать некоторой информацией о Вашем сервере базы данных
 		(строка подключения "connection string")<br />
 		Пожалуйста, свяжитесь с Вашим хостинг-провайдером, если есть необходимость, а если устанавливаете на локальную рабочую станцию или сервер, то получите информацию у Вашего системного администратора.]]></key>
@@ -802,7 +722,6 @@
     <key alias="defaultUserPassChanged"><![CDATA[<strong>Пароль пользователя по-умолчанию успешно изменен в процессе установки!</strong></p><p>Нет надобности в каких-либо дальнейших действиях. Нажмите кнопку <strong>Далее</strong> для продолжения.]]></key>
     <key alias="defaultUserPasswordChanged">Пароль изменен!</key>
     <key alias="greatStart">Для начального обзора возможностей системы рекомендуем посмотреть ознакомительные видеоматериалы</key>
-    <key alias="licenseText"><![CDATA[Нажимая кнопку <strong>Далее</strong> (или модифицируя вручную ключ "UmbracoConfigurationStatus" в файле "web.config"), Вы принимаете лицензионное соглашение для данного программного обеспечения, расположенное ниже. Пожалуйста, обратите внимание, что установочный пакет Umbraco отвечает двум различным типам лицензий: лицензии MIT на программные продукты с открытым исходным кодом в части ядра системы и свободной лицензии Umbraco в части пользовательского интерфейса.]]></key>
     <key alias="None">Система не установлена.</key>
     <key alias="permissionsAffectedFolders">Затронутые файлы и папки</key>
     <key alias="permissionsAffectedFoldersMoreInfo">Более подробно об установке разрешений для Umbraco рассказано здесь</key>
@@ -831,7 +750,7 @@
     <key alias="runwayFromScratchText"><![CDATA[
 		В настоящий момент Ваш сайт абсолютно пустой, что является наилучшим вариантом для старта
 		"с чистого листа", чтобы начать создавать свои собственные типы документов и шаблоны.
-		(<a href="http://Umbraco.tv/documentation/videos/for-site-builders/foundation/document-types">Здесь можно узнать об этом подробнее</a>) Вы также можете отложить установку "Runway" на более позднее время. Перейдите к разделу "Разработка" и выберите пункт "Пакеты".
+		(<a href="https://umbraco.tv/documentation/videos/for-site-builders/foundation/document-types">Здесь можно узнать об этом подробнее</a>) Вы также можете отложить установку "Runway" на более позднее время. Перейдите к разделу "Разработка" и выберите пункт "Пакеты".
 		]]></key>
     <key alias="runwayHeader">Вы только что установили чистую платформу Umbraco. Какой шаг будет следующим?</key>
     <key alias="runwayInstalled">"Runway" установлен</key>
@@ -865,8 +784,6 @@
     <key alias="theEndFurtherHelp"><![CDATA[<h3>Дальнейшее изучение и помощь</h3>
 		Получайте помощь от нашего замечательного сообщества пользователей, изучайте документацию или просматривайте наши свободно распространяемые видео-материалы о том, как создать собственный несложный сайт, как использовать расширения и пакеты, а также краткое руководство по терминологии Umbraco.]]></key>
     <key alias="theEndHeader">Система Umbraco %0% установлена и готова к работе</key>
-    <key alias="theEndInstallFailed"><![CDATA[Для завершения процесса установки Вам необходимо
-		вручную модифицировать файл <strong>web.config</strong> и изменить значение ключа <strong>UmbracoConfigurationStatus</strong> в секции <strong>AppSetting</strong>, установив его равным <strong>'%0%'</strong>.]]></key>
     <key alias="theEndInstallSuccess"><![CDATA[Вы можете начать работу <strong>прямо сейчас</strong>,
 		воспользовавшись ссылкой "Начать работу с Umbraco". <br />Если Вы <strong>новичок в мире Umbraco</strong>, Вы сможете найти много полезных ссылок на ресурсы на странице "Начало работы".]]></key>
     <key alias="theEndOpenUmbraco"><![CDATA[<h3>Начните работу с Umbraco</h3>
@@ -888,7 +805,7 @@
     <key alias="renewSession">Обновите сейчас, чтобы сохранить сделанные изменения</key>
   </area>
   <area alias="login">
-    <key alias="bottomText"><![CDATA[<p style="text-align:right;">&copy; 2001 - %0% <br /><a href="http://umbraco.com" style="text-decoration: none" target="_blank">umbraco.com</a></p>]]></key>
+    <key alias="bottomText"><![CDATA[<p style="text-align:right;">&copy; 2001 - %0% <br /><a href="https://umbraco.com" style="text-decoration: none" target="_blank" rel="noopener">umbraco.com</a></p>]]></key>
     <key alias="greeting0">Сегодня же выходной!</key>
     <key alias="greeting1">Понедельник — день тяжелый...</key>
     <key alias="greeting2">Вот уже вторник...</key>
@@ -954,7 +871,7 @@
 																<tbody>
 																	<tr>
 																		<td style='font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background: #35C786;' align='center' bgcolor='#35C786' valign='top'>
-																			<a href='%1%' target='_blank' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>
+																			<a href='%1%' target='_blank' rel='noopener' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>
 																				Нажмите на эту ссылку для того, чтобы сбросить пароль
 																			</a>
 																		</td>
@@ -1093,7 +1010,7 @@
 																	<td align='left' style='font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;' valign='top'>
 																		<table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tbody><tr>
 																			<td style='font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background: #35C786;' align='center' bgcolor='#35C786' valign='top'>
-																				<a href='http://%4%/#/content/content/edit/%5%' target='_blank' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>ВНЕСТИ ИЗМЕНЕНИЯ</a> </td> </tr></tbody></table>
+																				<a href='http://%4%/#/content/content/edit/%5%' target='_blank' rel='noopener' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>ВНЕСТИ ИЗМЕНЕНИЯ</a> </td> </tr></tbody></table>
 																	</td>
 																</tr>
 															</tbody>
@@ -1131,17 +1048,7 @@
 		Выберите файл пакета на своем компьютере, нажав на кнопку 'Обзор'<br />
 		и указав на нужный файл. Пакеты Umbraco обычно являются архивами с расширением '.zip'.
 		]]></key>
-    <key alias="dropHere">Перетащите сюда</key>
-    <key alias="orClickHereToUpload">или нажмите здесь для выбора файла пакета</key>
-    <key alias="uploadPackage">Загрузить пакет</key>
-    <key alias="localPackageDescription">Установите локальный пакет из файла, расположенного на Вашем компьютере. Остерегайтесь устанавливать пакеты из непроверенных источников!</key>
-    <key alias="uploadAnother">Загрузить еще один пакет</key>
-    <key alias="cancelAndUploadAnother">Отменить и загрузить другой пакет</key>
     <key alias="packageLicense">Лицензия</key>
-    <key alias="accept">Я принимаю</key>
-    <key alias="termsOfUse">условия использования</key>
-    <key alias="packageInstall">Установить пакет</key>
-    <key alias="installFinish">Завершить</key>
     <key alias="installedPackages">Установленные пакеты</key>
     <key alias="noPackages">Ни одного пакета еще не установлено</key>
     <key alias="noPackagesDescription"><![CDATA[Вы пока еще не устанавливали ни одного пакета. Вы можете установить как локальный пакет, выбрав файл на Вашем компьютере, так и пакет из репозитория, нажав на значок <strong>'Packages'</strong> наверху справа]]></key>
@@ -1182,16 +1089,6 @@
 		<span style="color: Red; font-weight: bold;">Обратите внимание:</span> все документы, медиа-файлы и другой контент, зависящий от этого пакета, перестанет нормально работать, что может привести к нестабильному поведению системы,
 		поэтому удаляйте пакеты очень осторожно. При наличии сомнений, свяжитесь с автором пакета.]]></key>
     <key alias="packageVersion">Версия пакета</key>
-    <key alias="packageAlreadyInstalled">Этот пакет уже установлен в системе</key>
-    <key alias="targetVersionMismatch">Этот пакет не может быть установлен, он требует наличия Umbraco версии как минимум</key>
-    <key alias="installStateUninstalling">Удаление...</key>
-    <key alias="installStateDownloading">Загрузка...</key>
-    <key alias="installStateImporting">Импорт...</key>
-    <key alias="installStateInstalling">Установка...</key>
-    <key alias="installStateRestarting">Перезапуск, подождите, пожалуйста...</key>
-    <key alias="installStateComplete">Все готово, сейчас браузер перезагрузит страницу, подождите, пожалуйста...</key>
-    <key alias="installStateCompleted">Пожалуйста, нажмите кнопку 'Завершить' для завершения установки и перезагрузки страницы.</key>
-    <key alias="installStateUploading">Загрузка пакета...</key>
   </area>
   <area alias="paste">
     <key alias="doNothing">Вставить, полностью сохранив форматирование (не рекомендуется)</key>
@@ -1275,7 +1172,6 @@
     <key alias="redirectedTo">Перенаправлен в</key>
     <key alias="noRedirects">На данный момент нет ни одного перенаправления</key>
     <key alias="noRedirectsDescription">Если опубликованный документ переименовывается или меняет свое расположение в дереве, а следовательно, меняется адрес (URL), автоматически создается перенаправление на новое местоположение этого документа.</key>
-    <key alias="confirmRemove">Вы уверены, что хотите удалить перенаправление с '%0%' на '%1%'?</key>
     <key alias="redirectRemoved">Перенаправление удалено.</key>
     <key alias="redirectRemoveError">Ошибка удаления перенаправления.</key>
     <key alias="confirmDisable">Вы уверены, что хотите остановить отслеживание URL?</key>
@@ -1328,7 +1224,6 @@
   </area>
   <area alias="settings">
     <key alias="addIcon">Добавить значок</key>
-    <key alias="asAContentMasterType">в качестве родительского типа. Вкладки родительского типа не показаны и могут быть изменены непосредственно в родительском типе</key>
     <key alias="contentTypeEnabled">Родительский тип контента разрешен</key>
     <key alias="contentTypeUses">Данный тип контента использует</key>
     <key alias="defaulttemplate">Шаблон по-умолчанию</key>
@@ -1492,9 +1387,9 @@
       ]]></key>
     <key alias="sectionName">Название секции</key>
     <key alias="sectionMandatory">Секция обязательна</key>
-    <key alias="sectionMandatoryDesc">
+    <key alias="sectionMandatoryDesc"><![CDATA[
       Если секция помечена как обязательная, то дочерний шаблон должен обязательно содержать ее определение <code>@section</code>, в противном случае генерируется ошибка.
-    </key>
+    ]]></key>
     <key alias="queryBuilder">Генератор запросов</key>
     <key alias="itemsReturned">элементов в результате, за</key>
     <key alias="iWant">Мне нужны</key>
@@ -1528,8 +1423,6 @@
     <key alias="template">Шаблон</key>
   </area>
   <area alias="templateEditor">
-    <key alias="addFallbackField">Добавить поле замены</key>
-    <key alias="fallbackField">Поле замены</key>
     <key alias="addDefaultValue">Добавить значение по-умолчанию</key>
     <key alias="defaultValue">Значение по-умолчанию</key>
     <key alias="alternativeField">Поле замены</key>
@@ -1537,27 +1430,22 @@
     <key alias="casing">Регистр</key>
     <key alias="chooseField">Выбрать поле</key>
     <key alias="convertLineBreaks">Преобразовать переводы строк</key>
-    <key alias="convertLineBreaksDescription">Да, преобразовывать</key>
     <key alias="convertLineBreaksHelp">Заменяет переводы строк на тэг html 'br'</key>
     <key alias="customFields">Пользовательские</key>
     <key alias="dateOnly">Только дата</key>
     <key alias="encoding">Кодировка</key>
-    <key alias="formatAndEncoding">Форматирование и кодировка</key>
     <key alias="formatAsDate">Форматировать как дату</key>
-    <key alias="formatAsDateDescr">Форматировать значение как дату, или как дату и время, в соответствии с текущей культурой</key>
     <key alias="htmlEncode">Кодировка HTML</key>
     <key alias="htmlEncodeHelp">Заменяет спецсимволы эквивалентами в формате HTML</key>
     <key alias="insertedAfter">Будет добавлено после поля</key>
     <key alias="insertedBefore">Будет вставлено перед полем</key>
     <key alias="lowercase">В нижнем регистре</key>
-    <key alias="modifyOutput">Модификации при выводе</key>
     <key alias="none">-Не указано-</key>
     <key alias="outputSample">Пример результата</key>
     <key alias="postContent">Вставить после поля</key>
     <key alias="preContent">Вставить перед полем</key>
     <key alias="recursive">Рекурсивно</key>
     <key alias="recursiveDescr">Да, использовать рекурсию</key>
-    <key alias="separator">Разделитель</key>
     <key alias="standardFields">Стандартные</key>
     <key alias="uppercase">В верхнем регистре</key>
     <key alias="urlEncode">Кодирование URL</key>
@@ -1667,9 +1555,8 @@
     <key alias="failedPasswordAttempts">Неудачных попыток входа</key>
     <key alias="goToProfile">К профилю пользователя</key>
     <key alias="groupsHelp">Добавьте пользователя в группу(ы) для задания прав доступа</key>
-    <key alias="invite">Пригласить</key>
     <key alias="inviteEmailCopySubject">Приглашение в панель администрирования Umbraco</key>
-    <key alias="inviteEmailCopyFormat"><![CDATA[<html><body><p>Здравствуйте, %0%,<br><br>Вы были приглашены пользователем %1%, и Вам предоставлен доступ в панель администрирования Umbraco.</p><p>Сообщение от %1%: <em>%2%</em></p><p>Перейдите по <a href="%3%" target="_blank">этой ссылке</a>, чтобы принять приглашение.</p><p><small>Если Вы не имеете возможности перейти по ссылке, скопируйте нижеследующий текст ссылки и вставьте в адресную строку Вашего браузера.<br/><br/>%3%</small></p></body></html>]]><![CDATA[
+    <key alias="inviteEmailCopyFormat"><![CDATA[<html><body><p>Здравствуйте, %0%,<br><br>Вы были приглашены пользователем %1%, и Вам предоставлен доступ в панель администрирования Umbraco.</p><p>Сообщение от %1%: <em>%2%</em></p><p>Перейдите по <a href="%3%" target="_blank" rel="noopener">этой ссылке</a>, чтобы принять приглашение.</p><p><small>Если Вы не имеете возможности перейти по ссылке, скопируйте нижеследующий текст ссылки и вставьте в адресную строку Вашего браузера.<br/><br/>%3%</small></p></body></html>]]><![CDATA[
         <html>
 			<head>
 				<meta name='viewport' content='width=device-width'>
@@ -1724,7 +1611,7 @@
 																			<tbody>
 																				<tr>
 																					<td style='font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background: #35C786;' align='center' bgcolor='#35C786' valign='top'>
-																						<a href='%3%' target='_blank' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>
+																						<a href='%3%' target='_blank' rel='noopener' style='color: #FFFFFF; text-decoration: none; -ms-word-break: break-all; word-break: break-all; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; text-transform: capitalize; background: #35C786; margin: 0; padding: 12px 30px; border: 1px solid #35c786;'>
 																							Нажмите на эту ссылку, чтобы принять приглашение
 																						</a>
 																					</td>
@@ -1829,7 +1716,7 @@
     <key alias="validation">Валидация</key>
     <key alias="validateAsEmail">Валидация по формату email</key>
     <key alias="validateAsNumber">Валидация числового значения</key>
-    <key alias="validateAsUrl">Валидация по формату Url</key>
+    <key alias="validateAsUrl">Валидация по формату URL</key>
     <key alias="enterCustomValidation">...или указать свои правила валидации</key>
     <key alias="fieldIsMandatory">Обязательно к заполнению</key>
     <key alias="validationRegExp">Задайте регулярное выражение</key>
@@ -1840,5 +1727,9 @@
     <key alias="invalidDate">Неверный формат даты</key>
     <key alias="invalidNumber">Не является числом</key>
     <key alias="invalidEmail">неверный формат email-адреса</key>
+  </area>
+  <area alias="logViewer">
+    <key alias="selectAllLogLevelFilters">Выбрать все</key>
+    <key alias="deselectAllLogLevelFilters">Убрать выделение со всего</key>
   </area>
 </language>

@@ -1,17 +1,23 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Home>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@using Member = Umbraco.Web.PublishedModels.Member;
-@using SgfDevs.Dev;
-@using SgfDevs.ViewModels;
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using SGFDevs.Dev
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Services
+@using Umbraco.Cms.Web.Common
+@inject DirectoryHelper _directoryHelper;
+@inject IMemberService _memberService;
+@inject UmbracoHelper _helper;
 
 @{
-    Layout = "_Layout.cshtml";
-    var mapper = AutoMapperConfig.Configure();
+    Layout = "_Layout";
+    //var mapper = AutoMapperConfig.Configure();
     var nextDevNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
     var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
     var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
-    var allUpcomingEvents = new List<EventViewModel>();
-    var members = DirectoryHelper.GetAllMembers();
+    var allUpcomingEvents = new List<Event>();
+    //var members = DirectoryHelper.GetAllMembers();
+    var members = _directoryHelper.GetAllMembers();
 
     var companies = Model.Descendants<Company>().ToList();
 
@@ -22,15 +28,15 @@
 
     if(upcomingDevNights.Any())
     {
-        allUpcomingEvents.AddRange(mapper.Map<List<Event>, List<EventViewModel>>(upcomingDevNights));
+        //allUpcomingEvents.AddRange(mapper.Map<List<Event>, List<EventViewModel>>(upcomingDevNights));
     }
 
     if (communityEvents.Any())
     {
-        allUpcomingEvents.AddRange(mapper.Map<List<CommunityEvent>, List<EventViewModel>>(communityEvents));
+        //allUpcomingEvents.AddRange(mapper.Map<List<CommunityEvent>, List<EventViewModel>>(communityEvents));
     }
 
-    var loginStatusModel = Members.GetCurrentLoginStatus();
+    //var loginStatusModel = Members.GetCurrentLoginStatus();
 }
 
 @if (nextDevNight != null)
@@ -50,10 +56,10 @@
                 {
                     var group = presentation.Group;
                     var presenter = (Member)presentation.Presenter;
-                    var member = Services.MemberService.GetById(presenter.Id);
+                    //var member = Services.MemberService.GetById(presenter.Id);
 
                     <li>
-                        <a href="/member/@member.Username" title="@presenter.Name">
+                        <a href="#" title="Name">
                             <figure>
                                 <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
                             </figure>
@@ -63,7 +69,7 @@
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="/member/@member.Username">@presenter.Name</a></dd>
+                            <dd><a href="#">@presenter.Name</a></dd>
                         </dl>
 
                         <dl>
@@ -75,59 +81,6 @@
             </ul>
         </section>
     }
-}
-
-@if (allUpcomingEvents != null)
-{
-    <section class="upcoming_events">
-        <header>
-            <span>Upcoming</span>
-            <img src="/images/headlines/events.svg" alt="Upcoming Events">
-        </header>
-
-        <div class="scroll_list">
-            <ul>
-                @foreach (var _event in allUpcomingEvents)
-                {
-                    var image = _event.Image != null ? _event.Image.GetCropUrl(width: 168) : "/images/need_a_default_image.jpg";
-
-                    if(_event.IsDevNight)
-                    {
-                        image = "/images/event_method.png";
-                    }
-
-                    <li>
-                        <a href="#">
-                            @if (image != null)
-                            {
-                                <figure>
-                                    <img src="@image" alt="@_event.Name">
-                                </figure>
-                            }
-
-                            <div class="content">
-                                <div class="details">
-                                    <h3>@_event.Name</h3>
-                                    <h4>@_event.Location</h4>
-                                    <time datetime="@_event.StartTime.ToString("M-dd-yyyy")">@_event.StartTime.ToString("MMM") <span>@_event.StartTime.ToString("dd")</span></time>
-                                </div>
-
-                                <footer>
-                                    <div class="host">By <span>@_event.Host</span></div>
-                                    <div class="price">@_event.Price</div>
-                                </footer>
-                            </div>
-                        </a>
-                    </li>
-
-                }
-            </ul>
-        </div>
-
-        <footer style="display: none;">
-            <a href="#">See All Events</a>
-        </footer>
-    </section>
 }
 
 <section class="directory_preview">
@@ -142,10 +95,10 @@
                 <strong>@members.Count()</strong> Members
             </span>
 
-            @if (!loginStatusModel.IsLoggedIn)
-            {
-                <a href="/register" class="button outline dark">Join Us</a>
-            }
+            @* @if (!loginStatusModel.IsLoggedIn) *@
+            @* { *@
+            @*     <a href="/register" class="button outline dark">Join Us</a> *@
+            @* } *@
         </section>
     </header>
 
@@ -179,11 +132,18 @@
 
             @foreach(var _member in members)
             {
-                var member = Umbraco.Member(_member.Id) as Member;
+                //var member = Umbraco.Member(_member.Id) as Member;
+                var member = _memberService.GetById(_member.Id);
                 var url = "/member/" + member.Username;
-                var location = member.City + ", " + member.State;
-                var image = member.ProfileImage != null ? member.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
-
+                var location = member.GetValue("city") + ", " + member.GetValue("state");
+                var image = "/images/pipey.jpg";
+                
+                if(member.GetValue("ProfileImage") != null)
+                {
+                    var imageUdi = member.GetValue("ProfileImage").ToString();
+                    image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
+                }
+            
                 <div class="card company_card">
                     <figure>
                         <a href="@url"><img src="@image" alt="@member.Name"></a>
@@ -192,13 +152,13 @@
                             <div>Founding Sponsor</div>
                         </figcaption>
                     </figure>
-
+            
                     <div class="content">
                         <dl>
                             <dt><a href="@url">@member.Name</a></dt>
                             <dd>@location</dd>
                         </dl>
-
+            
                         <footer>
                             <a class="button outline small" href="@url">Profile</a>
                         </footer>

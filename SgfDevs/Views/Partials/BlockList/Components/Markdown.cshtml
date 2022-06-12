@@ -1,8 +1,8 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Core.Models.Blocks.BlockListItem>
-@using ContentModels = Umbraco.Web.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 @{
-    var content = (ContentModels.Markdown)Model.Content;
+    var content = (Markdown)Model.Content;
 }
 
 @Html.Raw(content.Content)

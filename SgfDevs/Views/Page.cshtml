@@ -1,15 +1,13 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Page>
-@using ContentModels = Umbraco.Web.PublishedModels;
-@{
-	Layout = "_Layout.cshtml";
-}
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Page>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 <div class="container">
-	<div class="simple_content">
-		<header>
-			<h1>@Model.Name</h1>
-		</header>
+    <div class="simple_content">
+        <header>
+            <h1>@Model.Name</h1>
+        </header>
 
-		@Html.GetBlockListHtml(Model.Blocks)
-	</div>
+        @Html.GetBlockListHtml(Model.Blocks)
+    </div>
 </div>
