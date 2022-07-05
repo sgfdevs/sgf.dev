@@ -19,7 +19,7 @@
     //var members = DirectoryHelper.GetAllMembers();
     var members = _directoryHelper.GetAllMembers();
 
-    var companies = Model.Descendants<Company>().ToList();
+    var companies = Model.Descendants<Company>().Where(c => c.IsSponsor).ToList();
 
     if (nextDevNight != null)
     {
@@ -203,8 +203,10 @@
                 <figure>
                     <a href="@company.Url()"><img src="@company.Image.Url()" alt="@company.Name"></a>
                     <figcaption>
-                        <div>Platnium Sponsor</div>
-                        <div>Founding Sponsor</div>
+                        @if (company.IsFoundingSponsor)
+                        {
+                            <div>Founding Sponsor</div>
+                        }
                     </figcaption>
                 </figure>
 

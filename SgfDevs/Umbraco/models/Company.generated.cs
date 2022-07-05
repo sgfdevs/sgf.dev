@@ -105,6 +105,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string InstagramUrl => this.Value<string>(_publishedValueFallback, "instagramUrl");
 
 		///<summary>
+		/// Is Founding Sponsor
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("isFoundingSponsor")]
+		public virtual bool IsFoundingSponsor => this.Value<bool>(_publishedValueFallback, "isFoundingSponsor");
+
+		///<summary>
+		/// Is Sponsor
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("isSponsor")]
+		public virtual bool IsSponsor => this.Value<bool>(_publishedValueFallback, "isSponsor");
+
+		///<summary>
 		/// LinkedIn Url
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
@@ -135,6 +149,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("twitterUrl")]
 		public virtual string TwitterUrl => this.Value<string>(_publishedValueFallback, "twitterUrl");
+
+		///<summary>
+		/// Custom URL Slug: Custom URL Slug
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("umbracoUrlName")]
+		public virtual string UmbracoUrlName => this.Value<string>(_publishedValueFallback, "umbracoUrlName");
 
 		///<summary>
 		/// Website Url

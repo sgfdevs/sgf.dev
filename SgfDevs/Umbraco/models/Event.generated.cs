@@ -55,5 +55,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[ImplementPropertyType("date")]
 		public virtual global::System.DateTime Date => this.Value<global::System.DateTime>(_publishedValueFallback, "date");
+
+		///<summary>
+		/// Presentations: After setting the date, add presentations by clicking the Presentations tab in the top right.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("helpTextPresentations")]
+		public virtual string HelpTextPresentations => this.Value<string>(_publishedValueFallback, "helpTextPresentations");
 	}
 }
