@@ -39,7 +39,10 @@
                 <div class="metadata">
                     <div class="flag">
                         <!-- TODO modularize with the figcaption? -->
-                        <div>Platinum Sponsor</div>
+                        @if (Model.IsFoundingSponsor)
+                        {
+                            <div>Founding Sponsor</div>
+                        }
                     </div>
 
                     @if (Model.HasValue("Location"))
