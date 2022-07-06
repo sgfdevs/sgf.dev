@@ -6,3 +6,4 @@ riderModule.iml
 /.idea
 SGFDevs/wwwroot/media
 /SgfDevs/Umbraco/models/ood.flag
+/SgfDevs/package-lock.json
