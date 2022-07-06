@@ -56,26 +56,49 @@
                 {
                     var group = presentation.Group;
                     var presenter = (Member)presentation.Presenter;
-                    //var member = Services.MemberService.GetById(presenter.Id);
 
                     <li>
-                        <a href="#" title="Name">
-                            <figure>
+                        <div class="members">
+                            <a href="/member/@presenter.Username.ToLower()">
                                 <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
-                            </figure>
-                        </a>
+                            </a>
+                            @if (presentation.OtherPresenters != null)
+                            {
+                                foreach (var publishedContent in presentation.OtherPresenters)
+                                {
+                                    var otherPresenter = (Member)publishedContent;
+                                    var image = otherPresenter.ProfileImage == null ? "/images/pipey.jpg" : otherPresenter.ProfileImage.GetCropUrl(width: 500);
+                                    <a href="/member/@otherPresenter.Username">
+                                        <img src="@image" alt="@presenter.Name">
+                                    </a>
+                                }
+                            }
+                        </div>
 
                         <h3>@presentation.Name</h3>
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="#">@presenter.Name</a></dd>
+                            <dd><a href="/member/@presenter.Username.ToLower()">@presenter.Name</a></dd>
+                            
+                            @if (presentation.OtherPresenters != null)
+                            {
+                                @foreach (var publishedContent in presentation.OtherPresenters)
+                                {
+                                    var otherPresenter = (Member)publishedContent;
+                                    <dd><a href="/member/@otherPresenter.Username.ToLower()">@otherPresenter.Name</a></dd>
+                                }
+                            }
+                            
                         </dl>
 
-                        <dl>
-                            <dt>From</dt>
-                            <dd><a href="@group.Url()">@group.Name</a></dd>
-                        </dl>
+                        @if (group.Name.ToLower() != "springfield devs")
+                        {
+                            <dl>
+                                <dt>From</dt>
+                                <dd><a href="@group.Url()">@group.Name</a></dd>
+                            </dl>
+                        }
                     </li>
                 }
             </ul>

@@ -83,11 +83,11 @@
     
     .card {
         border: 0;
-        display: none;
         
-        figure img {
-            //border: 1px solid #fff;
-        }
+        // Styling logic to only show even number of boxes on specific screen sizez
+        // removing this for now. Just show all of them all the time. Can come back
+        // to tweak later if desired
+        //display: none;
         
         &:nth-child(-n+8) {
             display: block;
