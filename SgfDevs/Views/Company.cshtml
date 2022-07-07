@@ -29,7 +29,8 @@
             {
                 @Html.Raw(Model.FeaturedEmbed)
             }
-            else if (Model.FeaturedImage != null)
+            
+            @if (Model.FeaturedImage != null && string.IsNullOrEmpty(Model.FeaturedEmbed))
             {
                 <img src="@Model.FeaturedImage.GetCropUrl(width: 1410)" alt="@Model.Name" />
             }
