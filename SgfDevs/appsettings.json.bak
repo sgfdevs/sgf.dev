@@ -11,7 +11,6 @@
     }
   },
   "ConnectionStrings": {
-    "umbracoDbDSN": "server=127.0.0.1;database=SGFDevs;user id=USERNAME;password='P@SSW0RD'"
   },
   "Umbraco": {
     "CMS": {
@@ -19,6 +18,7 @@
         "ModelsMode": "SourceCodeManual"
       },
       "Global": {
+        "TimeOut": "99:00:00",
         "Id": "5256c000-ac18-4663-bf81-a4af27d08ea8",
         "SanitizeTinyMce": true
       },
