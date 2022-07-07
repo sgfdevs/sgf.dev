@@ -81,6 +81,22 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string FacebookUrl => this.Value<string>(_publishedValueFallback, "facebookUrl");
 
 		///<summary>
+		/// Featured Embed
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("featuredEmbed")]
+		public virtual string FeaturedEmbed => this.Value<string>(_publishedValueFallback, "featuredEmbed");
+
+		///<summary>
+		/// Featured Image
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("featuredImage")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent FeaturedImage => this.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(_publishedValueFallback, "featuredImage");
+
+		///<summary>
 		/// Headline
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

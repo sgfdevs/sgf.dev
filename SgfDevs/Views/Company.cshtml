@@ -10,12 +10,13 @@
     <header class="company-header">
 
         <div class="information">
-            <img class="logo" src="@Model.Image.Url()" alt="The Alchemedia Project Logo" />
-            <h1>@Model.Name</h1>
+            <div>
+                <img class="logo" src="@Model.Image.Url()" alt="@Model.Name" />
+            </div>
 
             @if (Model.HasValue("Headline"))
             {
-                <h2>@Model.Headline</h2>
+                <h1>@Model.Headline</h1>
             }
 
             @if (Model.HasValue("WebsiteUrl"))
@@ -24,7 +25,14 @@
             }
         </div>
         <div class="image">
-            <img src="https://via.placeholder.com/705x470?text=Coming+Soon" alt="@Model.Name" />
+            @if(Model.FeaturedEmbed != null)
+            {
+                @Html.Raw(Model.FeaturedEmbed)
+            }
+            else if (Model.FeaturedImage != null)
+            {
+                <img src="@Model.FeaturedImage.GetCropUrl(width: 1410)" alt="@Model.Name" />
+            }
         </div>
     </header>
 
