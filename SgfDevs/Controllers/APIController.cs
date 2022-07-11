@@ -12,10 +12,8 @@ using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Services.Implement;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
-using Umbraco.Extensions;
 using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
 
 namespace SGFDevs.Controllers;
@@ -90,7 +88,8 @@ public class APIController : UmbracoApiController
             if (string.IsNullOrEmpty(skillsQs))
             {
                 var allMembers = _directoryHelper.GetAllMembers();
-                
+                var allMemberTags = _directoryHelper.GetMemberTags();
+                var foundingMemberTag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "founding member");
                 foreach (var member in allMembers)
                 {
                     var url = "/member/" + member.Username;
@@ -103,8 +102,12 @@ public class APIController : UmbracoApiController
                         image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
                     }
                     
-                    // need to wire up this check on MemberTags
                     var isFoundingMember = false;
+                    var memberTags = member.GetValue("MemberTags")?.ToString();
+                    if (foundingMemberTag != null && memberTags != null)
+                    {
+                        isFoundingMember = memberTags.Contains(foundingMemberTag.Key.ToString().Replace("-", ""));
+                    }
 
                     memberResults.Add(new DirectoryResult { Name = member.Name, Location = location, Image = image, Url = url, FoundingMember = isFoundingMember });
                 }
