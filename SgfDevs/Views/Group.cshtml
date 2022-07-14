@@ -176,12 +176,15 @@
                     {
                         var parentEvent = presentation.Parent<Event>();
                         var presenter = presentation.Presenter as Member;
-
+                        var isFoundingMember = presenter.HasValue("MemberTags") ? presenter.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
                         <div class="card company_card">
                             <figure>
                                 <img src="@presenter.ProfileImage.GetCropUrl(width: 960)" alt="@presenter.Name">
                                 <figcaption>
-                                    <div>Founding Member</div>
+                                    @if (isFoundingMember)
+                                    {
+                                        <div>Founding Sponsor</div>
+                                    }
                                 </figcaption>
                             </figure>
                             <div class="content">
@@ -210,11 +213,15 @@
                 <div class="cards grid">
                     @foreach (Member leader in Model.Leaders)
                     {
+                        var isFoundingMember = leader.HasValue("MemberTags") ? leader.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
                         <div class="card company_card">
                             <figure>
                                 <img src="@leader.ProfileImage.GetCropUrl(width: 960)" alt="@leader.Name">
                                 <figcaption>
-                                    <div>Founding Member</div>
+                                    @if (isFoundingMember)
+                                    {
+                                        <div>Founding Member</div>
+                                    }
                                 </figcaption>
                             </figure>
                             <div class="content">

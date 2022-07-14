@@ -24,6 +24,10 @@ public class DirectoryHelper
     {
         return GetTagGroupTags("skills");
     }
+    public List<Tag> GetMemberTags()
+    {
+        return GetTagGroupTags("members");
+    }
     
     public List<Group> GetGroups()
     {
