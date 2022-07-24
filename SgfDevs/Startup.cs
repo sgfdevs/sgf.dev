@@ -40,11 +40,28 @@ namespace SGFDevs
         /// </remarks>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddUmbraco(_env, _config)
+            var devsServices = services.AddUmbraco(_env, _config)
                 .AddBackOffice()
                 .AddWebsite()
-                .AddComposers()
-                .Build();
+                .AddComposers();
+            
+            if (string.IsNullOrEmpty(_config["SGFDevs:AzureBlobStorageKey"]))
+            {
+                devsServices.AddCdnMediaUrlProvider(options =>
+                {
+                    options.Url = new Uri("https://sgf.dev/media/");
+                });
+            }
+            else
+            {
+                devsServices.AddAzureBlobMediaFileSystem(options =>
+                {
+                    options.ConnectionString = $"DefaultEndpointsProtocol=https;AccountName=sgfdevs;AccountKey={_config["SGFDevs:AzureBlobStorageKey"]};EndpointSuffix=core.windows.net";
+                    options.ContainerName = "website";
+                });
+            }
+            
+            devsServices.Build();
 
             services.AddScoped<DirectoryHelper>();
         }
