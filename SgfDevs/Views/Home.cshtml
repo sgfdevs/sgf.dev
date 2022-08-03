@@ -75,7 +75,14 @@
                             }
                         </div>
 
-                        <h3>@presentation.Name</h3>
+                        @if (presentation.HasValue("MeetupUrl"))
+                        {
+                            <a title="Meetup Link" target="_blank" href="@presentation.MeetupUrl" style="text-decoration: underline; color:  #fff;"><h3>@presentation.Name</h3></a>
+                        }
+                        else
+                        {
+                            <h3>@presentation.Name</h3>   
+                        }
 
                         <dl>
                             <dt>Presented By</dt>
