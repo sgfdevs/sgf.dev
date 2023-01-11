@@ -1,0 +1,23 @@
+version:  "3"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/azure-sql-edge:1.0.6
+    cap_add: [ 'SYS_PTRACE' ]
+    environment:
+      - "ACCEPT_EULA=1"
+      - "MSSQL_SA_PASSWORD=P@ssw0rd"
+    ports:
+      - "1433:1433"
+    hostname: mssql
+    volumes:
+      - "mssql-azuresql-edge-data:/var/opt/mssql"
+    networks:
+      - "sgfdevs"
+volumes:
+  mssql-azuresql-edge-data:
+  sqlpad-volume:
+
+networks:
+  sgfdevs:
+    driver: bridge
