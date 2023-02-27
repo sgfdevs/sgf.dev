@@ -4,12 +4,7 @@
 
 @{ 
     Random rand = new Random();
-    var pageTitle = "Springfield Devs - " + Model.Name;
-
-    if(ViewData["PageTitle"] != null)
-    {
-        pageTitle = "Springfield Devs - Jobs - " + ViewData["PageTitle"];
-    }
+    var pageTitle = ViewData["PageTitle"] ?? "Springfield Devs - " + Model.Name;
 }
 <!DOCTYPE html>
 <html>

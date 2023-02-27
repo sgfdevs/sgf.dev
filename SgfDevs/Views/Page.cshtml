@@ -1,6 +1,29 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Page>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    Layout = "_Layout";
+    if (!string.IsNullOrEmpty(Model.TitleTag))
+    {
+        ViewData["PageTitle"] = Model.TitleTag;
+    }
+}
+
+@section Head
+{
+    
+    @{
+        if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <meta name="description" content="@Model.Description">
+        }
+        
+        if (Model.OgImage != null)
+        {
+            <meta property="og:image" content="@Model.OgImage.MediaUrl(mode: UrlMode.Absolute)" />
+        }
+    }
+}
 
 <div class="container">
     <div class="simple_content">
