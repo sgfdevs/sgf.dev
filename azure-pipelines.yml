@@ -1,0 +1,40 @@
+trigger:
+  - master
+ 
+pool:
+  name: Azure Pipelines
+  vmImage: 'windows-latest'
+ 
+variables:
+  buildConfiguration: 'Release'
+ 
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core 6'
+  inputs:
+    version: 6.0.x
+ 
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+ 
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '**/*.csproj'
+ 
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--configuration release --output $(build.artifactstagingdirectory) /property:PublishWithAspNetCoreTargetManifest=false'
+    #zipAfterPublish: false
+ 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    ArtifactName: sgfdev
