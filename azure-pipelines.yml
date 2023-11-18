@@ -1,6 +1,8 @@
 trigger:
-  - master
- 
+  branches:
+    include:
+      - main
+
 pool:
   name: Azure Pipelines
   vmImage: 'windows-latest'
