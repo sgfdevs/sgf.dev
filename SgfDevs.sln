@@ -1,19 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgfDevs", "SgfDevs\SgfDevs.csproj", "{D6F118F7-657E-4262-8D78-F2329883480B}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SgfDevs", "SgfDevs\SgfDevs.csproj", "{D6F118F7-657E-4262-8D78-F2329883480B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82331941-A43E-4092-BC9E-59FFABD256F4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95ED0749-5793-4693-BC22-7A296DE53080}"
 	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{121B97FD-9EAD-41E5-BD03-967F6EC034D8}"
-	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		.env.example = .env.example
 		.gitignore = .gitignore
 		azure-pipelines.yml = azure-pipelines.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,5 +26,12 @@ Global
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
