@@ -24,7 +24,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
 - `dotnet run`
 - Open the URL that's printed in the console in your browser
 
-#### .NET IDE e.g. Rider Visual Studio (Windows)
+#### .NET IDE e.g. Rider or Visual Studio (Windows)
 - Copy `.env.example` to `.env`
 - Update your .NET User Secrets with a connection string
   - Most IDEs have a shortcut to navigate to this file
