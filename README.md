@@ -3,45 +3,49 @@
 ![](https://pbs.twimg.com/profile_banners/2869149607/1567717351/1500x500)
 
 ## Prerequisites
-
-1. Install the latest stable version of the [.NET SDK](https://dotnet.microsoft.com/en-us/download)
-
-2. If you plan on working with any css, make sure you have at least the latest stable version of [Node.js](https://nodejs.org/en/download/) installed in order to compile the .scss files.
-
-3. At this moment you will need to reach out to a member of the group to get a backup of the database for restoring locally. Eventually this will be able to be downloaded through the website. Please join our [Discord](https://sgf.dev/discord) and message the committee-website channel and ask for access. Somebody will DM you with the file you will need for install step 5.
+- [.NET SDK 6.x](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+  - Note for Apple Silicon Mac OS users, make sure to enable "Use Rosetta for x86/amd64 emulation" option in the Docker Desktop settings
+- [Node.js 18.x](https://nodejs.org/en/download/)
 
 ## Local Installation Instructions
 
-1. Confirm that the .NET CLI is working by running `dotnet —version` in your terminal. If successful you should see the version of .NET that you have installed. Ex: 6.0.300
+There are a couple of ways to run this project depending on if you have a .NET IDE installed or just the CLI tools
 
-2. Clone this repository
+### Environment Specific Steps
 
-`git clone git@github.com:sgfdevs/sgf.dev.git`
+#### CLI Tools
+- Copy `.env.example` to `.env`
+- Run `docker compose up -d mssql-init`
+  - Note: if you're on an Apple Silicon Mac Os there will be a lot of warnings, this is expected and should not cause issues
+- Navigate to the SgfDevs project folder `cd SgfDevs`
+- User the `dotnet user-secrets` command to set your connection string
+  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword"`
+  - Make sure the port and password in the above command match the values in `.env`
+- `dotnet run`
+- Open the URL that's printed in the console in your browser
 
-3. The template for the main config file exists at SgfDevs/appsettings.json.bak. Make a copy of this file at the same location by name it appsettings.json
+#### .NET IDE e.g. Rider or Visual Studio (Windows)
+- Copy `.env.example` to `.env`
+- Update your .NET User Secrets with a connection string
+  - Most IDEs have a shortcut to navigate to this file
+  - Reference `appsettings.json` for an example of the `ConnectionStrings` object
+    - Note that the actual connection string should reference the docker compose name instead of `localhost`
+    - e.g. `Server=mssql,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword`
+  - You can also fall back to the CLI tools instructions
+- You should see a "Configuration" option in your IDE for docker compose, run this
+- Open a browser to `https://localhost:5001`
+  - Substitute 5001 with whatever port you specified for `APP_HTTPS_PORT` in `.env`
 
-4. Change into the project directory
+### Umbraco In-browser Steps
+- Once the site has been launched you should see an Umbraco screen to create a new account
+- Fill this out and wait a few seconds for Umbraco to install
+- Once you're redirected to the Admin, click on the Settings tab
+- Navigation to "uSync" under "Synchronization" in the left panel
+- Under the "Everything" card click the green "Import" button
+- Once this is finished navigate to the site's root url and you should see a functioning site
 
-`cd sgf.dev/SgfDevs`
-
-And run `dotnet build` and ensure there are no errors.
-
-5. Next, you will need to have obtained a backup file for restoring all of the content locally. This is done via the uSync plugin for Umbraco. Once you have this file, unzip it and place all of the contents in the ./SgfDevs/uSync/v9 directory.
-
-6. Now you are ready to fire up the site for the first time, which will kick off a blank install of the Umbraco CMS. Run the following command
-
-`dotnet run`
-
-7. The output in the terminal should list the url and port to access the site. Ex: https://localhost:44307/. Note: You may be asked for your machine’s credentials when accessing the https version, this is because a local certificate is being established.
-
-8. Open your browser to the https URL and you should be prompted with a screen asking for your name, email, and a password - this will be the login for your local instance, so be sure to remember it. It is recommended to use the default database option which will create a SQLite database file on your machine. However, if you’d like to use SQL Server locally or remote, you can do so by clicking the Change Database Configuration button.
-
-9. After a few moments you will be brought to the admin area. If you have extracted all of the contents of the uSync backup into the proper directory from step 4, you will now be able to restore all of the site content. Go to Settings->uSync and under the Everything box, click the green Import button. You may see a handful of warnings about missing templates and some others(this will eventually be cleaned up), but everything should be okay. Refresh the admin page and then click on the Content link in the top left. You should now see a fully populated content tree.
-
-10. Go to the front-end of the site now by visiting the root url (remove /umbraco… and everything else to the right of that url segment). 
-
-	**NOTE:** for the time being any user-uploaded images will be broken because those media items are not tracked in the repo. We are looking into a remote storage option that will fix this issue. In the meantime, if you would like a backup of them, just send a request in the Discord channel mentioned in step 3 of the Prerequisites.
-
-## More Documentation Coming Soon
-
-These are just the details to get the site up and running. In the future there will be further details about working with Umbraco and some specifics as to how things are utilized for the Devs site. In the meantime, please don’t hesitate to reach out to the Discord channel mentioned in step 3 of the Prerequisites
+## Building CSS
+- Navigate to the SgfDevs project folder `cd SgfDevs`
+- `npm install`
+- `npm run build` or to watch for changes `npm run css`

@@ -4,7 +4,7 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 /.idea
+/.vs
 SGFDevs/wwwroot/media
 /SgfDevs/Umbraco/models/ood.flag
-/SgfDevs/package-lock.json
-/SgfDevs/appsettings.json
+.env

@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  sgfdevs:
+    image: ${DOCKER_REGISTRY-}sgfdevs
+    build:
+      context: .
+      dockerfile: SgfDevs/Dockerfile
+    depends_on:
+      - mssql-init
+    networks:
+      - sgfdevs
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "${DB_PASSWORD}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "${DB_PORT:-1433}:1433"
+    healthcheck:
+      test: |
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${DB_PASSWORD}" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - sgfdevs
+  mssql-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      mssql:
+        condition: service_healthy
+    networks:
+      - sgfdevs
+    command: |
+      bash -c '
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${DB_PASSWORD}" -Q "CREATE DATABASE SgfDevs" -b -o /dev/null;
+      echo "All done!";
+      '
+
+volumes:
+  mssql-data:
+networks:
+  sgfdevs:
+    driver: bridge
