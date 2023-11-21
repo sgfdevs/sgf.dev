@@ -43,3 +43,8 @@ There are a couple of ways to run this project depending on if you have a .NET I
 - Navigation to "uSync" under "Synchronization" in the left panel
 - Under the "Everything" card click the green "Import" button
 - Once this is finished navigate to the site's root url and you should see a functioning site
+
+## Building CSS
+- Navigate to the SgfDevs project folder `cd SgfDevs`
+- `npm install`
+- `npm run build` or to watch for changes `npm run css`
