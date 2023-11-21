@@ -3,8 +3,9 @@
 ![](https://pbs.twimg.com/profile_banners/2869149607/1567717351/1500x500)
 
 ## Prerequisites
-- [.NET SDK 6.x](https://dotnet.microsoft.com/en-us/download)
+- [.NET SDK 6.x](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+  - Note for Apple Silicon Mac OS users, make sure to enable "Use Rosetta for x86/amd64 emulation" option in the Docker Desktop settings
 - [Node.js 18.x](https://nodejs.org/en/download/)
 
 ## Local Installation Instructions
@@ -16,7 +17,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
 #### CLI Tools
 - Copy `.env.example` to `.env`
 - Run `docker compose up -d mssql-init`
-  - Note: if you're on an Apple Silicon mac there will be a lot of warnings, this is expected and should not cause issues
+  - Note: if you're on an Apple Silicon Mac Os there will be a lot of warnings, this is expected and should not cause issues
 - Navigate to the SgfDevs project folder `cd SgfDevs`
 - User the `dotnet user-secrets` command to set your connection string
   - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword"`

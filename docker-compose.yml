@@ -39,7 +39,7 @@ services:
       /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${DB_PASSWORD}" -Q "CREATE DATABASE SgfDevs" -b -o /dev/null;
       echo "All done!";
       '
-      
+
 volumes:
   mssql-data:
 networks:
