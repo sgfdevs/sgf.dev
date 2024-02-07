@@ -3,7 +3,7 @@
 This is a work in progress rewrite of our frontend in NextJS and TailwindUI. This is purely experimental at this phase.
 
 ## Prerequisites and Setup
-* NodeJS >= v18.18
+* NodeJS >= v18.17.0
 * npm >= 9.5.0
 
 Recommended management of NodeJS environments is through [Node Version Manager](https://github.com/nvm-sh/nvm).
