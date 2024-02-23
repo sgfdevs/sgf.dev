@@ -3,7 +3,7 @@
 ![](https://pbs.twimg.com/profile_banners/2869149607/1567717351/1500x500)
 
 ## Prerequisites
-- [.NET SDK 6.x](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [.NET SDK 8.x](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
   - Note for Apple Silicon Mac OS users, make sure to enable "Use Rosetta for x86/amd64 emulation" option in the Docker Desktop settings
 - [Node.js 18.x](https://nodejs.org/en/download/)
