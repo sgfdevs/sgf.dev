@@ -11,10 +11,20 @@ import { cn } from '@/utils/cn';
 import Pipey from '@/assets/pipey.jpg';
 import ChrisKin from '@/assets/ChrisKin.jpg';
 import LogicForte from '@/assets/Logic-Forte.jpg';
+import DeveloperCard from "@/components/DeveloperCard";
 
 export default function Home() {
   const memberCount = 109;
-
+  const exampleDev={
+      avatar: "https://sgf.dev/media/o4nhslxo/npadgett.jpg?width=800&rnd=133294228088870000",
+      name: "Nathanael Padgett",
+      location: "Springfield,  MO",
+      bio: "bob",
+      skills: [],
+      createdAt: new Date,
+      username: "npadgett",
+      social: " https://nathanaelpadgett.com",
+  }
   return (
     <div className='flex-1'>
       <section className='relative pb-32 pt-11 before:-top-8 before:left-0 before:h-8 before:w-full before:rounded-3xl before:bg-white'>
@@ -40,7 +50,7 @@ export default function Home() {
           </Link>
           <div className='flex overflow-hidden'>
             <DirectoryCard memberCount={memberCount} />
-
+              <DeveloperCard developer={exampleDev}></DeveloperCard>
               {/* Profile cards go here */}
           </div>
         </div>
