@@ -3,11 +3,11 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="ReverseMarkdown" Version="3.23.1" />
-    <PackageReference Include="Umbraco.Cms" Version="10.0.0" />
-    <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="10.0.0" />
-    <PackageReference Include="uSync.Complete" Version="10.0.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="ReverseMarkdown" Version="4.3.0" />
+    <PackageReference Include="Umbraco.Cms" Version="13.1.1" />
+    <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="13.0.0" />
+    <PackageReference Include="uSync.Complete" Version="13.1.1" />
   </ItemGroup>
   <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
   <ItemGroup>

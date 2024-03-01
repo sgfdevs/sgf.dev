@@ -20,7 +20,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
   - Note: if you're on an Apple Silicon Mac Os there will be a lot of warnings, this is expected and should not cause issues
 - Navigate to the SgfDevs project folder `cd SgfDevs`
 - User the `dotnet user-secrets` command to set your connection string
-  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword"`
+  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword;TrustServerCertificate=True;"`
   - Make sure the port and password in the above command match the values in `.env`
 - `dotnet run`
 - Open the URL that's printed in the console in your browser
@@ -31,7 +31,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
   - Most IDEs have a shortcut to navigate to this file
   - Reference `appsettings.json` for an example of the `ConnectionStrings` object
     - Note that the actual connection string should reference the docker compose name instead of `localhost`
-    - e.g. `Server=mssql,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword`
+    - e.g. `Server=mssql,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword; TrustServerCertificate=True;`
   - You can also fall back to the CLI tools instructions
 - You should see a "Configuration" option in your IDE for docker compose, run this
 - Open a browser to `https://localhost:5001`
