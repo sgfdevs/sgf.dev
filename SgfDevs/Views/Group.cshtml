@@ -214,6 +214,7 @@
                     @foreach (Member leader in Model.Leaders)
                     {
                         var isFoundingMember = leader.HasValue("MemberTags") ? leader.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
+                        var is2024SupportingMember = Model.HasValue("MemberTags") ? leader.MemberTags.Where(n => n.Name.ToLower() == "2024 supporting member").Any() : false;
                         <div class="card company_card">
                             <figure>
                                 <img src="@leader.ProfileImage.GetCropUrl(width: 960)" alt="@leader.Name">
@@ -221,6 +222,10 @@
                                     @if (isFoundingMember)
                                     {
                                         <div>Founding Member</div>
+                                    }
+                                    @if (is2024SupportingMember)
+                                    {
+                                        <div>2024 Supporting Member</div>
                                     }
                                 </figcaption>
                             </figure>
