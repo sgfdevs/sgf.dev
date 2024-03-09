@@ -55,17 +55,17 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className='relative overflow-hidden bg-foreground px-12 py-11 text-white'>
-        <header className='mb-12 flex justify-between'>
-          <section className='mr-8 lg:flex lg:items-end'>
+      <section className='relative overflow-hidden bg-foreground px-12 pb-11 pt-4 text-white'>
+        <header className='mb-[72px] flex justify-between'>
+          <section className='mr-8 lg:flex lg:items-end mt-[27.5px]'>
             <Image className='mr-2 inline' src={Sponsor} alt='Sponsors' />
-            <span className='block lg:mb-0 lg:inline lg:leading-[0.8em]'>
+            <span className='block lg:mb-0 lg:inline lg:leading-[10px]'>
               We are proudly sponsored by these companies & brands
             </span>
           </section>
           <div
             className={cn(
-              'relative top-[-30px] h-[58px] w-full flex-1 content-[""]',
+              'relative top-[-3px] h-[58px] w-full flex-1 content-[""]',
               'before:absolute before:left-0 before:top-0 before:h-[62px] before:w-[calc(100%+130px)] before:bg-[url(/sponsor_upper_left.svg),linear-gradient(#6F9DCA,#6F9DCA),url(/sponsor_upper_right.svg)] before:bg-sponsor-top before:bg-no-repeat',
               'after:absolute after:left-[110px] after:top-[24px] after:h-[41px] after:w-full after:bg-[url(/sponsor_lower_left.svg),linear-gradient(#6F9DCA,#6F9DCA),url(/sponsor_lower_right.svg)] after:bg-sponsor-bottom after:bg-no-repeat',
             )}
