@@ -11,20 +11,21 @@ import { cn } from '@/utils/cn';
 import Pipey from '@/assets/pipey.jpg';
 import ChrisKin from '@/assets/ChrisKin.jpg';
 import LogicForte from '@/assets/Logic-Forte.jpg';
-import DeveloperCard from "@/components/DeveloperCard";
+import DeveloperCard from '@/components/DeveloperCard';
 
 export default function Home() {
   const memberCount = 109;
-  const exampleDev={
-      avatar: "https://sgf.dev/media/o4nhslxo/npadgett.jpg?width=800&rnd=133294228088870000",
-      name: "Nathanael Padgett",
-      location: "Springfield,  MO",
-      bio: "bob",
-      skills: [],
-      createdAt: new Date,
-      username: "npadgett",
-      social: " https://nathanaelpadgett.com",
-  }
+  const exampleDev = {
+    avatar:
+      'https://sgf.dev/media/o4nhslxo/npadgett.jpg?width=800&rnd=133294228088870000',
+    name: 'Nathanael Padgett',
+    location: 'Springfield,  MO',
+    bio: 'bob',
+    skills: [],
+    createdAt: new Date(),
+    username: 'npadgett',
+    social: ' https://nathanaelpadgett.com',
+  };
   return (
     <div className='flex-1'>
       <section className='relative pb-32 pt-11 before:-top-8 before:left-0 before:h-8 before:w-full before:rounded-3xl before:bg-white'>
@@ -50,22 +51,26 @@ export default function Home() {
           </Link>
           <div className='flex overflow-hidden'>
             <DirectoryCard memberCount={memberCount} />
-              <DeveloperCard developer={exampleDev}></DeveloperCard>
-              {/* Profile cards go here */}
+            <DeveloperCard developer={exampleDev}></DeveloperCard>
+            {/* Profile cards go here */}
           </div>
         </div>
       </section>
       <section className='relative overflow-hidden bg-foreground px-12 pb-11 pt-4 text-white'>
-        <header className='mb-[120px] md:mb-[72px] flex flex-col md:flex-row justify-between'>
-          <section className='mr-8 lg:flex lg:items-end mt-[27.5px]'>
-            <Image className='mb-3 mr-2 inline lg:mb-0' src={Sponsor} alt='Sponsors' />
+        <header className='mb-[120px] flex flex-col justify-between md:mb-[72px] md:flex-row'>
+          <section className='mr-8 mt-[27.5px] lg:flex lg:items-end'>
+            <Image
+              className='mb-3 mr-2 inline lg:mb-0'
+              src={Sponsor}
+              alt='Sponsors'
+            />
             <span className='block lg:mb-0 lg:inline lg:leading-[10px]'>
               We are proudly sponsored by these companies & brands
             </span>
           </section>
           <div
             className={cn(
-              'relative top-[-15px] md:top-[-3px] h-[58px] w-full flex-1 content-[""]',
+              'relative top-[-15px] h-[58px] w-full flex-1 content-[""] md:top-[-3px]',
               'before:absolute before:left-0 before:top-0 before:h-[62px] before:w-[calc(100%+130px)] before:bg-[url(/sponsor_upper_left.svg),linear-gradient(#6F9DCA,#6F9DCA),url(/sponsor_upper_right.svg)] before:bg-sponsor-top before:bg-no-repeat',
               'after:absolute after:left-[110px] after:top-[24px] after:h-[41px] after:w-full after:bg-[url(/sponsor_lower_left.svg),linear-gradient(#6F9DCA,#6F9DCA),url(/sponsor_lower_right.svg)] after:bg-sponsor-bottom after:bg-no-repeat',
             )}
