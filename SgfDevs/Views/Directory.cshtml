@@ -108,7 +108,8 @@
                         <img :src="member.image" alt="">
                     </a>
                     <figcaption>
-                        <div v-if="member.foundingMember">Founding Member</div>
+                        <div v-if="member.isFoundingMember">Founding Member</div>
+                        <div v-if="member.is2024SupportingMember">2024 Supporting Member</div>
                     </figcaption>
                 </figure>
 

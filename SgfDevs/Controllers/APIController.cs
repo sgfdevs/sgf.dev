@@ -8,6 +8,7 @@ using Examine;
 using SGFDevs.ViewModels;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Serialization;
@@ -15,6 +16,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
 using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
+using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
 
 namespace SGFDevs.Controllers;
 
@@ -31,7 +33,7 @@ public class APIController : UmbracoApiController
     private IContentTypeBaseServiceProvider _contentTypeBaseServiceProvider;
     private IJsonSerializer _serializer;
     private MediaUrlGeneratorCollection _mediaUrlGeneratorCollection;
-    
+
 
     public APIController(DirectoryHelper directoryHelper, IMemberService memberService, IExamineManager examineManager, UmbracoHelper helper, IMemberManager memberManager, IMediaService mediaService, MediaFileManager mediaFileManager, IShortStringHelper shortStringHelper, IContentTypeBaseServiceProvider contentTypeBaseServiceProvider, IJsonSerializer serializer, MediaUrlGeneratorCollection mediaUrlGeneratorCollection)
     {
@@ -55,7 +57,7 @@ public class APIController : UmbracoApiController
         var skills = _directoryHelper.GetSkills().ToList();
         return skills.Select(x => string.IsNullOrEmpty(x.DisplayName) ? x.Name : x.DisplayName);
     }
-    
+
     [Route("api/directory/filters/skills")]
     public IActionResult GetSkillsFilters()
     {
@@ -72,47 +74,25 @@ public class APIController : UmbracoApiController
 
         return Ok(skills.ToList());
     }
-    
+
     [Route("api/directory/search")]
     public IActionResult GetSearch()
     {
         var memberResults = new List<DirectoryResult>();
-        
+
         // This is pretty much one massive brainstorm cluster eff at this point. Psh.
         if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.MembersIndexName, out var index))
         {
             var searcher = index.Searcher;
             var skillsQs = HttpContext.Request.Query["skills"].ToString();
             var allMemberTags = _directoryHelper.GetMemberTags();
-            var foundingMemberTag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "founding member");
-
             // Send back all the members if no params are set
             if (string.IsNullOrEmpty(skillsQs))
             {
-                var allMembers = _directoryHelper.GetAllMembers();
-                foreach (var member in allMembers)
-                {
-                    var url = "/member/" + member.Username;
-                    var location = member.GetValue("city") + ", " + member.GetValue("state");
-                    var image = "/images/pipey.jpg";
-                    
-                    if(member.GetValue("ProfileImage") != null)
-                    {
-                        var imageUdi = member.GetValue("ProfileImage").ToString();
-                        image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
-                    }
-                    
-                    var isFoundingMember = false;
-                    var memberTags = member.GetValue("MemberTags")?.ToString();
-                    if (foundingMemberTag != null && memberTags != null)
-                    {
-                        isFoundingMember = memberTags.Contains(foundingMemberTag.Key.ToString().Replace("-", ""));
-                    }
+                var allMembers = _directoryHelper.GetAllMembers()
+                    .Select(member => BuildDirectoryResult(member, allMemberTags));
 
-                    memberResults.Add(new DirectoryResult { Name = member.Name, Location = location, Image = image, Url = url, FoundingMember = isFoundingMember });
-                }
-
-                return Ok(memberResults);
+                return Ok(allMembers);
             }
 
             // Otherwise hit Lucene/Examine
@@ -123,36 +103,19 @@ public class APIController : UmbracoApiController
 
             if (results.Any())
             {
-                foreach (var result in results)
-                {
-                    var member = _memberService.GetById(int.Parse((string)result.Id));
-                    var url = "/member/" + member.Username;
-                    var location = member.GetValue("city") + ", " + member.GetValue("state");
-                    var image = "/images/pipey.jpg";
-                    
-                    if(member.GetValue("ProfileImage") != null)
-                    {
-                        var imageUdi = member.GetValue("ProfileImage").ToString();
-                        image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
-                    }
-                    
-                    var isFoundingMember = false;
-                    var memberTags = member.GetValue("MemberTags")?.ToString();
-                    if (foundingMemberTag != null && memberTags != null)
-                    {
-                        isFoundingMember = memberTags.Contains(foundingMemberTag.Key.ToString().Replace("-", ""));
-                    }
-                    
-                    memberResults.Add(new DirectoryResult { Name = member.Name, Location = location, Image = image, Url = url, FoundingMember = isFoundingMember });
-                }
+                var ids = results.Select(result => int.Parse(result.Id)).ToArray();
 
-                return Ok(memberResults.OrderBy(m => m.Name));
+                var filteredMembers = _memberService.GetAllMembers(ids)
+                    .Select(member => BuildDirectoryResult(member, allMemberTags))
+                    .OrderBy(m => m.Name);
+
+                return Ok(filteredMembers);
             }
         }
 
         return Ok(memberResults);
     }
-        
+
     [Route("api/profile/image-process")]
     public async Task<IActionResult> UploadProfileImage()
     {
@@ -179,14 +142,14 @@ public class APIController : UmbracoApiController
                 // For now, just create dupes!
                 // - Myke
                 var media = _mediaService.CreateMedia(member.Username, membersMediaFolder, Constants.Conventions.MediaTypes.Image);
-                
+
                 media.SetValue(
-                    _mediaFileManager, 
-                    _mediaUrlGeneratorCollection, 
-                    _shortStringHelper, 
-                    _contentTypeBaseServiceProvider, 
-                    Constants.Conventions.Media.File, 
-                    newFileName, 
+                    _mediaFileManager,
+                    _mediaUrlGeneratorCollection,
+                    _shortStringHelper,
+                    _contentTypeBaseServiceProvider,
+                    Constants.Conventions.Media.File,
+                    newFileName,
                     file.OpenReadStream()
                 );
                 _mediaService.Save(media);
@@ -196,7 +159,45 @@ public class APIController : UmbracoApiController
                 return Ok(imageUdi);
             }
         }
-            
+
         return BadRequest();
+    }
+
+    private DirectoryResult BuildDirectoryResult(IMember member, List<Tag> allMemberTags)
+    {
+        var foundingMemberTag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "founding member");
+        var supportingMember2024Tag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "2024 supporting member");
+        var url = "/member/" + member.Username;
+        var location = member.GetValue("city") + ", " + member.GetValue("state");
+        var image = "/images/pipey.jpg";
+
+        if(member.GetValue("ProfileImage") != null)
+        {
+            var imageUdi = member.GetValue("ProfileImage").ToString();
+            image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
+        }
+
+        var isFoundingMember = false;
+        var isSupportingMember2024 = false;
+        var memberTags = member.GetValue("MemberTags")?.ToString();
+        if (foundingMemberTag != null && memberTags != null)
+        {
+            isFoundingMember = memberTags.Contains(foundingMemberTag.Key.ToString().Replace("-", ""));
+        }
+
+        if (supportingMember2024Tag != null && memberTags != null)
+        {
+            isSupportingMember2024 = memberTags.Contains(supportingMember2024Tag.Key.ToString().Replace("-", ""));
+        }
+
+        return new DirectoryResult
+        {
+            Name = member.Name,
+            Location = location,
+            Image = image,
+            Url = url,
+            IsFoundingMember = isFoundingMember,
+            Is2024SupportingMember = isSupportingMember2024,
+        };
     }
 }
