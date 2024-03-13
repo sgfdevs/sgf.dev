@@ -9,6 +9,28 @@ const routes = [
   {
     label: 'About',
     href: '/about',
+    subMenuRoutes: [
+      {
+        label: 'Springfield Devs',
+        href: '/about/',
+      },
+      {
+        label: 'Leadership',
+        href: '/about/leadership/',
+      },
+      {
+        label: 'Code of conduct',
+        href: '/about/code-of-conduct/',
+      },
+      {
+        label: 'Sponsorship',
+        href: '/about/sponsorship',
+      },
+      {
+        label: 'Volunteer to Speak',
+        href: 'https://sessionize.com/sgf-dev-night',
+      },
+    ],
   },
   {
     label: 'Groups',
@@ -39,8 +61,8 @@ export function Header() {
         </div>
         <nav className='hidden lg:block' role='navigation'>
           <ul className='flex'>
-            {routes.map(({ label, href }) => (
-              <HeaderItem key={href} href={href}>
+            {routes.map(({ label, href, subMenuRoutes }) => (
+              <HeaderItem key={href} href={href} subMenuRoutes={subMenuRoutes}>
                 {label}
               </HeaderItem>
             ))}
