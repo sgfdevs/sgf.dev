@@ -4,6 +4,7 @@
     var name = Model.FirstName + " " + Model.LastName;
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
     var isFoundingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
+    var is2024SupportingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "2024 supporting member").Any() : false;
 }
 
 
@@ -41,6 +42,10 @@
                         @if (isFoundingMember)
                         {
                             <div>Founding Member</div>
+                        }
+                        @if (is2024SupportingMember)
+                        {
+                            <div>2024 Supporting Member</div>
                         }
                     </div>
 
