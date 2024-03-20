@@ -153,7 +153,14 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className='min-h-[353px] bg-[url(/circuit_graphic.svg)] bg-[70vw_center] bg-no-repeat pb-24 pt-36'>
+      <section
+        className={cn(
+          'relative pt-[153px]',
+          'after:bg-120 after:absolute after:left-0 after:top-[-23px] after:z-[-1] after:h-[180px] after:w-full after:bg-[url(/circuit_graphic.svg)] after:bg-right-bottom after:bg-no-repeat after:content-[""]',
+          'md:after:absolute md:after:left-auto md:after:top-auto md:after:z-auto md:after:h-auto md:after:w-auto md:after:bg-none md:after:content-[""]',
+          'md:relative md:min-h-[353px] md:bg-[url(/circuit_graphic.svg)] md:bg-[65vw_50%] md:bg-no-repeat md:pb-24 md:pr-16 md:pt-36 xl:bg-[right]',
+        )}
+      >
         <div className='relative mx-auto px-8'>
           <div className='max-w-[65%] xl:max-w-[43%]'>
             <h3 className='text-4xl font-bold text-foreground'>

@@ -22,6 +22,7 @@ const config: Config = {
       backgroundSize: {
         'sponsor-top': '149px 51px,calc(100% - 155px) 2px, 8px 8px',
         'sponsor-bottom': '41px 31px, calc(100% - 225px) 2px, 8px 8px',
+        '120': '120%',
       },
       backgroundPosition: {
         'sponsor-top': '0 10px,147px 10px, right 7px',
