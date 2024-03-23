@@ -29,6 +29,7 @@ const config: Config = {
       },
       fontFamily: {
         ['font-awesome-5-pro']: 'Font Awesome 5 Pro',
+        ['source-sans-3']: ['var(--font-source-sans-3)'],
       },
       fontSize: {
         sm: ['14px', 'inherit'],
