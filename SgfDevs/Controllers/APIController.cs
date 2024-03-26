@@ -8,7 +8,6 @@ using Examine;
 using SGFDevs.ViewModels;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Serialization;
@@ -16,7 +15,9 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
 using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
+using Umbraco.Extensions;
 using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
+using Umbraco.Cms.Core.Models;
 
 namespace SGFDevs.Controllers;
 

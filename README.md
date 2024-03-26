@@ -5,7 +5,7 @@
 **Important Note:** If you're contributing to the rewrite, please see `sgfdevs-frontend/README.md`
 
 ## Prerequisites
-- [.NET SDK 6.x](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [.NET SDK 8.x](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
   - Note for Apple Silicon Mac OS users, make sure to enable "Use Rosetta for x86/amd64 emulation" option in the Docker Desktop settings
 - [Node.js 18.x](https://nodejs.org/en/download/)
@@ -22,7 +22,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
   - Note: if you're on an Apple Silicon Mac Os there will be a lot of warnings, this is expected and should not cause issues
 - Navigate to the SgfDevs project folder `cd SgfDevs`
 - User the `dotnet user-secrets` command to set your connection string
-  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword"`
+  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Server=localhost,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword;TrustServerCertificate=True;"`
   - Make sure the port and password in the above command match the values in `.env`
 - `dotnet run`
 - Open the URL that's printed in the console in your browser
@@ -33,7 +33,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
   - Most IDEs have a shortcut to navigate to this file
   - Reference `appsettings.json` for an example of the `ConnectionStrings` object
     - Note that the actual connection string should reference the docker compose name instead of `localhost`
-    - e.g. `Server=mssql,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword`
+    - e.g. `Server=mssql,1433; Database=SgfDevs; User Id=sa; Password=MyP@ssword; TrustServerCertificate=True;`
   - You can also fall back to the CLI tools instructions
 - You should see a "Configuration" option in your IDE for docker compose, run this
 - Open a browser to `https://localhost:5001`

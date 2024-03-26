@@ -14,9 +14,9 @@ variables:
  
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core 6'
+  displayName: 'Use .NET Core 8'
   inputs:
-    version: 6.0.x
+    version: 8.0.x
  
 - task: DotNetCoreCLI@2
   displayName: Restore
