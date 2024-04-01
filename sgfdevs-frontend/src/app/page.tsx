@@ -6,6 +6,7 @@ import { Link } from '@/components/Link';
 import { DirectoryCard } from '@/components/DirectoryCard';
 import { SponsorCard } from '@/components/SponsorCard';
 import { cn } from '@/utils/cn';
+import { DevNightBanner } from '@/components/DevNightBanner';
 
 //TODO: Repplace with actual images.
 import Pipey from '@/assets/pipey.jpg';
@@ -28,6 +29,10 @@ export default function Home() {
   };
   return (
     <div className='flex-1'>
+      <DevNightBanner>
+
+      </DevNightBanner>
+
       <section className='relative pb-32 pt-11 before:-top-8 before:left-0 before:h-8 before:w-full before:rounded-3xl before:bg-white'>
         <header className='mb-11 flex items-end justify-between px-12'>
           <section className='lg:flex lg:items-end'>
@@ -179,7 +184,7 @@ export default function Home() {
               </Link>
             </p>
             <p className='my-4'>
-              And the party doesn't stop after Dev Night. Join our Discord
+              And the party doesn`&#39`t stop after Dev Night. Join our Discord
               server to keep the convos rolling.
             </p>
             <p>
