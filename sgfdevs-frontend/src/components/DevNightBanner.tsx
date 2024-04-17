@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export function DevNightBanner() {
   return (
-    <section className='relative overflow-hidden bg-foreground pb-64 text-white text-center rounded-3xl'>
+    <section className='relative overflow-hidden bg-foreground pb-36 text-white text-center rounded-3xl'>
       <time className='block text-white box-border font-bold text-lg'>
         <span className='py-3.5 w-64 inline-block border-x-2 border-cyan-500 '>
           Apr 1, 2024
