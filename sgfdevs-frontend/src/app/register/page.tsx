@@ -4,7 +4,7 @@ import Input from '@/components/Input';
 import InputLabel from '@/components/InputLabel';
 import NullCheckText from '@/components/NullCheckText';
 import Modal from '@/components/Modal';
-import { registerAction } from '@/app/register/register-action';
+import { registerAction } from '@/actions/register-action';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
 import { useState } from 'react';
