@@ -1,4 +1,6 @@
 
+import Link from 'next/link';
+
 export default function About() {
   return (
     <div className='flex-1 max-w-full flex-col max-h-100vh font-source-sans-3'>
@@ -46,7 +48,8 @@ export default function About() {
             Connect with the developer community in Springfield
             </p>
           <div className="flex mt-auto">
-            <button className='bg-white text-sm md:text-base text-[#153558] border-[#153558] border-2 font-bold rounded-full py-2 px-4'>Become a  Sponsor</button>
+            {/* Links to current site page */}
+            <button className='bg-white text-sm md:text-base text-[#153558] border-[#153558] border-2 font-bold rounded-full py-2 px-4'><Link href="https://sgf.dev/media/prgasrsw/springfield_devs_sponsorship.pdf">Become a  Sponsor</Link></button>
            </div>
           </div>
       {/* Card 2 */}
@@ -57,7 +60,8 @@ export default function About() {
         Code of Conduct
         </p>
         <div className="flex mt-auto">
-        <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'>Read</button>
+
+        <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'><Link href="./code-of-conduct">Read</Link></button>
         </div>
         </div>
         {/* Card 3 */}
@@ -68,7 +72,8 @@ export default function About() {
           Articles of Incorporation
           </p>
           <div className="flex mt-auto">
-          <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'>Check it Out</button>
+            {/* Links to current site page */}
+          <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'><Link href="https://sgf.dev/media/kbxmwecj/articles-of-incorporation.pdf">Check it Out</Link></button>
         </div>
         </div>
         {/* Card 4 */}
@@ -79,7 +84,8 @@ export default function About() {
           Bylaws
           </p>
           <div className="flex mt-auto">
-          <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'>Download Document</button>
+            {/* Links to current site page */}
+          <button className='bg-foreground text-sm md:text-base text-white font-bold rounded-full py-2 px-4'><Link href="https://sgf.dev/media/wy0hhb5d/bylaws.pdf">Download</Link></button>
           </div>
           </div>
           </div>
