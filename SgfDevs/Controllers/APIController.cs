@@ -176,9 +176,12 @@ public class APIController : UmbracoApiController
 
     [HttpPost]
     [Route("api/newsletter/signup")]
-    public async Task<IActionResult> NewsletterSignUp([FromForm] string email)
+    public async Task<IActionResult> NewsletterSignUp([FromForm] string email, [FromForm(Name = "name")] string honeypot)
     {
-        await _newsletterHelper.Subscribe(email);
+        if (string.IsNullOrEmpty(honeypot))
+        {
+            await _newsletterHelper.Subscribe(email);
+        }
 
         return Ok();
     }
