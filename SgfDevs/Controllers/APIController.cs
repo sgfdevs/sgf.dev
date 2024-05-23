@@ -11,7 +11,6 @@ using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Security;
-using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
@@ -31,11 +30,23 @@ public class APIController : UmbracoApiController
     private MediaFileManager _mediaFileManager;
     private IShortStringHelper _shortStringHelper;
     private IContentTypeBaseServiceProvider _contentTypeBaseServiceProvider;
-    private IJsonSerializer _serializer;
     private MediaUrlGeneratorCollection _mediaUrlGeneratorCollection;
+    private NewsletterHelper _newsletterHelper;
 
 
-    public APIController(DirectoryHelper directoryHelper, IMemberService memberService, IExamineManager examineManager, UmbracoHelper helper, IMemberManager memberManager, IMediaService mediaService, MediaFileManager mediaFileManager, IShortStringHelper shortStringHelper, IContentTypeBaseServiceProvider contentTypeBaseServiceProvider, IJsonSerializer serializer, MediaUrlGeneratorCollection mediaUrlGeneratorCollection)
+    public APIController(
+        DirectoryHelper directoryHelper,
+        IMemberService memberService,
+        IExamineManager examineManager,
+        UmbracoHelper helper,
+        IMemberManager memberManager,
+        IMediaService mediaService,
+        MediaFileManager mediaFileManager,
+        IShortStringHelper shortStringHelper,
+        IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
+        MediaUrlGeneratorCollection mediaUrlGeneratorCollection,
+        NewsletterHelper newsletterHelper
+    )
     {
         _directoryHelper = directoryHelper;
         _memberService = memberService;
@@ -46,8 +57,8 @@ public class APIController : UmbracoApiController
         _mediaFileManager = mediaFileManager;
         _shortStringHelper = shortStringHelper;
         _contentTypeBaseServiceProvider = contentTypeBaseServiceProvider;
-        _serializer = serializer;
         _mediaUrlGeneratorCollection = mediaUrlGeneratorCollection;
+        _newsletterHelper = newsletterHelper;
     }
 
     // GET
@@ -161,6 +172,18 @@ public class APIController : UmbracoApiController
         }
 
         return BadRequest();
+    }
+
+    [HttpPost]
+    [Route("api/newsletter/signup")]
+    public async Task<IActionResult> NewsletterSignUp([FromForm] string email, [FromForm(Name = "name")] string honeypot)
+    {
+        if (string.IsNullOrEmpty(honeypot))
+        {
+            await _newsletterHelper.Subscribe(email);
+        }
+
+        return Ok();
     }
 
     private DirectoryResult BuildDirectoryResult(IMember member, List<Tag> allMemberTags)
