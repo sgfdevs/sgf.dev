@@ -1,47 +1,31 @@
-version: '3.4'
-
 services:
-  sgfdevs:
-    image: ${DOCKER_REGISTRY-}sgfdevs
+  sgf-devs:
     build:
-      context: .
-      dockerfile: SgfDevs/Dockerfile
-    depends_on:
-      - mssql-init
-    networks:
-      - sgfdevs
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      SA_PASSWORD: "${DB_PASSWORD}"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "${DB_PORT:-1433}:1433"
-    healthcheck:
-      test: |
-        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${DB_PASSWORD}" -Q "SELECT 1" -b -o /dev/null
-      interval: 10s
-      timeout: 3s
-      retries: 10
+      context: ./
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
     volumes:
-      - mssql-data:/var/opt/mssql
-    networks:
-      - sgfdevs
-  mssql-init:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    depends_on:
-      mssql:
-        condition: service_healthy
-    networks:
-      - sgfdevs
-    command: |
-      bash -c '
-      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${DB_PASSWORD}" -Q "CREATE DATABASE SgfDevs" -b -o /dev/null;
-      echo "All done!";
-      '
+      - './SgfDevs/umbraco/Data/Umbraco.sqlite.db:/usr/src/main/umbraco/Data/Umbraco.sqlite.db'
+      - 'media-cache:/usr/src/main/umbraco/TEMP/MediaCache'
+      - 'data-protection-keys:/root/.aspnet/DataProtection-Keys'
+    restart: unless-stopped
+  proxy:
+    image: caddy:2.8
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      APP_BASE_URL: ${APP_BASE_URL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
-  mssql-data:
-networks:
-  sgfdevs:
-    driver: bridge
+  media-cache:
+  data-protection-keys:
+  caddy_data:
+  caddy_config:
