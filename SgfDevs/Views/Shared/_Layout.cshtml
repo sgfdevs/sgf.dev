@@ -2,7 +2,7 @@
 @* @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Base> *@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
-@{ 
+@{
     Random rand = new Random();
     var pageTitle = ViewData["PageTitle"] ?? "Springfield Devs - " + Model.Name;
 }
@@ -158,7 +158,7 @@
                     <a target="_blank" href="https://www.instagram.com/sgfdevs/">Instagram</a>
                     <a target="_blank" href="https://discord.sgf.dev/">Discord</a>
                 </nav>
-                
+
                 <p>
                     <span style="font-size: 13px">V2.0</span>
                 </p>
@@ -178,10 +178,12 @@
                     Subscribe to our newsletter and be the first to know about exciting events, exclusive offers from sponsors and what’s happening in our dev community.
                 </p>
 
-                <form action="https://hooks.zapier.com/hooks/catch/5643689/o317nvx/" method="post" id="updates_subscribe">
+                <form action="/api/newsletter/signup" method="post" id="updates_subscribe">
                     <div class="material_input">
                         <label for="email">Email</label>
                         <input type="text" placeholder="laurie.bream@raviga.com" name="email" id="email">
+                        <label for="name" class="null-check">Leave this field empty</label>
+                        <input type="text" id="name" name="name" class="null-check" tabindex="-1" autocomplete="off">
                     </div>
 
                     <button class="button">Sign Up</button>
