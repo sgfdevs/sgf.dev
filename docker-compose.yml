@@ -9,10 +9,23 @@ services:
       - './SgfDevs/umbraco/Data/Umbraco.sqlite.db:/usr/src/main/umbraco/Data/Umbraco.sqlite.db'
       - 'media-cache:/usr/src/main/umbraco/TEMP/MediaCache'
       - 'data-protection-keys:/root/.aspnet/DataProtection-Keys'
-    ports:
-      - 4444:80
     restart: unless-stopped
+  proxy:
+    image: caddy:2.8
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      APP_BASE_URL: ${APP_BASE_URL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
   media-cache:
   data-protection-keys:
+  caddy_data:
+  caddy_config:
