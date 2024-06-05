@@ -4,5 +4,15 @@ services:
       context: ./
       dockerfile: ./Dockerfile
     env_file:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - .env
+    volumes:
+      - './SgfDevs/umbraco/Data/Umbraco.sqlite.db:/usr/src/main/umbraco/Data/Umbraco.sqlite.db'
+      - 'media-cache:/usr/src/main/umbraco/TEMP/MediaCache'
+      - 'data-protection-keys:/root/.aspnet/DataProtection-Keys'
+    ports:
+      - 4444:80
     restart: unless-stopped
+
+volumes:
+  media-cache:
+  data-protection-keys:

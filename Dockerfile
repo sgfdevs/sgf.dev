@@ -16,7 +16,7 @@ RUN dotnet publish "./SgfDevs/SgfDevs.csproj" -c Release -o /usr/src/main/publis
 
 FROM base AS final
 ENV ASPNETCORE_HTTP_PORTS=80
-ENV ASPNETCORE_URLS=http://+:80
 WORKDIR /usr/src/main
 COPY --from=publish /usr/src/main/publish .
+RUN mkdir -p umbraco/Data && touch umbraco/Data/Umbraco.sqlite.db
 ENTRYPOINT ["dotnet", "SgfDevs.dll"]
