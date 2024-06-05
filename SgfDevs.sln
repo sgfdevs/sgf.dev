@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		azure-pipelines.yml = azure-pipelines.yml
 		README.md = README.md
 		.editorconfig = .editorconfig
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
 	EndProjectSection
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6F118F7-657E-4262-8D78-F2329883480B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E05C9EF9-9C65-4BC0-A037-53BDBAEE843D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
