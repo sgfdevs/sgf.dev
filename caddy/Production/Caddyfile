@@ -1,0 +1,7 @@
+https://www.sgf.dev {
+	reverse_proxy sgf-devs:80
+}
+
+sgf.dev {
+	redir https://www.sgf.dev{uri}
+}

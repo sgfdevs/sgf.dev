@@ -17,10 +17,8 @@ services:
       - '80:80'
       - '443:443'
       - '443:443/udp'
-    environment:
-      APP_BASE_URL: ${APP_BASE_URL}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - './caddy/${CADDY_ENVIRONMENT:-Development}/Caddyfile:/etc/caddy/Caddyfile'
       - caddy_data:/data
       - caddy_config:/config
 
