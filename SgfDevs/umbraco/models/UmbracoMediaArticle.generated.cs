@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Image</summary>
-	[PublishedModel("Image")]
-	public partial class Image : PublishedContentModel
+	/// <summary>Article</summary>
+	[PublishedModel("umbracoMediaArticle")]
+	public partial class UmbracoMediaArticle : PublishedContentModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		public new const string ModelTypeAlias = "Image";
+		public new const string ModelTypeAlias = "umbracoMediaArticle";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Media;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
@@ -34,14 +34,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Image, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<UmbracoMediaArticle, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Image(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public UmbracoMediaArticle(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -65,25 +65,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string UmbracoExtension => this.Value<string>(_publishedValueFallback, "umbracoExtension");
 
 		///<summary>
-		/// Upload image
+		/// Article
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("umbracoFile")]
-		public virtual global::Umbraco.Cms.Core.PropertyEditors.ValueConverters.ImageCropperValue UmbracoFile => this.Value<global::Umbraco.Cms.Core.PropertyEditors.ValueConverters.ImageCropperValue>(_publishedValueFallback, "umbracoFile");
-
-		///<summary>
-		/// Height: in pixels
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[ImplementPropertyType("umbracoHeight")]
-		public virtual int UmbracoHeight => this.Value<int>(_publishedValueFallback, "umbracoHeight");
-
-		///<summary>
-		/// Width: in pixels
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[ImplementPropertyType("umbracoWidth")]
-		public virtual int UmbracoWidth => this.Value<int>(_publishedValueFallback, "umbracoWidth");
+		public virtual string UmbracoFile => this.Value<string>(_publishedValueFallback, "umbracoFile");
 	}
 }
