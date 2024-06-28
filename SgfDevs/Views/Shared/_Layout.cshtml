@@ -23,14 +23,10 @@
 
     @RenderSection("TopScripts", required: false)
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y5BQE4F4YS"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <environment names="Production">
+        <script defer data-domain="sgf.dev" src="https://plausible.sgf.dev/js/script.js"></script>
+    </environment>
 
-        gtag('config', 'G-Y5BQE4F4YS');
-    </script>
     <style>
         /*.dev_night_banner ul.presentations_1 {
             grid-template-columns: repeat(1, 1fr);
