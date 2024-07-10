@@ -1,6 +1,7 @@
 import Directory from '@/assets/Headline.svg';
 import Sponsor from '@/assets/Sponsor.svg';
 import Image from 'next/image';
+import Carousel from '@/components/Carousel';
 
 import { Link } from '@/components/Link';
 import { DirectoryCard } from '@/components/DirectoryCard';
@@ -49,11 +50,10 @@ export default function Home() {
           >
             <i className='font-font-awesome-5-pro before:content-[""]' />
           </Link>
-          <div className='flex overflow-hidden'>
-            <DirectoryCard memberCount={memberCount} />
-            <DeveloperCard developer={exampleDev}></DeveloperCard>
-            {/* Profile cards go here */}
-          </div>
+          <Carousel className='flex'
+            length = {memberCount}
+            directoryCard = {<DirectoryCard memberCount={memberCount}/>}
+          />
         </div>
       </section>
       <section className='relative overflow-hidden bg-foreground px-12 pb-11 pt-4 text-white'>
