@@ -11,7 +11,7 @@ import { cn } from '@/utils/cn';
 //TODO: Repplace with actual images.
 import Pipey from '@/assets/pipey.jpg';
 import ChrisKin from '@/assets/ChrisKin.jpg';
-import LogicForte from '@/assets/Logic-Forte.jpg';
+import LogicForte from '@/assets/logic-forte.jpg';
 import DeveloperCard from '@/components/DeveloperCard';
 
 export default function Home() {
