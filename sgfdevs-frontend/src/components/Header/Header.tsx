@@ -55,7 +55,7 @@ export function Header() {
     <header className='pb-10 pt-7'>
       <div className='relative mx-auto flex items-center justify-between px-12'>
         <div>
-          <Link href='/public'>
+          <Link href='/'>
             <Image src={Logo} alt='Logo' />
           </Link>
         </div>
