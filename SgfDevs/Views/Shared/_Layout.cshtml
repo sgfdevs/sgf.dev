@@ -23,14 +23,10 @@
 
     @RenderSection("TopScripts", required: false)
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y5BQE4F4YS"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <environment names="Production">
+        <script defer data-domain="sgf.dev" src="https://plausible.sgf.dev/js/script.js"></script>
+    </environment>
 
-        gtag('config', 'G-Y5BQE4F4YS');
-    </script>
     <style>
         /*.dev_night_banner ul.presentations_1 {
             grid-template-columns: repeat(1, 1fr);
@@ -58,6 +54,7 @@
                         <nav>
                             <ul>
                                 <li><a href="/about/">Springfield Devs</a></li>
+                                <li><a href="https://www.methodconf.com" target="_blank">Method Conference</a></li>
                                 <li><a href="/about/leadership/">Leadership</a></li>
                                 <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
                                 <li><a href="/about/sponsorship/">Sponsorship</a></li>
@@ -115,9 +112,9 @@
                     <button id="mobile_nav_back"> <i class="fa fa-angle-left"></i>Back</button>
                     <ul>
                         <li><a href="/about/">Springfield Devs</a></li>
+                        <li><a href="https://www.methodconf.com" target="_blank">Method Conference</a></li>
                         <li><a href="/about/leadership/">Leadership</a></li>
                         <li><a href="/about/code-of-conduct/">Code of Conduct</a></li>
-                        <li><a href="/about/sponsorship/">Sponsorship</a></li>
                         <li><a href="https://sessionize.com/sgf-dev-night" target="_blank">Volunteer to Speak</a></li>
                         @*<li><a href="#">Contact</a></li>*@
                     </ul>
@@ -194,7 +191,7 @@
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/js/plugins.js?cb=2021.2.28"></script>
-    <script src="~/js/main.js?cb=2021.2.28"></script>
+    <script src="~/js/main.js?cb=2024.6.23"></script>
 
     @RenderSection("Scripts", required: false)
     @* @Html.RenderJsHere() *@
