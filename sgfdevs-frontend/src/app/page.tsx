@@ -184,7 +184,7 @@ export default function Home() {
               </Link>
             </p>
             <p className='my-4'>
-              And the party doesn`&#39`t stop after Dev Night. Join our Discord
+              And the party doesn&apos;t stop after Dev Night. Join our Discord
               server to keep the convos rolling.
             </p>
             <p>

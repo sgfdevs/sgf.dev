@@ -41,6 +41,19 @@ const config: Config = {
       },
       maxWidth: {
         sm: '316px',
+        '575': '575px'
+      },
+      spacing: {
+        '7.5': '30px',
+        '12': '48px',
+        '5.5': '22px',
+        '3.5': '14px',
+        '15': '60px',
+        '11': '44px',
+        '36': '9rem'
+      },
+      borderRadius: {
+        27: '27px',
       },
     },
   },

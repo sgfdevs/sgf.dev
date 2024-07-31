@@ -3,15 +3,102 @@
 @tailwind utilities;
 
 body {
-    font-family: "Source Sans Variable", "Open Sans", sans-serif;
-    font-size: 18px;
-    color: #254151;
-    font-weight: 400;
-    line-height: 1.666em;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: flex;
-    flex-direction: column;
+  font-family: 'Source Sans Variable', 'Open Sans', sans-serif;
+  font-size: 18px;
+  color: #254151;
+  font-weight: 400;
+  line-height: 1.666em;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
 }
+
+.headline {
+  background-image: url('../assets/circuit_oval.svg'),
+    url('../assets/circuit_oval.svg'), url('../assets/circuit_oval.svg'),
+    url('../assets/circuit_oval.svg'), url('../assets/circuit_line.svg'),
+    url('../assets/circuit_line.svg');
+  background-size:
+    11px 11px,
+    11px 11px,
+    11px 11px,
+    11px 11px,
+    2px,
+    2px;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat-x,
+    repeat-x;
+  background-position:
+    0 0,
+    right 0,
+    0 bottom,
+    right bottom,
+    right 0 top 4px,
+    right 0 bottom 4px;
+}
+
+@layer components {
+  .dev-night-banner {
+    @apply relative z-10 overflow-hidden rounded-27 bg-foreground px-0 py-0 pb-36 text-center text-white;
+  }
+
+  .presentations_1 {
+    margin-left: 2.75rem;
+    margin-right: 2.75rem;
+    @apply max-w-575;
+  }
+
+  .verticals {
+    position: relative;
+  }
+
+  .verticals:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: -52px !important;
+    width: 100%;
+    max-width: 500px;
+    height: 52px !important;
+    background-image: url('../assets/circuit_line.svg'),
+      url('../assets/circuit_line.svg');
+    background-size: 2px;
+    background-repeat: repeat-y;
+    background-position:
+      75px,
+      right 75px top 0 ;
+  }
+
+  .dev-night-banner ul {
+    position: relative;
+    background-image: url('../assets/circuit_line.svg');
+    background-size: 2px;
+    background-repeat: repeat-x;
+    background-position: 0 50px;
+  }
+
+  @screen md {
+    .dev-night-banner ul {
+      background-position: center 50%;
+    }
+
+    li {
+      position: relative;
+    }
+
+    li:after {
+      display: none;
+    }
+
+    li:first-child:after {
+      top: -52px !important;
+
+      height: 52px !important;
+    }
+  }
+}
+
