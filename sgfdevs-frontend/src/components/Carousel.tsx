@@ -2,6 +2,8 @@
 
 import React from 'react';
 import SampleData from "./SampleData";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 export interface ICarouselProps {
   directoryCard: React.ReactNode;
@@ -42,13 +44,14 @@ interface IScrollButtonProps {
 }
 
 function RightScroll({ onClick }: IScrollButtonProps){
-  const rightChevron = "<"
-
+  
   return(
     <div className="absolute left-0 top-0 z-10 h-full">
       <button 
-      className="h-full w-20 bg-white opacity-50"
-      onClick={onClick}>{rightChevron}</button>
+      className="h-full w-20 bg-gradient-to-r from-white"
+      onClick={onClick}>
+      <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
     </div>
   )
 }
@@ -59,8 +62,10 @@ function LeftScroll({onClick}: IScrollButtonProps){
   return (
     <div className="absolute right-0 top-0 z-10 h-full">
       <button 
-      className="h-full w-20 bg-white opacity-50"
-      onClick={onClick}>{leftChevron}</button>
+      className="h-full w-20 bg-gradient-to-l from-white"
+      onClick={onClick}>
+        <FontAwesomeIcon icon={faChevronRight} />
+      </button>
     </div>
   )
 }
