@@ -39,6 +39,13 @@ body {
     right 0 bottom 4px;
 }
 
+@layer utilities {
+  .grid-auto-fit {
+    @apply grid grid-cols-1; /* Ensure grid is set up */
+    grid-template-columns: repeat(auto-fit, minmax(554px, 1fr));
+  }
+}
+
 @layer components {
   .dev-night-banner {
     @apply relative z-10 overflow-hidden rounded-27 bg-foreground px-0 py-0 pb-36 text-center text-white;
