@@ -1,4 +1,4 @@
-https://www.sgf.dev {
+http://www.sgf.dev {
 	reverse_proxy sgf-devs:80
 }
 
