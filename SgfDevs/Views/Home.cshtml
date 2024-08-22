@@ -81,13 +81,13 @@
                         }
                         else
                         {
-                            <h3>@presentation.Name</h3>   
+                            <h3>@presentation.Name</h3>
                         }
 
                         <dl>
                             <dt>Presented By</dt>
                             <dd><a href="/member/@presenter.Username.ToLower()">@presenter.Name</a></dd>
-                            
+
                             @if (presentation.OtherPresenters != null)
                             {
                                 @foreach (var publishedContent in presentation.OtherPresenters)
@@ -96,7 +96,7 @@
                                     <dd><a href="/member/@otherPresenter.Username.ToLower()">@otherPresenter.Name</a></dd>
                                 }
                             }
-                            
+
                         </dl>
 
                         @if (group.Name.ToLower() != "springfield devs")
@@ -167,13 +167,13 @@
                 var url = "/member/" + member.Username;
                 var location = member.GetValue("city") + ", " + member.GetValue("state");
                 var image = "/images/pipey.jpg";
-                
+
                 if(member.GetValue("ProfileImage") != null)
                 {
                     var imageUdi = member.GetValue("ProfileImage").ToString();
                     image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
                 }
-            
+
                 <div class="card company_card">
                     <figure>
                         <a href="@url"><img src="@image" alt="@member.Name"></a>
@@ -182,13 +182,13 @@
                             <div>Founding Sponsor</div>
                         </figcaption>
                     </figure>
-            
+
                     <div class="content">
                         <dl>
                             <dt><a href="@url">@member.Name</a></dt>
                             <dd>@location</dd>
                         </dl>
-            
+
                         <footer>
                             <a class="button outline small" href="@url">Profile</a>
                         </footer>
@@ -231,7 +231,7 @@
         {
             <div class="card sponsor_card">
                 <figure>
-                    <a href="@company.Url()"><img src="@company.Image.Url()" alt="@company.Name"></a>
+                    <a href="@company.Url()"><img src="@company.Image?.Url()" alt="@company.Name"></a>
                     <figcaption>
                         @if (company.IsFoundingSponsor)
                         {

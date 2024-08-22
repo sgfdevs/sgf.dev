@@ -1,24 +1,70 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using System;
+using System.Data.Common;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using SGFDevs.Controllers;
+using SGFDevs.Dev;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Persistence.Sqlite;
+using Umbraco.Extensions;
 
-namespace SGFDevs
+var builder = WebApplication.CreateBuilder(args);
+
+var umbracoBuilder = builder.CreateUmbracoBuilder()
+    .AddBackOffice()
+    .AddWebsite()
+    .AddDeliveryApi()
+    .AddComposers();
+
+var blobStorageKey = builder.Configuration["SGFDevs:AzureBlobStorageKey"];
+if (string.IsNullOrEmpty(blobStorageKey))
 {
-    public class Program
+    umbracoBuilder.AddCdnMediaUrlProvider(options =>
     {
-        public static void Main(string[] args)
-            => CreateHostBuilder(args)
-                .Build()
-                .Run();
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureUmbracoDefaults()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStaticWebAssets();
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+        options.Url = new Uri("https://sgf.dev/media/");
+    });
 }
+else
+{
+    umbracoBuilder.AddAzureBlobMediaFileSystem(options =>
+    {
+        options.ConnectionString = $"DefaultEndpointsProtocol=https;AccountName=sgfdevs;AccountKey={blobStorageKey};EndpointSuffix=core.windows.net";
+        options.ContainerName = "website";
+    });
+}
+
+umbracoBuilder.Build();
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<DirectoryHelper>();
+builder.Services.AddScoped<NewsletterHelper>();
+
+var app = builder.Build();
+
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+await app.BootUmbracoAsync();
+
+
+app.UseUmbraco()
+    .WithMiddleware(u =>
+    {
+        u.UseBackOffice();
+        u.UseWebsite();
+    })
+    .WithEndpoints(u =>
+    {
+        u.EndpointRouteBuilder.MapControllerRoute(
+            "ProfileCustomRoute",
+            "member/{username}",
+            new { Controller = "Member", Action = "MemberProfile" });
+        u.UseBackOfficeEndpoints();
+        u.UseWebsiteEndpoints();
+    });
+
+await app.RunAsync();
