@@ -9,6 +9,7 @@ public class MemberProfile
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public string JobTitle { get; set; }
     public string ProfileImagePath { get; set; }
     public string AboutText { get; set; }
     public string Skills { get; set; }
