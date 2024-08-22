@@ -1,12 +1,7 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Profile>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Profile>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@using SGFDevs.Models
 @using Umbraco.Cms.Core.Security
 @using SGFDevs.Dev
-@using Smidge.TagHelpers
-@using Umbraco.Cms.Core
-@using Umbraco.Cms.Web.Website.Controllers
 @inject IMemberManager _memberManager
 @inject DirectoryHelper _directoryHelper
 
@@ -49,11 +44,11 @@
        {
            <p>Profile updated</p>
        }
-       
+
         <form asp-controller="Account" asp-action="ProfileUpdate" method="post">
             <input type="hidden" id="MemberId" name="MemberId" value="@member.Id"/>
             <input type="hidden" id="MemberKey" name="MemberKey" value="@member.Key"/>
-            
+
             <div class="field">
                 <label for="member.Email">Email</label>
                 <input type="text" id="member.Email" name="email" class="form-control" value="@currentMember.Email"/>
@@ -81,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="field" style="display: block;">
                 <label asp-for="@member.AboutText">About Text</label>
                 <div style="margin-top: 0.5em">
@@ -245,7 +240,7 @@
                 <button class="button tall wide" type="submit">Save</button>
             </footer>
         </form>
-        
+
         <div class="mt_75"></div>
     </div>
 }
@@ -256,25 +251,25 @@
             .form {
                 padding: 0 15px;
             }
-    
+
             .filepond--root {
                 max-width: 300px;
             }
-    
+
             .filepond--credits {
                 display: none;
             }
-    
+
             .filepond--file-info {
                 display: none !important;
             }
         </style>
-        
+
         <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
         <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
         <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet">
-    
+
         <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
@@ -357,8 +352,8 @@
                 load: '/api/profile/image-load'
             }
         });
-        
-        let simplemde = new SimpleMDE({ 
+
+        let simplemde = new SimpleMDE({
             element: document.getElementById("AboutText"),
             autosave: {
                 enabled: true,
@@ -366,5 +361,5 @@
                 delay: 500,
             },
         });
-    </script>   
+    </script>
 }
