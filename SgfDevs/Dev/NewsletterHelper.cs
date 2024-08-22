@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace SGFDevs.Controllers;
+namespace SgfDevs.Dev;
 
 public class NewsletterHelper
 {

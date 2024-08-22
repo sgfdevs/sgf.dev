@@ -67,6 +67,12 @@
                 <span asp-validation-for="@member.LastName" class="text-danger"></span>
             </div>
 
+            <div class="field">
+                <label asp-for="@member.JobTitle">Job Title</label>
+                <input asp-for="@member.JobTitle" name="JobTitle" class="form-control"/>
+                <span asp-validation-for="@member.JobTitle" class="text-danger"></span>
+            </div>
+
             <div class="profile_image_upload">
                 <input type="hidden" name="ProfileImagePath" value="" id="profile_image_path"/>
                 <div class="field">

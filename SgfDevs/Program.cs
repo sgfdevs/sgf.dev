@@ -5,6 +5,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SGFDevs.Controllers;
+using SgfDevs.Dev;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Persistence.Sqlite;

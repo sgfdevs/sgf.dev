@@ -36,21 +36,21 @@ public class AccountController : SurfaceController
         _memberService = memberService;
         _directoryHelper = directoryHelper;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model)
     {
         if (!ModelState.IsValid)
             return CurrentUmbracoPage();
-        
+
         var loginResult = await _memberSignInManager.PasswordSignInAsync(model.Username, model.Password, true,false);
         if (loginResult.Succeeded)
         {
             return Redirect("/");
         }
-        
+
         ModelState.AddModelError(string.Empty, "Unable to log in.");
-        
+
         // Might need to check this out. Currently the ValidateCredentialsAsync does not want
         // to validate any credentials from the V8 version of Umbraco which used the old
         // Membership Provider. So for now, skipping the validation and just attempting a login
@@ -78,13 +78,13 @@ public class AccountController : SurfaceController
 
         return CurrentUmbracoPage();
     }
-    
+
     public async Task<IActionResult> Logout()
     {
         await _memberSignInManager.SignOutAsync();
         return Redirect("/");
     }
-    
+
     public async Task<IActionResult> Register(RegisterModel model)
     {
         if (!ModelState.IsValid)
@@ -109,7 +109,7 @@ public class AccountController : SurfaceController
         if (identityResult.Succeeded)
         {
             await _memberManager.AddToRolesAsync(identityMember, new string[] { "SGF Devs" });
-            
+
             //save the additional details using the MemberService
             var member = _memberService.GetByKey(identityMember.Key);
             member.SetValue("FirstName", model.FirstName);
@@ -121,11 +121,11 @@ public class AccountController : SurfaceController
 
             return Redirect("/account");
         }
-        
+
         ModelState.AddModelError("", "Password too weak");
         return CurrentUmbracoPage();
     }
-    
+
     [HttpPost]
     public IActionResult ProfileUpdate(MemberProfile profile)
     {
@@ -133,6 +133,7 @@ public class AccountController : SurfaceController
         member.Email = profile.Email;
         member.SetValue("FirstName", profile.FirstName);
         member.SetValue("LastName", profile.LastName);
+        member.SetValue("JobTitle", profile.JobTitle);
         member.SetValue("AboutText", profile.AboutText);
         member.SetValue("City", profile.City);
         member.SetValue("State", profile.State);
@@ -152,45 +153,45 @@ public class AccountController : SurfaceController
         {
             var selectedSkills = profile.Skills.Split(',').ToList();
             var newSkills = new List<string>();
-        
+
             foreach (var selectedSkill in selectedSkills)
             {
                 var skillKey = Guid.Parse(selectedSkill);
                 var skillUdi = Udi.Create(Constants.UdiEntityType.Document, skillKey);
                 newSkills.Add(skillUdi.ToString());
             }
-            
+
             member.SetValue("SkillsTags", string.Join(",", newSkills));
         } else
         {
             member.SetValue("SkillsTags", "");
         }
-        
+
         //Groups
         if(!string.IsNullOrEmpty(profile.Groups))
         {
             var selectedGroups = profile.Groups.Split(',').ToList();
             var newGroups = new List<string>();
-        
+
             foreach (var selectedGroup in selectedGroups)
             {
                 var groupKey = Guid.Parse(selectedGroup);
                 var groupUdi = Udi.Create(Constants.UdiEntityType.Document, groupKey);
                 newGroups.Add(groupUdi.ToString());
             }
-            
+
             member.SetValue("Groups", string.Join(",", newGroups));
         } else
         {
             member.SetValue("Groups", "");
         }
-        
+
         // Profile Image
         if(!string.IsNullOrEmpty(profile.ProfileImagePath))
         {
-            member.SetValue("ProfileImage", profile.ProfileImagePath);   
+            member.SetValue("ProfileImage", profile.ProfileImagePath);
         }
-        
+
         _memberService.Save(member);
 
         return Redirect("/account");
