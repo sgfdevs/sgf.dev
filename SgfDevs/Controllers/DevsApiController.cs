@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SGFDevs.Dev;
 using Umbraco.Cms.Web.Common.Controllers;
 using Examine;
+using SgfDevs.Dev;
 using SGFDevs.ViewModels;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.IO;
@@ -14,13 +15,15 @@ using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
+using Umbraco.Cms.Web.Common.Filters;
 using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
 using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
 using Umbraco.Extensions;
 
 namespace SGFDevs.Controllers;
 
-public class APIController : UmbracoApiController
+[ApiController]
+public class DevsApiController : Controller
 {
     private DirectoryHelper _directoryHelper;
     private IMemberService _memberService;
@@ -35,7 +38,7 @@ public class APIController : UmbracoApiController
     private NewsletterHelper _newsletterHelper;
 
 
-    public APIController(
+    public DevsApiController(
         DirectoryHelper directoryHelper,
         IMemberService memberService,
         IExamineManager examineManager,
@@ -129,6 +132,7 @@ public class APIController : UmbracoApiController
     }
 
     [Route("api/profile/image-process")]
+    [UmbracoMemberAuthorize]
     public async Task<IActionResult> UploadProfileImage()
     {
         var currentMember = await _memberManager.GetCurrentMemberAsync();
