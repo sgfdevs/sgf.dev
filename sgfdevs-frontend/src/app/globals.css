@@ -39,6 +39,65 @@ body {
     right 0 bottom 4px;
 }
 
+.group .tabs .tab:focus + .label {
+  z-index: 1;
+}
+
+.group .tabs .tab:checked + .label {
+  background: rgba(0, 0, 0, 0);
+  color: inherit;
+}
+
+.group .tabs .tab:checked + .label + .panel {
+  display: flex;
+}
+
+/* Non-button links */
+.company a:not(.button) {
+  color: #153557;
+  font-weight: 500;
+}
+
+.company a:not(.button):visited {
+  color: inherit;
+}
+
+.company a:not(.button):hover {
+  color: #619ece;
+}
+
+
+.video::after {
+  background: foreground;
+  content: '';
+  display: block;
+  height: 200px;
+  position: absolute;
+  top: 125px;
+  right: 0;
+  width: 300px;
+  z-index: -1;
+}
+
+@media (min-width: 767px) {
+  .group .group-header .video::after {
+    height: 340px;
+    width: 440px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .group .group-header .video::after {
+    width: 30%;
+  }
+}
+
+@media (min-width: 1800px) {
+  .group .group-header .video::after {
+    width: 30%;
+  }
+}
+
 @layer utilities {
   .grid-auto-fit {
     @apply grid grid-cols-1; /* Ensure grid is set up */

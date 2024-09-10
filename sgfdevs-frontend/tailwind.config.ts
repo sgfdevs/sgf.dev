@@ -55,6 +55,11 @@ const config: Config = {
       borderRadius: {
         27: '27px',
       },
+      screens: {
+        'custom-sm': '600px',
+        'custom-md': '715px',
+        'custom-lg': '1243px',
+      },
     },
   },
   plugins: [],
