@@ -5,18 +5,7 @@ import { title } from 'process';
 import React, { useState, useEffect } from 'react';
 
 export function DevNightBanner() {
-  // const [nextDevNight, setNextDevNight] = useState(null);
-  // const [presentations, setPresentations] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch('https://sgf.dev/api/dev-night/');
-  //     const data = await response.json();
-  //     setNextDevNight(data.nextDevNight);
-  //     setPresentations(data.presentations);
-  //   }
-  //  fetchData();
-  // }, []);
+  // For testing purposes, single, two, or multiple presentation nights
   // const presentations = [{group: 'Group Name', presenter: 'Presenter Name', otherPresenter: ['Other Presenter Name1', 'Other Presenter Name2'], name: 'TED Talk Title long longer longest est est more more more more more moe moer more more more more moremore mroe mroe', MeetupUrl: '#'}];
   // const presentations = [{group: 'Group Name', presenter: 'Presenter Name', otherPresenter: ['Other Presenter Name1', 'Other Presenter Name2'], name: 'TED Talk Title', MeetupUrl: '#'}, {group: 'Group 2 Name', presenter: 'Presenter 2 Name', otherPresenter: ['Other Presenter 2 Name1', 'Other Presenter 2 Name2'], name: 'TED 2 Talk 2 Title pants pants pants pants ', MeetupUrl: '#'}];
   const presentations = [{group: 'Group Name', presenter: 'Presenter Name', otherPresenter: ['Other Presenter Name1', 'Other Presenter Name2'], name: 'TED Talk Title', MeetupUrl: '#'}, {group: 'Group 2 Name', presenter: 'Presenter 2 Name', otherPresenter: ['Other Presenter 2 Name1', 'Other Presenter 2 Name2'], name: 'TED 2 Talk 2 Title', MeetupUrl: '#'}, {group: 'Group 3 Name', presenter: 'Presenter 3 Name', otherPresenter: ['Other Presenter 3 Name1', 'Other Presenter 3 Name2'], name: 'TED 3 Talk 3 Title', MeetupUrl: '#'}];

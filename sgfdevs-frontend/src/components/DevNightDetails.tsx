@@ -31,27 +31,16 @@ function DevNightDetails({ presentation, index, total }) {
             className='block h-20 w-20 rounded-full border-2 border-solid border-foreground-light'
           >
             {/* Conditional rendering for client-side */}
-            {typeof window !== 'undefined' && (
+            {typeof window === 'undefined' && (
             <Image
               src='/ChrisKin.jpg' //needs to change for actual pictures
-              // src='presenter.ProfileImage.GetCropUrl(width:500)}
-              alt={presenter.name}
+              alt="Chris's Name" // needs to point to actual user
               height={76}
               width={76}
               className='rounded-full object-cover grayscale'
               style={{ zIndex: 1}}
-              z-Index={1}
+              z-index={1}
             />
-            )}
-            {typeof window === 'undefined' && (
-              <img
-                src='/ChrisKin.jpg'
-                alt='Speaker Name'
-                height={76}
-                width={76}
-                className='rounded-full object-cover grayscale'
-                style={{ zIndex: 1 }}
-              />
             )}
           </a>
         </div>
