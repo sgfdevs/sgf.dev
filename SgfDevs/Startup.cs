@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SGFDevs.Controllers;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
@@ -44,7 +45,7 @@ namespace SGFDevs
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers();
-            
+
             if (string.IsNullOrEmpty(_config["SGFDevs:AzureBlobStorageKey"]))
             {
                 devsServices.AddCdnMediaUrlProvider(options =>
@@ -60,10 +61,12 @@ namespace SGFDevs
                     options.ContainerName = "website";
                 });
             }
-            
+
             devsServices.Build();
 
+            services.AddHttpClient();
             services.AddScoped<DirectoryHelper>();
+            services.AddScoped<NewsletterHelper>();
         }
 
         /// <summary>

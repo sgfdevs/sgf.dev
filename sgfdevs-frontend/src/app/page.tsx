@@ -1,6 +1,7 @@
 import Directory from '@/assets/Headline.svg';
 import Sponsor from '@/assets/Sponsor.svg';
 import Image from 'next/image';
+import Carousel from '@/components/Carousel';
 
 import { Link } from '@/components/Link';
 import { DirectoryCard } from '@/components/DirectoryCard';
@@ -11,7 +12,7 @@ import { DevNightBanner } from '@/components/DevNightBanner';
 //TODO: Repplace with actual images.
 import Pipey from '@/assets/pipey.jpg';
 import ChrisKin from '@/assets/ChrisKin.jpg';
-import LogicForte from '@/assets/Logic-Forte.jpg';
+import LogicForte from '@/assets/logic-forte.jpg';
 import DeveloperCard from '@/components/DeveloperCard';
 
 export default function Home() {
@@ -54,11 +55,10 @@ export default function Home() {
           >
             <i className='font-font-awesome-5-pro before:content-[""]' />
           </Link>
-          <div className='flex overflow-hidden'>
-            <DirectoryCard memberCount={memberCount} />
-            <DeveloperCard developer={exampleDev}></DeveloperCard>
-            {/* Profile cards go here */}
-          </div>
+          <Carousel className='flex'
+            length = {memberCount}
+            directoryCard = {<DirectoryCard memberCount={memberCount}/>}
+          />
         </div>
       </section>
       <section className='relative overflow-hidden bg-foreground px-12 pb-11 pt-4 text-white'>
@@ -158,7 +158,14 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className='min-h-[353px] bg-[url(/circuit_graphic.svg)] bg-[70vw_center] bg-no-repeat pb-24 pt-36'>
+      <section
+        className={cn(
+          'relative pt-[153px]',
+          'after:bg-120 after:absolute after:left-0 after:top-[-23px] after:z-[-1] after:h-[180px] after:w-full after:bg-[url(/circuit_graphic.svg)] after:bg-right-bottom after:bg-no-repeat after:content-[""]',
+          'md:after:absolute md:after:left-auto md:after:top-auto md:after:z-auto md:after:h-auto md:after:w-auto md:after:bg-none md:after:content-[""]',
+          'md:relative md:min-h-[353px] md:bg-[url(/circuit_graphic.svg)] md:bg-[65vw_50%] md:bg-no-repeat md:pb-24 md:pr-16 md:pt-36 xl:bg-[right]',
+        )}
+      >
         <div className='relative mx-auto px-8'>
           <div className='max-w-[65%] xl:max-w-[43%]'>
             <h3 className='text-4xl font-bold text-foreground'>

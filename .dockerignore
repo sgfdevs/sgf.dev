@@ -23,6 +23,8 @@
 **/values.dev.yaml
 LICENSE
 README.md
+SgfDevs/Umbraco/Logs
+SgfDevs/Umbraco/Data
 !**/.gitignore
 !.git/HEAD
 !.git/config

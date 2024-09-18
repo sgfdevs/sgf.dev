@@ -14,7 +14,7 @@ export function MobileHeader({ children }: PropsWithChildren) {
         <ul className='flex'>
           <MobileNav open={open} toggle={() => setOpen((open) => !open)} />
           <HeaderItem href='/login'>Login</HeaderItem>
-          <HeaderItem href='/signup'>Sign Up</HeaderItem>
+          <HeaderItem href='/register'>Sign Up</HeaderItem>
         </ul>
       </nav>
       <MobileMenu open={open}>{children}</MobileMenu>

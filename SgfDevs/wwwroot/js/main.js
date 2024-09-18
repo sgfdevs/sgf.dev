@@ -63,7 +63,7 @@ $(function() {
         if (validateEmail(emailAddress)) {
             $.post($(this).attr('action'), $(this).serialize()).done(function (data) {
                 $('#email').val('');
-                swal('You Are Awesome', "Thanks for signing up for updates. You'll be hearing from us soon!", 'success');
+                swal('Check your email', "You'll be sent an email to confirm your subscriptions to our newsletter", 'success');
             });
         } else {
             swal('Whoops', 'Something went wrong... Please double check that your email address is valid. And if so, yell at us on the Twitter and tell us our stuff is broken.', 'error');
