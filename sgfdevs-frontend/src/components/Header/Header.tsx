@@ -42,11 +42,11 @@ const routes = [
   },
   {
     label: 'Archives',
-    href: '/archives',
+    href: 'https://youtube.com/playlist?list=PLsuKlCbZhK0Of5hMBU7CZeunPHIciRfPD&si=Iv9RVVeOHaCAexIc',
   },
   {
     label: 'Discord',
-    href: '/discord',
+    href: 'https://discord.sgf.dev/',
   },
 ];
 
