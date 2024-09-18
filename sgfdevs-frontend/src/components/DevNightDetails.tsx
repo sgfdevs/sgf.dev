@@ -30,8 +30,6 @@ function DevNightDetails({ presentation, index, total }) {
             href='#'
             className='block h-20 w-20 rounded-full border-2 border-solid border-foreground-light'
           >
-            {/* Conditional rendering for client-side */}
-            {typeof window === 'undefined' && (
             <Image
               src='/ChrisKin.jpg' //needs to change for actual pictures
               alt="Chris's Name" // needs to point to actual user
@@ -41,7 +39,6 @@ function DevNightDetails({ presentation, index, total }) {
               style={{ zIndex: 1}}
               z-index={1}
             />
-            )}
           </a>
         </div>
         {/* Presentation Title */}
