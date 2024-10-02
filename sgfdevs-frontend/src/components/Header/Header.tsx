@@ -59,7 +59,7 @@ export function Header() {
             <Image src={Logo} alt='Logo' />
           </Link>
         </div>
-        <nav className='hidden lg:block' role='navigation'>
+        <nav className='hidden lg:block relative z-50' role='navigation'>
           <ul className='flex'>
             {routes.map(({ label, href, subMenuRoutes }) => (
               <HeaderItem key={href} href={href} subMenuRoutes={subMenuRoutes}>
