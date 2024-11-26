@@ -22,9 +22,11 @@
             <ul>
                 @foreach (Member member in officers)
                 {
+                    var image = member.ProfileImage?.Url() ?? "/images/pipey.jpg";
+
                     <li>
                         <figure>
-                            <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                            <img src="@image" alt="@member.Name">
                         </figure>
                         <h2><a href="/member/@member.Username">@member.Name</a></h2>
                         <h3>@member.OfficerTitle</h3>
@@ -47,10 +49,12 @@
             <ul>
                 @foreach (Member member in board)
                 {
+                    var image = member.ProfileImage?.Url() ?? "/images/pipey.jpg";
+
                     <li>
                         <a href="/member/@member.Username">
                             <figure>
-                                <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                                <img src="@image" alt="@member.Name">
                             </figure>
                             <h4>@member.Name</h4>
                         </a>
@@ -72,11 +76,12 @@
                 @foreach (Member member in history)
                 {
                     var title = string.IsNullOrEmpty(member.OfficerTitle) ? "Board Member" : member.OfficerTitle;
+                    var image = member.ProfileImage?.Url() ?? "/images/pipey.jpg";
 
                     <li>
                         <a href="#">
                             <figure>
-                                <img src="@member.ProfileImage.Url()" alt="@member.Name">
+                                <img src="@image" alt="@member.Name">
                             </figure>
                             <h4>@member.Name</h4>
 
