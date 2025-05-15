@@ -1,13 +1,12 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using SgfDevs.Dev
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using SGFDevs.Dev
 @using Umbraco.Cms.Core
-@using Umbraco.Cms.Core.Services
 @using Umbraco.Cms.Web.Common
 @inject DirectoryHelper _directoryHelper;
-@inject IMemberService _memberService;
 @inject UmbracoHelper _helper;
+@inject MemberConverter _memberConverter;
 
 @{
     Layout = "_Layout";
@@ -55,7 +54,8 @@
                 @foreach (var presentation in presentations)
                 {
                     var group = presentation.Group;
-                    var presenter = (Member)presentation.Presenter;
+
+                    var presenter = _memberConverter.FromContent(presentation.Presenter);
 
                     <li>
                         <div class="members">
@@ -66,7 +66,7 @@
                             {
                                 foreach (var publishedContent in presentation.OtherPresenters)
                                 {
-                                    var otherPresenter = (Member)publishedContent;
+                                    var otherPresenter = _memberConverter.FromContent(publishedContent);
                                     var image = otherPresenter.ProfileImage == null ? "/images/pipey.jpg" : otherPresenter.ProfileImage.GetCropUrl(width: 500);
                                     <a href="/member/@otherPresenter.Username">
                                         <img src="@image" alt="@presenter.Name">
@@ -160,18 +160,16 @@
                 </footer>
             </div>
 
-            @foreach(var _member in members)
+            @foreach(var _member in members.Take(20))
             {
-                //var member = Umbraco.Member(_member.Id) as Member;
-                var member = _memberService.GetById(_member.Id);
+                var member = _memberConverter.FromMember(_member);
                 var url = "/member/" + member.Username;
-                var location = member.GetValue("city") + ", " + member.GetValue("state");
+                var location = member.City + ", " + member.State;
                 var image = "/images/pipey.jpg";
 
-                if(member.GetValue("ProfileImage") != null)
+                if(member.ProfileImage != null)
                 {
-                    var imageUdi = member.GetValue("ProfileImage").ToString();
-                    image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
+                    image = member.ProfileImage.GetCropUrl(width: 250);
                 }
 
                 <div class="card company_card">

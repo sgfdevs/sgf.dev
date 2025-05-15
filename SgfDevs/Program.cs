@@ -39,6 +39,7 @@ else
 umbracoBuilder.Build();
 
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<MemberConverter>();
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
 

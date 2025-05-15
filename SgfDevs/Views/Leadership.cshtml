@@ -1,11 +1,13 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using SgfDevs.Dev
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Leadership>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject MemberConverter _memberConverter;
 
 @{
-    var officers = Model.Officers;
-    var board = Model.BoardOfDirectors;
-    var history = Model.History;
+    var officers = Model.Officers?.Select(c => _memberConverter.FromContent(c)).ToList() ?? [];
+    var board = Model.BoardOfDirectors?.Select(c => _memberConverter.FromContent(c)).ToList() ?? [];;
+    var history = Model.History?.Select(c => _memberConverter.FromContent(c)).ToList() ?? [];;
 }
 
 <header class="leadership_header">

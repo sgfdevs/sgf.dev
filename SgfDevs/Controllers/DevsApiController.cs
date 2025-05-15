@@ -16,6 +16,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Filters;
+using Umbraco.Cms.Web.Common.PublishedModels;
 using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
 using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
 using Umbraco.Extensions;
@@ -36,6 +37,7 @@ public class DevsApiController : Controller
     private IContentTypeBaseServiceProvider _contentTypeBaseServiceProvider;
     private MediaUrlGeneratorCollection _mediaUrlGeneratorCollection;
     private NewsletterHelper _newsletterHelper;
+    private readonly MemberConverter _memberConverter;
 
 
     public DevsApiController(
@@ -49,7 +51,8 @@ public class DevsApiController : Controller
         IShortStringHelper shortStringHelper,
         IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
         MediaUrlGeneratorCollection mediaUrlGeneratorCollection,
-        NewsletterHelper newsletterHelper
+        NewsletterHelper newsletterHelper,
+        MemberConverter memberConverter
     )
     {
         _directoryHelper = directoryHelper;
@@ -63,6 +66,7 @@ public class DevsApiController : Controller
         _contentTypeBaseServiceProvider = contentTypeBaseServiceProvider;
         _mediaUrlGeneratorCollection = mediaUrlGeneratorCollection;
         _newsletterHelper = newsletterHelper;
+        _memberConverter = memberConverter;
     }
 
     // GET
@@ -136,8 +140,11 @@ public class DevsApiController : Controller
     public async Task<IActionResult> UploadProfileImage()
     {
         var currentMember = await _memberManager.GetCurrentMemberAsync();
-        var memberById = await _memberManager.FindByIdAsync(currentMember.Id);
-        var member = _memberManager.AsPublishedMember(memberById) as Member;
+        if (currentMember == null)
+        {
+            return Forbid();
+        }
+        var member = _memberConverter.FromContent(_memberManager.AsPublishedMember(currentMember));
 
         //var request = HttpContext.Current.Request;
         //var request = HttpContext.Request;
@@ -191,31 +198,31 @@ public class DevsApiController : Controller
         return Ok();
     }
 
-    private DirectoryResult BuildDirectoryResult(IMember member, List<Tag> allMemberTags)
+    private DirectoryResult BuildDirectoryResult(IMember umbracoMember, List<Tag> allMemberTags)
     {
+        var member = _memberConverter.FromMember(umbracoMember);
         var foundingMemberTag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "founding member");
         var supportingMember2024Tag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "2024 supporting member");
         var url = "/member/" + member.Username;
-        var location = member.GetValue("city") + ", " + member.GetValue("state");
+        var location = member.City + ", " + member.State;
         var image = "/images/pipey.jpg";
 
-        if(member.GetValue("ProfileImage") != null)
+        if(member.ProfileImage != null)
         {
-            var imageUdi = member.GetValue("ProfileImage").ToString();
-            image = _helper.Media(UdiParser.Parse(imageUdi)).GetCropUrl(width: 800);
+            image = member.ProfileImage.GetCropUrl(width: 500);
         }
 
         var isFoundingMember = false;
         var isSupportingMember2024 = false;
-        var memberTags = member.GetValue("MemberTags")?.ToString();
+        var memberTags = member.MemberTags?.Cast<Tag>().Select(t => t.Key).ToList() ?? [];
         if (foundingMemberTag != null && memberTags != null)
         {
-            isFoundingMember = memberTags.Contains(foundingMemberTag.Key.ToString().Replace("-", ""));
+            isFoundingMember = memberTags.Contains(foundingMemberTag.Key);
         }
 
         if (supportingMember2024Tag != null && memberTags != null)
         {
-            isSupportingMember2024 = memberTags.Contains(supportingMember2024Tag.Key.ToString().Replace("-", ""));
+            isSupportingMember2024 = memberTags.Contains(supportingMember2024Tag.Key);
         }
 
         return new DirectoryResult
