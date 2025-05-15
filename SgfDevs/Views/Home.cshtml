@@ -2,6 +2,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using SGFDevs.Dev
+@using SgfDevs.Extensions
 @using Umbraco.Cms.Core
 @using Umbraco.Cms.Web.Common
 @inject DirectoryHelper _directoryHelper;
@@ -15,8 +16,9 @@
     var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
     var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
     var allUpcomingEvents = new List<Event>();
-    //var members = DirectoryHelper.GetAllMembers();
-    var members = _directoryHelper.GetAllMembers();
+
+    var allMembers = _directoryHelper.GetAllMembers().ToList();
+    var dailyRandomMembers = allMembers.GetDailyRandomItems(15);
 
     var companies = Model.Descendants<Company>().Where(c => c.IsSponsor).ToList();
 
@@ -122,7 +124,7 @@
 
         <section>
             <span>
-                <strong>@members.Count()</strong> Members
+                <strong>@allMembers.Count()</strong> Members
             </span>
 
             @* @if (!loginStatusModel.IsLoggedIn) *@
@@ -152,7 +154,7 @@
                 </dl>
 
                 <p>
-                    @members.Count() profiles found
+                    @allMembers.Count() profiles found
                 </p>
 
                 <footer>
@@ -160,7 +162,7 @@
                 </footer>
             </div>
 
-            @foreach(var _member in members.Take(20))
+            @foreach(var _member in dailyRandomMembers)
             {
                 var member = _memberConverter.FromMember(_member);
                 var url = "/member/" + member.Username;
