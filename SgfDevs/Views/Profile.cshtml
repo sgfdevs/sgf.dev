@@ -1,14 +1,16 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Profile>
+@using SgfDevs.Dev
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using Umbraco.Cms.Core.Security
 @using SGFDevs.Dev
 @inject IMemberManager _memberManager
 @inject DirectoryHelper _directoryHelper
+@inject MemberConverter _memberConverter;
 
 @{
     var currentMember = await _memberManager.GetCurrentMemberAsync();
     var memberById = await _memberManager.FindByIdAsync(currentMember.Id);
-    var member = _memberManager.AsPublishedMember(memberById) as Member;
+    var member = _memberConverter.FromContent(_memberManager.AsPublishedMember(memberById));
     var success = TempData["ProfileUpdateSuccess"] != null;
 
     var skills = _directoryHelper.GetSkills();

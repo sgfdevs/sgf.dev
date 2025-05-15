@@ -1,6 +1,8 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using SgfDevs.Dev
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Groups>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject MemberConverter _memberConverter;
 
 @{
     var groups = Model.Children<Group>().ToList();
@@ -37,7 +39,7 @@
                 {
                     <dl>
                         <dt>Group Leaders</dt>
-                        @foreach (Member leader in group.Leaders)
+                        @foreach (var leader in group.Leaders.Select(c => _memberConverter.FromContent(c)))
                         {
                             //var member = Services.MemberService.GetById(leader.Id);
 

@@ -2,9 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using J2N.Collections.Generic;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
-using SGFDevs.Dev;
 using SGFDevs.Models;
 using SGFDevs.ViewModels;
 using Umbraco.Cms.Core;
@@ -16,7 +14,6 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Common.Models;
-using Umbraco.Cms.Web.Common.PublishedModels;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Controllers;
 
@@ -27,14 +24,22 @@ public class AccountController : SurfaceController
     private IMemberSignInManager _memberSignInManager;
     private IMemberManager _memberManager;
     private IMemberService _memberService;
-    private DirectoryHelper _directoryHelper;
 
-    public AccountController(IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IMemberManager memberManager, IMemberService memberService, DirectoryHelper directoryHelper) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
+    public AccountController(
+        IUmbracoContextAccessor umbracoContextAccessor,
+        IUmbracoDatabaseFactory databaseFactory,
+        ServiceContext services,
+        AppCaches appCaches,
+        IProfilingLogger profilingLogger,
+        IPublishedUrlProvider publishedUrlProvider,
+        IMemberSignInManager memberSignInManager,
+        IMemberManager memberManager,
+        IMemberService memberService
+        ) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
     {
         _memberSignInManager = memberSignInManager;
         _memberManager = memberManager;
         _memberService = memberService;
-        _directoryHelper = directoryHelper;
     }
 
     [HttpPost]
