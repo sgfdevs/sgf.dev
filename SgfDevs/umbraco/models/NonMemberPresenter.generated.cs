@@ -63,6 +63,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "15.4.1+0ad020f")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("profileImage")]
-		public virtual string ProfileImage => this.Value<string>(_publishedValueFallback, "profileImage");
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops ProfileImage => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "profileImage");
 	}
 }
