@@ -94,7 +94,7 @@
                             {
                                 @foreach (var publishedContent in presentation.OtherPresenters)
                                 {
-                                    var otherPresenter = (Member)publishedContent;
+                                    var otherPresenter = _memberConverter.FromContent(publishedContent);
                                     <dd><a href="/member/@otherPresenter.Username.ToLower()">@otherPresenter.Name</a></dd>
                                 }
                             }
