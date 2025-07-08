@@ -1,10 +1,11 @@
 @model Umbraco.Cms.Web.Common.PublishedModels.Member
+@using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
 
 @{
     var name = Model.FirstName + " " + Model.LastName;
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
-    var isFoundingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
-    var is2024SupportingMember = Model.HasValue("MemberTags") ? Model.MemberTags.Where(n => n.Name.ToLower() == "2024 supporting member").Any() : false;
+    var memberTags = Model.HasValue("MemberTags") ? Model.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
+    var joinDate = (Model.GetProperty("CreateDate")?.GetValue() as DateTime?)?.ToString("MMMM yyyy");
 }
 
 
@@ -26,8 +27,18 @@
             }
         </div>
 
-        <div class="image">
-            <img src="@image" alt="@name" />
+        <div class="image-wrapper">
+            <div class="image">
+                <figure>
+                    <img src="@image" alt="@name"/>
+                </figure>
+                <figcaption>
+                    @foreach (var tagName in memberTags.Select(tag => !string.IsNullOrWhiteSpace(tag.DisplayName) ? tag.DisplayName : tag.Name))
+                    {
+                        <div>@tagName</div>
+                    }
+                </figcaption>
+            </div>
         </div>
     </header>
 
@@ -37,27 +48,18 @@
         <div class="panel about">
             <div class="col-1">
                 <div class="metadata">
-                    <div class="flag">
-                        <!-- TODO modularize with the figcaption? -->
-                        @if (isFoundingMember)
-                        {
-                            <div>Founding Member</div>
-                        }
-                        @if (is2024SupportingMember)
-                        {
-                            <div>2024 Supporting Member</div>
-                        }
-                    </div>
-
                     <div class="location">
                         <i class="icon fas fa-map-marker-alt"></i>
                         @Model.City, @Model.State
                     </div>
 
-                    <div class="member-since">
-                        <i class="icon fas fa-calendar-alt"></i>
-                        Member since @Model.CreateDate.ToString("MMMM yyyy")
-                    </div>
+                    @if (!string.IsNullOrEmpty(joinDate))
+                    {
+                        <div class="member-since">
+                            <i class="icon fas fa-calendar-alt"></i>
+                            Member since @joinDate
+                        </div>
+                    }
                 </div>
 
                 <div class="socials">

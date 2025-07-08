@@ -168,6 +168,7 @@
                 var url = "/member/" + member.Username;
                 var location = member.City + ", " + member.State;
                 var image = "/images/pipey.jpg";
+                var memberTags = member.MemberTags?.Cast<Tag>().ToList() ?? [];
 
                 if(member.ProfileImage != null)
                 {
@@ -177,9 +178,11 @@
                 <div class="card company_card">
                     <figure>
                         <a href="@url"><img src="@image" alt="@member.Name"></a>
-                        <figcaption style="display: none;">
-                            <div>Platinum Sponsor</div>
-                            <div>Founding Sponsor</div>
+                        <figcaption>
+                            @foreach (var tagName in memberTags.Select(t => !string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : t.Name))
+                            {
+                                <div>@tagName</div>
+                            }
                         </figcaption>
                     </figure>
 

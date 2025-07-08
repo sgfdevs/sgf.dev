@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SGFDevs.Dev;
-using Umbraco.Cms.Web.Common.Controllers;
 using Examine;
 using SgfDevs.Dev;
 using SGFDevs.ViewModels;
@@ -16,8 +15,6 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Filters;
-using Umbraco.Cms.Web.Common.PublishedModels;
-using Member = Umbraco.Cms.Web.Common.PublishedModels.Member;
 using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
 using Umbraco.Extensions;
 
@@ -117,7 +114,7 @@ public class DevsApiController : Controller
             // Otherwise hit Lucene/Examine
             var skillsParam = skillsQs.Split(',');
             var criteria = searcher.CreateQuery("member");
-            var query = criteria.GroupedOr(new string[] { "nodeName", "skillKeys", "skillsTags", "skills", "skillIds" }, skillsParam as string[]);
+            var query = criteria.GroupedOr(["nodeName", "skillKeys", "skillsTags", "skills", "skillIds"], skillsParam);
             var results = query.Execute();
 
             if (results.Any())
@@ -201,8 +198,6 @@ public class DevsApiController : Controller
     private DirectoryResult BuildDirectoryResult(IMember umbracoMember, List<Tag> allMemberTags)
     {
         var member = _memberConverter.FromMember(umbracoMember);
-        var foundingMemberTag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "founding member");
-        var supportingMember2024Tag = allMemberTags.FirstOrDefault(x => x.Name?.ToLower() == "2024 supporting member");
         var url = "/member/" + member.Username;
         var location = member.City + ", " + member.State;
         var image = "/images/pipey.jpg";
@@ -212,18 +207,7 @@ public class DevsApiController : Controller
             image = member.ProfileImage.GetCropUrl(width: 500);
         }
 
-        var isFoundingMember = false;
-        var isSupportingMember2024 = false;
-        var memberTags = member.MemberTags?.Cast<Tag>().Select(t => t.Key).ToList() ?? [];
-        if (foundingMemberTag != null && memberTags != null)
-        {
-            isFoundingMember = memberTags.Contains(foundingMemberTag.Key);
-        }
-
-        if (supportingMember2024Tag != null && memberTags != null)
-        {
-            isSupportingMember2024 = memberTags.Contains(supportingMember2024Tag.Key);
-        }
+        var memberTags = member.MemberTags?.Cast<Tag>().ToList() ?? [];
 
         return new DirectoryResult
         {
@@ -231,8 +215,7 @@ public class DevsApiController : Controller
             Location = location,
             Image = image,
             Url = url,
-            IsFoundingMember = isFoundingMember,
-            Is2024SupportingMember = isSupportingMember2024,
+            Tags = memberTags.Select(t => !string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : t.Name)
         };
     }
 }
