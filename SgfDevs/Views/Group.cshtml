@@ -215,19 +215,14 @@
                 <div class="cards grid">
                     @foreach (var leader in Model.Leaders.Select(c => _memberConverter.FromContent(c)))
                     {
-                        var isFoundingMember = leader.HasValue("MemberTags") ? leader.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
-                        var is2024SupportingMember = Model.HasValue("MemberTags") ? leader.MemberTags.Where(n => n.Name.ToLower() == "2024 supporting member").Any() : false;
+                        var memberTags = leader.HasValue("MemberTags") ? leader.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
                         <div class="card company_card">
                             <figure>
                                 <img src="@leader.ProfileImage.GetCropUrl(width: 960)" alt="@leader.Name">
                                 <figcaption>
-                                    @if (isFoundingMember)
+                                    @foreach (var tagName in memberTags.Select(tag => !string.IsNullOrWhiteSpace(tag.DisplayName) ? tag.DisplayName : tag.Name))
                                     {
-                                        <div>Founding Member</div>
-                                    }
-                                    @if (is2024SupportingMember)
-                                    {
-                                        <div>2024 Supporting Member</div>
+                                        <div>@tagName</div>
                                     }
                                 </figcaption>
                             </figure>

@@ -36,8 +36,12 @@
             }
         }
 
-        .image {
-            width:75%;
+        .image-wrapper {
+            width: 100%;
+
+            @media (min-width: 500px) {
+                width:75%;
+            }
 
             @media (min-width:1024px) {
                 width:40%;
@@ -74,6 +78,33 @@
                 }
             }
 
+            .image {
+                position: relative;
+                max-width: 800px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            figcaption {
+                position: absolute;
+                bottom: 30px;
+                right: 0;
+
+                div {
+                    background: #6f9dca;
+                    color: #fff;
+                    padding: 0 5px 0 14px;
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 7px 50%);
+                    line-height: 23px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    letter-spacing: 0;
+                    margin-bottom: 8px;
+                }
+            }
         }
     }
 
@@ -106,7 +137,7 @@
             &:checked + .label {
                 background:transparent;
                 color:inherit;
-                
+
                 & + .panel {
                     display:flex; // Shows the panel when active.
 
@@ -248,12 +279,12 @@
 
         .flag {
             position: absolute;
-            right:5vmax;
-    
+            right: 5vmax;
+
             @media (min-width:1024px) {
                 right:6vmax;
             }
-    
+
             div {
                 background:$light_blue;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 7px 50%);
