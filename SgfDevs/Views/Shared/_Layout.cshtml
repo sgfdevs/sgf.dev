@@ -5,6 +5,8 @@
 @{
     Random rand = new Random();
     var pageTitle = ViewData["PageTitle"] ?? "Springfield Devs - " + Model.Name;
+    var eventsLink = "https://www.meetup.com/sgfdevs/events/";
+    var archiveLink = "https://youtube.com/playlist?list=PLsuKlCbZhK0Of5hMBU7CZeunPHIciRfPD";
 }
 <!DOCTYPE html>
 <html>
@@ -66,8 +68,8 @@
                     @*<li><a href="/events/">Events</a></li>*@
                     <li><a href="/groups">Groups</a></li>
                     <li><a href="/directory">Directory</a></li>
-                    <li><a href="https://youtube.com/playlist?list=PLsuKlCbZhK0Of5hMBU7CZeunPHIciRfPD&si=Iv9RVVeOHaCAexIc" target="_blank">Archives</a></li>
-                    <li><a href="/discord">Discord</a></li>
+                    <li><a href="@archiveLink" target="_blank">Archives</a></li>
+                    <li><a href="@eventsLink" target="_blank">Events</a></li>
                     <li class="mobile"><a href="/login">Login</a></li>
                     <li class="mobile"><a href="/register">Signup</a></li>
                 </ul>
@@ -104,7 +106,8 @@
                     @*<li><a href="/events/">Events</a></li>*@
                     <li><a href="/groups/">Groups</a></li>
                     <li><a href="/directory/">Directory</a></li>
-                    <li><a href="https://youtube.com/playlist?list=PLsuKlCbZhK0Of5hMBU7CZeunPHIciRfPD&si=Iv9RVVeOHaCAexIc" target="_blank">Archives</a></li>
+                    <li><a href="@archiveLink" target="_blank">Archives</a></li>
+                    <li><a href="@eventsLink" target="_blank">Events</a></li>
                     <li class="mobile"><a href="/login">Login</a></li>
                     <li class="mobile"><a href="/register">Signup</a></li>
                 </ul>
@@ -153,7 +156,7 @@
                     <a target="_blank" href="https://www.facebook.com/sgfdevs">Facebook</a>
                     <a target="_blank" href="https://twitter.com/sgfdevs/">Twitter</a>
                     <a target="_blank" href="https://www.instagram.com/sgfdevs/">Instagram</a>
-                    <a target="_blank" href="https://discord.sgf.dev/">Discord</a>
+                    <a href="/discord">Discord</a>
                 </nav>
 
                 <p>
