@@ -1,4 +1,8 @@
 http://www.sgf.dev {
+    handle_path /dev-night-survey {
+        redir https://forms.gle/iKbsVXxEhAFLA5bD6 302
+    }
+
 	reverse_proxy sgf-devs:80
 }
 
