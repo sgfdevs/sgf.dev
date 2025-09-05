@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +13,8 @@ using Umbraco.Cms.Persistence.Sqlite;
 using Umbraco.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseSentry();
 
 var umbracoBuilder = builder.CreateUmbracoBuilder()
     .AddBackOffice()
