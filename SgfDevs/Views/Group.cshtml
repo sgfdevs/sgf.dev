@@ -5,6 +5,7 @@
 @inject MemberConverter _memberConverter;
 @{
     var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
+    var leaders = (Model.Leaders ?? []).ToArray();
 }
 
 <main class="group">
@@ -205,15 +206,15 @@
             </div>
         }
 
-        @if (Model.Leaders.Any())
+        @if (leaders.Any())
         {
             <input name="tabs" type="radio" id="tab-3" class="tab" />
-            <label for="tab-3" class="label">Leaders <span>@Model.Leaders.Count()</span></label>
+            <label for="tab-3" class="label">Leaders <span>@leaders.Length</span></label>
             <div class="panel archive">
                 <h3>Leaders</h3>
 
                 <div class="cards grid">
-                    @foreach (var leader in Model.Leaders.Select(c => _memberConverter.FromContent(c)))
+                    @foreach (var leader in leaders.Select(c => _memberConverter.FromContent(c)))
                     {
                         var memberTags = leader.HasValue("MemberTags") ? leader.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
                         <div class="card company_card">
