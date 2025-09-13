@@ -9,6 +9,7 @@
     <PackageReference Include="Umbraco.Cms" Version="16.2.0" />
     <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="16.0.0" />
     <PackageReference Include="uSync" Version="16.0.4" />
+    <PackageReference Include="Glitchedmob.Skybrud.Umbraco.Redirects" Version="16.0.0-glitchedmob" />
   </ItemGroup>
   <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
   <ItemGroup>
