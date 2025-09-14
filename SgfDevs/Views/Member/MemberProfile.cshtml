@@ -6,6 +6,18 @@
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
     var memberTags = Model.HasValue("MemberTags") ? Model.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
     var joinDate = (Model.GetProperty("CreateDate")?.GetValue() as DateTime?)?.ToString("MMMM yyyy");
+    string url = null;
+    string urlDisplay = null;
+    if (Model.HasValue("WebsiteUrl") && !string.IsNullOrWhiteSpace(Model.WebsiteUrl))
+    {
+        url = Model.WebsiteUrl.StartsWith("http") ? Model.WebsiteUrl : $"https://{Model.WebsiteUrl}";
+        urlDisplay = Model.WebsiteUrl
+            .ReplaceFirst("http://", "")
+            .ReplaceFirst("https://", "")
+            .ReplaceFirst("www.", "")
+            .ToLower()
+            .Split("/")[0];
+    }
 }
 
 
@@ -16,9 +28,9 @@
             <h1>@name</h1>
             <h2>@Model.JobTitle</h2>
 
-            @if (Model.HasValue("WebsiteUrl"))
+            @if (url != null)
             {
-                <a href="@Model.WebsiteUrl" class="button">Visit Site</a>
+                <a href="@url" target="_blank" class="button">Visit Site</a>
             }
 
             @if (Model.AvailableForContractWork || Model.AvailableForHire)
@@ -66,10 +78,10 @@
                     <h3>Social</h3>
 
                     <ul>
-                        @if (Model.HasValue("WebsiteUrl"))
+                        @if (url != null)
                         {
                             <li class="social website">
-                                <a href="@Model.WebsiteUrl"><i class="icon fa fa-globe"></i> @Model.WebsiteUrl</a>
+                                <a href="@url"><i class="icon fa fa-globe"></i> @urlDisplay</a>
                             </li>
                         }
 
