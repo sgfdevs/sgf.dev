@@ -81,42 +81,42 @@
                         @if (url != null)
                         {
                             <li class="social website">
-                                <a href="@url"><i class="icon fa fa-globe"></i> @urlDisplay</a>
+                                <a href="@url" target="_blank"><i class="icon fa fa-globe"></i> @urlDisplay</a>
                             </li>
                         }
 
                         @if (Model.HasValue("TwitterUrl"))
                         {
                             <li class="social twitter">
-                                <a href="@Model.TwitterUrl"><i class="icon fab fa-twitter"></i> Twitter</a>
+                                <a href="@Model.TwitterUrl" target="_blank"><i class="icon fab fa-twitter"></i> Twitter</a>
                             </li>
                         }
 
                         @if (Model.HasValue("LinkedInUrl"))
                         {
                             <li class="social linkedin">
-                                <a href="@Model.LinkedInUrl"><i class="icon fab fa-linkedin"></i> LinkedIn</a>
+                                <a href="@Model.LinkedInUrl" target="_blank"><i class="icon fab fa-linkedin"></i> LinkedIn</a>
                             </li>
                         }
 
                         @if (Model.HasValue("FacebookUrl"))
                         {
                             <li class="social facebook">
-                                <a href="@Model.FacebookUrl"><i class="icon fab fa-facebook"></i> Facebook</a>
+                                <a href="@Model.FacebookUrl" target="_blank"><i class="icon fab fa-facebook"></i> Facebook</a>
                             </li>
                         }
 
                         @if (Model.HasValue("InstagramUrl"))
                         {
                             <li class="social instagram">
-                                <a href="@Model.InstagramUrl"><i class="icon fab fa-instagram"></i> Instagram</a>
+                                <a href="@Model.InstagramUrl" target="_blank"><i class="icon fab fa-instagram"></i> Instagram</a>
                             </li>
                         }
 
                         @if (Model.HasValue("YouTubeUrl"))
                         {
                             <li class="social youtube">
-                                <a href="@Model.YouTubeUrl"><i class="icon fab fa-youtube"></i> Youtube</a>
+                                <a href="@Model.YouTubeUrl" target="_blank"><i class="icon fab fa-youtube"></i> Youtube</a>
                             </li>
                         }
                     </ul>
