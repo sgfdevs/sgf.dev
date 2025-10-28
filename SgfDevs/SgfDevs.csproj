@@ -3,10 +3,10 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
-    <PackageReference Include="ReverseMarkdown" Version="4.7.0" />
+    <PackageReference Include="AutoMapper" Version="15.1.0" />
+    <PackageReference Include="ReverseMarkdown" Version="4.7.1" />
     <PackageReference Include="Sentry.AspNetCore" Version="5.16.1" />
-    <PackageReference Include="Umbraco.Cms" Version="16.3.1" />
+    <PackageReference Include="Umbraco.Cms" Version="16.3.3" />
     <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="16.0.0" />
     <PackageReference Include="uSync" Version="16.1.0" />
     <PackageReference Include="Glitchedmob.Skybrud.Umbraco.Redirects" Version="16.0.0-glitchedmob" />
