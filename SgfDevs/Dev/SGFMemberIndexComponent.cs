@@ -34,7 +34,7 @@ public class SGFMemberIndexComponent : IComponent
 
         ((BaseIndexProvider)index).TransformingIndexValues += IndexProviderTransformingIndexValues;
     }
-    
+
     private void IndexProviderTransformingIndexValues(object sender, IndexingItemEventArgs e)
     {
         if (int.TryParse(e.ValueSet.Id, out var nodeId))
@@ -64,13 +64,14 @@ public class SGFMemberIndexComponent : IComponent
                         foreach (var skillGuid in skillGuids)
                         {
                             //Udi.Parse(skillGuid)
-                            
-                            var skill = umbracoContext.UmbracoContext.Content.GetById(UdiParser.Parse(skillGuid)) as Tag;
+                            var udi = UdiParser.Parse(skillGuid);
+
+                            var skill = umbracoContext.UmbracoContext.Content.GetById(new GuidUdi(udi.UriValue).Guid) as Tag;
                             skillsIndexValue.Add(string.IsNullOrEmpty(skill.DisplayName) ? skill.Name : skill.DisplayName);
                             skillKeysValue.Add(skill.Key.ToString());
                             skillIdsValue.Add(skill.Id.ToString());
                         }
-                        
+
                         // This approach seems to have been killed off in Umbraco 10 upgrade
                         // and the update to Examine 3. Keeping around for now until this
                         // tested approach appears to work. Documentation is sparse af
@@ -78,14 +79,14 @@ public class SGFMemberIndexComponent : IComponent
                         //e.ValueSet.Set("skills", string.Join(",", skillsIndexValue.ToArray()));
                         //e.ValueSet.Set("skillKeys", string.Join(",", skillKeysValue.ToArray()));
                         //e.ValueSet.Set("skillIds", string.Join(",", skillIdsValue.ToArray()));
-                        
+
                         var values = new Dictionary<string, IEnumerable<object>>()
                         {
                             {"skills", skillsIndexValue.ToArray() },
                             {"skillKeys", skillKeysValue.ToArray() },
                             {"skillIds", skillIdsValue.ToArray()}
                         };
-                        
+
                         e.SetValues(values);
                     }
                 }

@@ -17,6 +17,7 @@ namespace SGFDevs.Controllers;
 public class MemberController : UmbracoPageController, IVirtualPageController
 {
     private IMemberManager _memberManager;
+    private readonly IDocumentUrlService _documentUrlService;
     private readonly MemberConverter _memberConverter;
     private readonly IUmbracoContextAccessor _umbracoContextAccessor;
     private ILogger<MemberController> _logger;
@@ -26,18 +27,32 @@ public class MemberController : UmbracoPageController, IVirtualPageController
         ICompositeViewEngine compositeViewEngine,
         IUmbracoContextAccessor umbracoContextAccessor,
         IMemberManager memberManager,
+        IDocumentUrlService documentUrlService,
         MemberConverter memberConverter
     ) : base(logger, compositeViewEngine)
     {
         _umbracoContextAccessor = umbracoContextAccessor;
         _memberManager = memberManager;
+        _documentUrlService = documentUrlService;
         _memberConverter = memberConverter;
         _logger = logger;
     }
 
     public IPublishedContent FindContent(ActionExecutingContext actionExecutingContext)
     {
-        return _umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext) ? umbracoContext.Content.GetByRoute("/member") : null;
+        var key = _documentUrlService.GetDocumentKeyByRoute("/member", null, null, false);
+
+        if (key is null)
+        {
+            return null;
+        }
+
+        if (!_umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext))
+        {
+            return null;
+        }
+
+        return umbracoContext.Content.GetById(key.Value);
     }
 
     [HttpGet]
