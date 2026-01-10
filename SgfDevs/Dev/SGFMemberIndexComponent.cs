@@ -72,22 +72,18 @@ public class SGFMemberIndexComponent : IComponent
                             skillIdsValue.Add(skill.Id.ToString());
                         }
 
-                        // This approach seems to have been killed off in Umbraco 10 upgrade
-                        // and the update to Examine 3. Keeping around for now until this
-                        // tested approach appears to work. Documentation is sparse af
-                        // so hopefully this works!
-                        //e.ValueSet.Set("skills", string.Join(",", skillsIndexValue.ToArray()));
-                        //e.ValueSet.Set("skillKeys", string.Join(",", skillKeysValue.ToArray()));
-                        //e.ValueSet.Set("skillIds", string.Join(",", skillIdsValue.ToArray()));
+                        var updatedValues = new Dictionary<string, IEnumerable<object>>();
 
-                        var values = new Dictionary<string, IEnumerable<object>>()
+                        foreach (var kvp in e.ValueSet.Values)
                         {
-                            {"skills", skillsIndexValue.ToArray() },
-                            {"skillKeys", skillKeysValue.ToArray() },
-                            {"skillIds", skillIdsValue.ToArray()}
-                        };
+                            updatedValues[kvp.Key] = kvp.Value;
+                        }
 
-                        e.SetValues(values);
+                        updatedValues["skills"] = skillsIndexValue.ToArray();
+                        updatedValues["skillKeys"] = skillKeysValue.ToArray();
+                        updatedValues["skillIds"] = skillIdsValue.ToArray();
+
+                        e.SetValues(updatedValues);
                     }
                 }
             }
