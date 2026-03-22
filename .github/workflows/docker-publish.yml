@@ -98,16 +98,16 @@ jobs:
             });
             
             const imageUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/pkgs/container/${context.repo.repo}`;
-            const body = `## Docker Image\n\n` +
+            const dockerSection = `## Docker Image\n\n` +
               `**Published:** ✅\n` +
               `**Image:** \`ghcr.io/${context.repo.owner}/${context.repo.repo}:${{ inputs.version }}\`\n` +
               `**Latest:** \`ghcr.io/${context.repo.owner}/${context.repo.repo}:latest\`\n\n` +
               `Pull: \`docker pull ghcr.io/${context.repo.owner}/${context.repo.repo}:${{ inputs.version }}\`\n\n` +
               `[View on GitHub Container Registry](${imageUrl})`;
             
-            await github.rest.repos.createReleaseComment({
+            await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: release.id,
-              body: body
+              body: release.body + '\n\n---\n\n' + dockerSection
             });
