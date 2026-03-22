@@ -43,7 +43,7 @@ jobs:
         id: platform
         run: |
           PLATFORM_TAG=$(echo "${{ matrix.platform }}" | tr '/' '-')
-          echo "tag=$PLATFORM_TAG" >> $GITHUB_OUTPUT
+          echo "tag=$PLATFORM_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
