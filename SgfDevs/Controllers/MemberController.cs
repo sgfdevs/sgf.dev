@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -58,6 +59,11 @@ public class MemberController : UmbracoPageController, IVirtualPageController
     [HttpGet]
     public async Task<IActionResult> MemberProfile(string username)
     {
+        if (string.IsNullOrWhiteSpace(username) || username.Any(c => !char.IsLetterOrDigit(c)))
+        {
+            return NotFound();
+        }
+
         var memberUser = await _memberManager.FindByNameAsync(username);
         if (memberUser == null)
         {

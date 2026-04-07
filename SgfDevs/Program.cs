@@ -66,7 +66,7 @@ app.UseUmbraco()
     {
         u.EndpointRouteBuilder.MapControllerRoute(
             "ProfileCustomRoute",
-            "member/{username}",
+            "member/{username:regex(^[a-zA-Z0-9]+$)}",
             new { Controller = "Member", Action = "MemberProfile" });
         u.UseBackOfficeEndpoints();
         u.UseWebsiteEndpoints();
