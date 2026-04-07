@@ -178,11 +178,19 @@
                     @foreach (Presentation presentation in upcomingPresentations)
                     {
                         var parentEvent = presentation.Parent<Event>();
-                        var presenter = presentation.Presenter as Member;
-                        var isFoundingMember = presenter.HasValue("MemberTags") ? presenter.MemberTags.Where(n => n.Name.ToLower() == "founding member").Any() : false;
+                        var presenterContent = presentation.Presenter;
+
+                        if (presenterContent == null)
+                        {
+                            continue;
+                        }
+
+                        var presenter = _memberConverter.FromContent(presenterContent);
+                        var isFoundingMember = presenter.MemberTags?.Cast<Tag>().Any(tag => tag.Name.Equals("founding member", StringComparison.OrdinalIgnoreCase)) ?? false;
+                        var presenterImage = presenter.ProfileImage?.GetCropUrl(width: 960) ?? "/images/pipey.jpg";
                         <div class="card company_card">
                             <figure>
-                                <img src="@presenter.ProfileImage.GetCropUrl(width: 960)" alt="@presenter.Name">
+                                <img src="@presenterImage" alt="@presenter.Name">
                                 <figcaption>
                                     @if (isFoundingMember)
                                     {
