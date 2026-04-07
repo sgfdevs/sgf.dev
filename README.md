@@ -20,7 +20,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
 - Copy `.env.example` to `.env`
 - Navigate to the SgfDevs project folder `cd SgfDevs`
 - User the `dotnet user-secrets` command to set your connection string
-  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True"`
+  - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True;Default Timeout=60"`
 - `dotnet run`
 - Open the URL that's printed in the console in your browser
 
@@ -29,7 +29,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
 - Update your .NET User Secrets with a connection string
   - Most IDEs have a shortcut to navigate to this file
   - Reference `appsettings.json` for an example of the `ConnectionStrings` object
-    - Set `umbracoDbDSN` to something like `Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True`
+    - Set `umbracoDbDSN` to something like `Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True;Default Timeout=60`
   - You can also fall back to the CLI tools instructions
 - Your IDE will likely have some kind of run option, run this and it should launch your browser
 
