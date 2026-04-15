@@ -3,8 +3,46 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    open-pull-requests-limit: 1
     groups:
       github-actions:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+      github-actions-security:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "nuget"
+    directory: "/SgfDevs"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 1
+    groups:
+      dotnet:
+        applies-to: "version-updates"
+        group-by: "dependency-name"
+        patterns:
+          - "*"
+      dotnet-security:
+        applies-to: "security-updates"
+        group-by: "dependency-name"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 1
+    groups:
+      docker:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+      docker-security:
+        applies-to: "security-updates"
         patterns:
           - "*"
