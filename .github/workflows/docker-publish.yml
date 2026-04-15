@@ -87,7 +87,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}-linux-arm64
 
       - name: Add Docker image info to release
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const tag = 'v${{ inputs.version }}';
