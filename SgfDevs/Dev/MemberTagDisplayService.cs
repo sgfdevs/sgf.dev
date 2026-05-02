@@ -24,6 +24,7 @@ public class MemberTagDisplayService
     internal IReadOnlyList<string> FormatDisplayMemberTags(IEnumerable<string> tagNames)
     {
         var displayTags = new List<string>();
+        var seenTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var supportingYears = new SortedSet<int>();
         int? supportingInsertIndex = null;
 
@@ -42,7 +43,7 @@ public class MemberTagDisplayService
                 continue;
             }
 
-            if (!displayTags.Contains(tagName, StringComparer.OrdinalIgnoreCase))
+            if (seenTags.Add(tagName))
             {
                 displayTags.Add(tagName);
             }
@@ -70,40 +71,38 @@ public class MemberTagDisplayService
 
     private static string FormatSupportingMemberYears(IEnumerable<int> years)
     {
-        var ranges = new List<string>();
-        int? rangeStart = null;
-        int? previousYear = null;
-
-        foreach (var year in years)
-        {
-            if (!rangeStart.HasValue)
-            {
-                rangeStart = year;
-                previousYear = year;
-                continue;
-            }
-
-            if (year == previousYear + 1)
-            {
-                previousYear = year;
-                continue;
-            }
-
-            ranges.Add(FormatRange(rangeStart.Value, previousYear!.Value));
-            rangeStart = year;
-            previousYear = year;
-        }
-
-        if (rangeStart.HasValue && previousYear.HasValue)
-        {
-            ranges.Add(FormatRange(rangeStart.Value, previousYear.Value));
-        }
-
-        return string.Join(", ", ranges);
+        return string.Join(", ", GetConsecutiveYearRanges(years).Select(range => FormatRange(range.Start, range.End)));
     }
 
     private static string FormatRange(int startYear, int endYear)
     {
         return startYear == endYear ? startYear.ToString() : $"{startYear}-{endYear}";
+    }
+
+    private static IEnumerable<(int Start, int End)> GetConsecutiveYearRanges(IEnumerable<int> years)
+    {
+        using var enumerator = years.GetEnumerator();
+        if (!enumerator.MoveNext())
+        {
+            yield break;
+        }
+
+        var rangeStart = enumerator.Current;
+        var rangeEnd = rangeStart;
+
+        while (enumerator.MoveNext())
+        {
+            var year = enumerator.Current;
+            if (year == rangeEnd + 1)
+            {
+                rangeEnd = year;
+                continue;
+            }
+
+            yield return (rangeStart, rangeEnd);
+            rangeStart = rangeEnd = year;
+        }
+
+        yield return (rangeStart, rangeEnd);
     }
 }
