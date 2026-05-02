@@ -1,0 +1,44 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SGFDevs.Models.ResetPasswordModel>
+
+<div class="container">
+    <div class="form">
+        <header>
+            <h1>Reset your password</h1>
+            <p>Choose a new password for your Springfield Devs account.</p>
+        </header>
+
+        @if (string.IsNullOrWhiteSpace(Model.MemberId) || string.IsNullOrWhiteSpace(Model.Token))
+        {
+            <p>This reset link is invalid or has expired.</p>
+            <p><a href="/forgotten-password">Request a new reset link</a></p>
+        }
+        else
+        {
+            @using (Html.BeginUmbracoForm("ResetPassword", "Account", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true)
+                <input asp-for="MemberId" type="hidden" />
+                <input asp-for="Token" type="hidden" />
+
+                <div class="field">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <footer>
+                    <button class="button tall wide" type="submit">Update password</button>
+                    <p><a href="/login">Back to login</a></p>
+                </footer>
+            }
+        }
+    </div>
+</div>
+
+<div class="mt_75"></div>

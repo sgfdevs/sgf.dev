@@ -225,6 +225,34 @@ public class AccountController : SurfaceController
     }
 
     [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+    {
+        if (!ModelState.IsValid)
+            return CurrentUmbracoPage();
+
+        var member = await _memberManager.FindByIdAsync(model.MemberId);
+        if (member == null)
+        {
+            ModelState.AddModelError(string.Empty, "This reset link is invalid or has expired.");
+            return CurrentUmbracoPage();
+        }
+
+        var result = await _memberManager.ResetPasswordAsync(member, model.Token, model.Password);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return CurrentUmbracoPage();
+        }
+
+        TempData["LoginMessage"] = "Your password has been updated. Please log in.";
+        return Redirect("/login");
+    }
+
+    [HttpPost]
     [UmbracoMemberAuthorize]
     public async Task<IActionResult> ProfileUpdate(MemberProfile profile)
     {
