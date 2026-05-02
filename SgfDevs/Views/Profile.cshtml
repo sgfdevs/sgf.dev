@@ -47,9 +47,8 @@
            <p>Profile updated</p>
        }
 
-        <form asp-controller="Account" asp-action="ProfileUpdate" method="post">
-            <input type="hidden" id="MemberId" name="MemberId" value="@member.Id"/>
-            <input type="hidden" id="MemberKey" name="MemberKey" value="@member.Key"/>
+        @using (Html.BeginUmbracoForm("ProfileUpdate", "Account", FormMethod.Post))
+        {
 
             <div class="field">
                 <label for="member.Email">Email</label>
@@ -247,7 +246,7 @@
             <footer>
                 <button class="button tall wide" type="submit">Save</button>
             </footer>
-        </form>
+        }
 
         <div class="mt_75"></div>
     </div>

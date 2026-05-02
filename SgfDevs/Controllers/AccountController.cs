@@ -14,11 +14,13 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Common.Models;
+using Umbraco.Cms.Web.Common.Filters;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Controllers;
 
 namespace SGFDevs.Controllers;
 
+[AutoValidateAntiforgeryToken]
 public class AccountController : SurfaceController
 {
     private IMemberSignInManager _memberSignInManager;
@@ -84,12 +86,15 @@ public class AccountController : SurfaceController
         return CurrentUmbracoPage();
     }
 
+    [HttpPost]
+    [UmbracoMemberAuthorize]
     public async Task<IActionResult> Logout()
     {
         await _memberSignInManager.SignOutAsync();
         return Redirect("/");
     }
 
+    [HttpPost]
     public async Task<IActionResult> Register(RegisterModel model)
     {
         if (!ModelState.IsValid)
@@ -132,9 +137,24 @@ public class AccountController : SurfaceController
     }
 
     [HttpPost]
-    public IActionResult ProfileUpdate(MemberProfile profile)
+    [UmbracoMemberAuthorize]
+    public async Task<IActionResult> ProfileUpdate(MemberProfile profile)
     {
-        var member = _memberService.GetByKey(profile.MemberKey);
+        var currentMember = await _memberManager.GetCurrentMemberAsync();
+        if (currentMember == null)
+        {
+            return Forbid();
+        }
+
+        var member = _memberService.GetByKey(currentMember.Key);
+        var fullName = string.Join(" ", new[] { profile.FirstName, profile.LastName }
+            .Where(value => !string.IsNullOrWhiteSpace(value)));
+
+        if (!string.IsNullOrWhiteSpace(fullName))
+        {
+            member.Name = fullName;
+        }
+
         member.Email = profile.Email;
         member.SetValue("FirstName", profile.FirstName);
         member.SetValue("LastName", profile.LastName);
