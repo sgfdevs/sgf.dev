@@ -1,0 +1,40 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SGFDevs.Models.ForgotPasswordModel>
+
+<div class="container">
+    @if (TempData["ForgotPasswordMessage"] is string message)
+    {
+        <div class="form">
+            <header>
+                <h1>Check your email</h1>
+                <p>@message</p>
+                <p><a href="/login">Back to login</a></p>
+            </header>
+        </div>
+    }
+    else
+    {
+        @using (Html.BeginUmbracoForm("ForgotPassword", "Account", FormMethod.Post))
+        {
+            <div class="form">
+                <header>
+                    <h1>Forgot your password?</h1>
+                    <p>Enter the email address tied to your account and we will send you a reset link.</p>
+                    @Html.ValidationSummary(true)
+                </header>
+
+                <div class="field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <footer>
+                    <button class="button tall wide" type="submit">Send reset link</button>
+                    <p><a href="/login">Back to login</a></p>
+                </footer>
+            </div>
+        }
+    }
+</div>
+
+<div class="mt_75"></div>

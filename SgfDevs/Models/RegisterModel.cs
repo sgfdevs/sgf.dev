@@ -22,7 +22,7 @@ public class RegisterModel
 
     [Required]
     [DataType(DataType.Password)]
-    [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage ="You know the drill.. Password must contain at least one upper and lowercase letter, a numeric digit, a special character, and be at least 8 characters long.")]
+    [RegularExpression(PasswordValidationRules.Pattern, ErrorMessage = PasswordValidationRules.ErrorMessage)]
     public string Password { get; set; }
 
     [Required]

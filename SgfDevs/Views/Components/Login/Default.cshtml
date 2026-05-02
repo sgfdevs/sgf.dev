@@ -3,6 +3,10 @@
 
 
 <div class="container">
+    @if (TempData["LoginMessage"] is string loginMessage)
+    {
+        <p>@loginMessage</p>
+    }
     <p>@ViewData["Login"]</p>
     <p>@ViewData["invalid"]</p>
     <p>@ViewData["LoginInvalid"]</p>

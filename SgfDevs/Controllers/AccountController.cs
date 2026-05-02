@@ -1,31 +1,44 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using J2N.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SGFDevs.Models;
 using SGFDevs.ViewModels;
+using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
+using Umbraco.Cms.Core.Mail;
+using Umbraco.Cms.Core.Models.Email;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
+using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Models;
 using Umbraco.Cms.Web.Common.Filters;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Controllers;
+using Umbraco.Extensions;
 
 namespace SGFDevs.Controllers;
 
 [AutoValidateAntiforgeryToken]
 public class AccountController : SurfaceController
 {
-    private IMemberSignInManager _memberSignInManager;
-    private IMemberManager _memberManager;
-    private IMemberService _memberService;
+    private readonly IMemberSignInManager _memberSignInManager;
+    private readonly IMemberManager _memberManager;
+    private readonly IMemberService _memberService;
+    private readonly UmbracoHelper _umbracoHelper;
+    private readonly IEmailSender _emailSender;
+    private readonly IOptions<GlobalSettings> _globalSettings;
+    private readonly ILogger<AccountController> _logger;
 
     public AccountController(
         IUmbracoContextAccessor umbracoContextAccessor,
@@ -36,12 +49,20 @@ public class AccountController : SurfaceController
         IPublishedUrlProvider publishedUrlProvider,
         IMemberSignInManager memberSignInManager,
         IMemberManager memberManager,
-        IMemberService memberService
+        IMemberService memberService,
+        UmbracoHelper umbracoHelper,
+        IEmailSender emailSender,
+        IOptions<GlobalSettings> globalSettings,
+        ILogger<AccountController> logger
         ) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
     {
         _memberSignInManager = memberSignInManager;
         _memberManager = memberManager;
         _memberService = memberService;
+        _umbracoHelper = umbracoHelper;
+        _emailSender = emailSender;
+        _globalSettings = globalSettings;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -134,6 +155,101 @@ public class AccountController : SurfaceController
 
         ModelState.AddModelError("", "Password too weak");
         return CurrentUmbracoPage();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+    {
+        if (!ModelState.IsValid)
+            return CurrentUmbracoPage();
+
+        if (_emailSender.CanSendRequiredEmail() == false)
+        {
+            ModelState.AddModelError(string.Empty, "Password reset is unavailable right now.");
+            return CurrentUmbracoPage();
+        }
+
+        var fromAddress = _globalSettings.Value.Smtp?.From;
+        if (string.IsNullOrWhiteSpace(fromAddress))
+        {
+            ModelState.AddModelError(string.Empty, "Password reset is unavailable right now.");
+            return CurrentUmbracoPage();
+        }
+
+        var resetPage = _umbracoHelper
+            .ContentAtRoot()
+            .SelectMany(root => root.DescendantsOrSelf())
+            .FirstOrDefault(content => content.ContentType.Alias == "resetPassword");
+
+        if (resetPage == null)
+        {
+            _logger.LogError("Unable to locate the reset password page in content.");
+            ModelState.AddModelError(string.Empty, "Password reset is unavailable right now.");
+            return CurrentUmbracoPage();
+        }
+
+        var resetPageUrl = resetPage.Url(mode: UrlMode.Absolute);
+        if (Uri.TryCreate(resetPageUrl, UriKind.Absolute, out _) == false)
+        {
+            _logger.LogError("Unable to build an absolute URL for the reset password page.");
+            ModelState.AddModelError(string.Empty, "Password reset is unavailable right now.");
+            return CurrentUmbracoPage();
+        }
+
+        var member = await _memberManager.FindByEmailAsync(model.Email);
+        if (member != null)
+        {
+            try
+            {
+                var token = await _memberManager.GeneratePasswordResetTokenAsync(member);
+                var resetLink = QueryHelpers.AddQueryString(resetPageUrl, new Dictionary<string, string>
+                {
+                    ["memberId"] = member.Id,
+                    ["token"] = token,
+                });
+
+                var subject = "Reset your Springfield Devs password";
+                var body = $"<p>Hi {member.Name},</p><p>Someone requested a password reset for your Springfield Devs account.</p><p>If that was you, use the link below to choose a new password:</p><p><a href=\"{resetLink}\">Reset your password</a></p><p>If you did not request this, you can ignore this email.</p>";
+                var emailMessage = new EmailMessage(fromAddress, member.Email, subject, body, true);
+
+                await _emailSender.SendAsync(emailMessage, "PasswordReset", true, _globalSettings.Value.Smtp?.EmailExpiration);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send a password reset email for member {MemberId}.", member.Id);
+            }
+        }
+
+        TempData["ForgotPasswordMessage"] = "If an account exists for that email, we sent a reset link.";
+        return Redirect("/forgotten-password");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+    {
+        if (!ModelState.IsValid)
+            return CurrentUmbracoPage();
+
+        var member = await _memberManager.FindByIdAsync(model.MemberId);
+        if (member == null)
+        {
+            ModelState.AddModelError(string.Empty, "This reset link is invalid or has expired.");
+            return CurrentUmbracoPage();
+        }
+
+        var result = await _memberManager.ResetPasswordAsync(member, model.Token, model.Password);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return CurrentUmbracoPage();
+        }
+
+        TempData["LoginMessage"] = "Your password has been updated. Please log in.";
+        return Redirect("/login");
     }
 
     [HttpPost]
