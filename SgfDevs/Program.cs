@@ -43,6 +43,7 @@ umbracoBuilder.Build();
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<MemberConverter>();
+builder.Services.AddScoped<MemberTagDisplayService>();
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
 

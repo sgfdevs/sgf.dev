@@ -3,6 +3,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Group>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @inject MemberConverter _memberConverter;
+@inject MemberTagDisplayService _memberTagDisplayService;
 @{
     var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
     var leaders = (Model.Leaders ?? []).ToArray();
@@ -186,15 +187,15 @@
                         }
 
                         var presenter = _memberConverter.FromContent(presenterContent);
-                        var isFoundingMember = presenter.MemberTags?.Cast<Tag>().Any(tag => tag.Name.Equals("founding member", StringComparison.OrdinalIgnoreCase)) ?? false;
+                        var presenterMemberTags = _memberTagDisplayService.GetDisplayMemberTags(presenter);
                         var presenterImage = presenter.ProfileImage?.GetCropUrl(width: 960) ?? "/images/pipey.jpg";
                         <div class="card company_card">
                             <figure>
                                 <img src="@presenterImage" alt="@presenter.Name">
                                 <figcaption>
-                                    @if (isFoundingMember)
+                                    @foreach (var tagName in presenterMemberTags)
                                     {
-                                        <div>Founding Sponsor</div>
+                                        <div>@tagName</div>
                                     }
                                 </figcaption>
                             </figure>
@@ -224,12 +225,12 @@
                 <div class="cards grid">
                     @foreach (var leader in leaders.Select(c => _memberConverter.FromContent(c)))
                     {
-                        var memberTags = leader.HasValue("MemberTags") ? leader.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
+                        var memberTags = _memberTagDisplayService.GetDisplayMemberTags(leader);
                         <div class="card company_card">
                             <figure>
                                 <img src="@leader.ProfileImage.GetCropUrl(width: 960)" alt="@leader.Name">
                                 <figcaption>
-                                    @foreach (var tagName in memberTags.Select(tag => !string.IsNullOrWhiteSpace(tag.DisplayName) ? tag.DisplayName : tag.Name))
+                                    @foreach (var tagName in memberTags)
                                     {
                                         <div>@tagName</div>
                                     }

@@ -1,10 +1,12 @@
 @model Umbraco.Cms.Web.Common.PublishedModels.Member
+@using SgfDevs.Dev
 @using Tag = Umbraco.Cms.Web.Common.PublishedModels.Tag;
+@inject MemberTagDisplayService _memberTagDisplayService;
 
 @{
     var name = Model.FirstName + " " + Model.LastName;
     var image = Model.ProfileImage != null ? Model.ProfileImage.GetCropUrl(width: 800) : "/images/pipey.jpg";
-    var memberTags = Model.HasValue("MemberTags") ? Model.MemberTags?.Cast<Tag>().ToList() ?? [] : [];
+    var memberTags = _memberTagDisplayService.GetDisplayMemberTags(Model);
     var joinDate = (Model.GetProperty("CreateDate")?.GetValue() as DateTime?)?.ToString("MMMM yyyy");
     string url = null;
     string urlDisplay = null;
@@ -45,7 +47,7 @@
                     <img src="@image" alt="@name"/>
                 </figure>
                 <figcaption>
-                    @foreach (var tagName in memberTags.Select(tag => !string.IsNullOrWhiteSpace(tag.DisplayName) ? tag.DisplayName : tag.Name))
+                    @foreach (var tagName in memberTags)
                     {
                         <div>@tagName</div>
                     }
