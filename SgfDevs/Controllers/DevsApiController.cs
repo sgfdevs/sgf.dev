@@ -35,6 +35,7 @@ public class DevsApiController : Controller
     private MediaUrlGeneratorCollection _mediaUrlGeneratorCollection;
     private NewsletterHelper _newsletterHelper;
     private readonly MemberConverter _memberConverter;
+    private readonly MemberTagDisplayService _memberTagDisplayService;
 
 
     public DevsApiController(
@@ -49,7 +50,8 @@ public class DevsApiController : Controller
         IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
         MediaUrlGeneratorCollection mediaUrlGeneratorCollection,
         NewsletterHelper newsletterHelper,
-        MemberConverter memberConverter
+        MemberConverter memberConverter,
+        MemberTagDisplayService memberTagDisplayService
     )
     {
         _directoryHelper = directoryHelper;
@@ -64,6 +66,7 @@ public class DevsApiController : Controller
         _mediaUrlGeneratorCollection = mediaUrlGeneratorCollection;
         _newsletterHelper = newsletterHelper;
         _memberConverter = memberConverter;
+        _memberTagDisplayService = memberTagDisplayService;
     }
 
     // GET
@@ -101,12 +104,11 @@ public class DevsApiController : Controller
         {
             var searcher = index.Searcher;
             var skillsQs = HttpContext.Request.Query["skills"].ToString();
-            var allMemberTags = _directoryHelper.GetMemberTags();
             // Send back all the members if no params are set
             if (string.IsNullOrEmpty(skillsQs))
             {
                 var allMembers = _directoryHelper.GetAllMembers()
-                    .Select(member => BuildDirectoryResult(member, allMemberTags));
+                    .Select(BuildDirectoryResult);
 
                 return Ok(allMembers);
             }
@@ -122,7 +124,7 @@ public class DevsApiController : Controller
                 var ids = results.Select(result => int.Parse(result.Id)).ToArray();
 
                 var filteredMembers = _memberService.GetAllMembers(ids)
-                    .Select(member => BuildDirectoryResult(member, allMemberTags))
+                    .Select(BuildDirectoryResult)
                     .OrderBy(m => m.Name);
 
                 return Ok(filteredMembers);
@@ -195,7 +197,7 @@ public class DevsApiController : Controller
         return Ok();
     }
 
-    private DirectoryResult BuildDirectoryResult(IMember umbracoMember, List<Tag> allMemberTags)
+    private DirectoryResult BuildDirectoryResult(IMember umbracoMember)
     {
         var member = _memberConverter.FromMember(umbracoMember);
         var url = "/member/" + member.Username;
@@ -207,15 +209,13 @@ public class DevsApiController : Controller
             image = member.ProfileImage.GetCropUrl(width: 500);
         }
 
-        var memberTags = member.MemberTags?.Cast<Tag>().ToList() ?? [];
-
         return new DirectoryResult
         {
             Name = member.Name,
             Location = location,
             Image = image,
             Url = url,
-            Tags = memberTags.Select(t => !string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : t.Name)
+            Tags = _memberTagDisplayService.GetDisplayMemberTags(member)
         };
     }
 }

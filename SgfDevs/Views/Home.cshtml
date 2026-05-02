@@ -8,6 +8,7 @@
 @inject DirectoryHelper _directoryHelper;
 @inject UmbracoHelper _helper;
 @inject MemberConverter _memberConverter;
+@inject MemberTagDisplayService _memberTagDisplayService;
 
 @{
     Layout = "_Layout";
@@ -168,7 +169,7 @@
                 var url = "/member/" + member.Username;
                 var location = member.City + ", " + member.State;
                 var image = "/images/pipey.jpg";
-                var memberTags = member.MemberTags?.Cast<Tag>().ToList() ?? [];
+                var memberTags = _memberTagDisplayService.GetDisplayMemberTags(member);
 
                 if(member.ProfileImage != null)
                 {
@@ -179,7 +180,7 @@
                     <figure>
                         <a href="@url"><img src="@image" alt="@member.Name"></a>
                         <figcaption>
-                            @foreach (var tagName in memberTags.Select(t => !string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : t.Name))
+                            @foreach (var tagName in memberTags)
                             {
                                 <div>@tagName</div>
                             }
