@@ -142,7 +142,7 @@ public class AccountController : SurfaceController
             await _memberManager.AddToRolesAsync(identityMember, new string[] { "SGF Devs" });
 
             //save the additional details using the MemberService
-            var member = _memberService.GetByKey(identityMember.Key);
+            var member = _memberService.GetById(identityMember.Key);
             member.SetValue("FirstName", model.FirstName);
             member.SetValue("LastName", model.LastName);
             member.SetValue("Username", model.Username);
@@ -262,7 +262,7 @@ public class AccountController : SurfaceController
             return Forbid();
         }
 
-        var member = _memberService.GetByKey(currentMember.Key);
+        var member = _memberService.GetById(currentMember.Key);
         var fullName = string.Join(" ", new[] { profile.FirstName, profile.LastName }
             .Where(value => !string.IsNullOrWhiteSpace(value)));
 
