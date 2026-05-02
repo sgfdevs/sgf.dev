@@ -2,6 +2,8 @@ using Umbraco.Cms.Core.Composing;
 using Examine;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Umbraco.Cms.Core.Web;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core;
@@ -11,7 +13,7 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace SGFDevs.Dev;
 
-public class SGFMemberIndexComponent : IComponent
+public class SGFMemberIndexComponent : IAsyncComponent
 {
     private readonly IUmbracoContextFactory _umbracoContextFactory;
     private readonly IExamineManager _examineManager;
@@ -26,13 +28,14 @@ public class SGFMemberIndexComponent : IComponent
         _memberService = memberService;
     }
 
-    public void Initialize()
+    public Task InitializeAsync(bool isRestarting, CancellationToken cancellationToken)
     {
         // Get the member index
         if (!_examineManager.TryGetIndex(Constants.UmbracoIndexes.MembersIndexName, out IIndex index))
-            return;
+            return Task.CompletedTask;
 
         ((BaseIndexProvider)index).TransformingIndexValues += IndexProviderTransformingIndexValues;
+        return Task.CompletedTask;
     }
 
     private void IndexProviderTransformingIndexValues(object sender, IndexingItemEventArgs e)
@@ -90,9 +93,14 @@ public class SGFMemberIndexComponent : IComponent
         }
     }
 
-    public void Terminate()
+    public Task TerminateAsync(bool isRestarting, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.MembersIndexName, out IIndex index))
+        {
+            ((BaseIndexProvider)index).TransformingIndexValues -= IndexProviderTransformingIndexValues;
+        }
+
+        return Task.CompletedTask;
     }
 }
 
