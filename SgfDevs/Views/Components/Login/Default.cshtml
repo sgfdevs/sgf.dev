@@ -9,8 +9,6 @@
     <p>@ViewData["loginWorked"]</p>
     @using (Html.BeginUmbracoForm("Login", "Account", FormMethod.Post))
     {
-        @* @Html.AntiForgeryToken() *@
-
         <div class="form">
             @Html.ValidationSummary(true)
 

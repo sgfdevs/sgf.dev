@@ -47,9 +47,7 @@
            <p>Profile updated</p>
        }
 
-        <form asp-controller="Account" asp-action="ProfileUpdate" method="post">
-            <input type="hidden" id="MemberId" name="MemberId" value="@member.Id"/>
-            <input type="hidden" id="MemberKey" name="MemberKey" value="@member.Key"/>
+        <form asp-controller="Account" asp-action="ProfileUpdate" method="post" asp-antiforgery="true">
 
             <div class="field">
                 <label for="member.Email">Email</label>

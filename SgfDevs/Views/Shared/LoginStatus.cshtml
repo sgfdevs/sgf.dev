@@ -1,13 +1,5 @@
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using Umbraco.Cms.Core.Security
-@using Umbraco.Cms.Web.Common.Models
-@using Umbraco.Cms.Web.Common.Controllers
 @inject IMemberManager _memberManager;
-
-@{
-    //var loginStatusModel = Members.GetCurrentLoginStatus();
-    //var logoutModel = new PostRedirectModel();
-}
 
 @if (_memberManager.IsLoggedIn())
 {
@@ -17,12 +9,10 @@
         <a href="/account">@currentMember.Name</a>
     </li>
     <li>
-        <a href="/umbraco/surface/account/logout">Logout</a>
-        @* @using (Html.BeginUmbracoForm<UmbLoginStatusController>("HandleLogout")) *@
-        @* { *@
-        @*     <button>Logout</button> *@
-        @*     @Html.HiddenFor(m => logoutModel.RedirectUrl) *@
-        @* } *@
+        @using (Html.BeginUmbracoForm("Logout", "Account", FormMethod.Post))
+        {
+            <button type="submit">Logout</button>
+        }
     </li>
 }
 else
