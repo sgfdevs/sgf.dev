@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - SgfDevs/**
+      - SgfDevs.Tests/**
+      - SgfDevs.slnx
+      - .github/workflows/**
+  push:
+    branches:
+      - main
+    paths:
+      - SgfDevs/**
+      - SgfDevs.Tests/**
+      - SgfDevs.slnx
+      - .github/workflows/**
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore SgfDevs.slnx
+
+      - name: Build
+        run: dotnet build SgfDevs.slnx --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test SgfDevs.slnx --no-build --verbosity minimal
