@@ -16,29 +16,47 @@ public class SessionizeSyncPlanner
             .GroupBy(speaker => speaker.Id, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(group => group.Key, group => group.Last(), StringComparer.OrdinalIgnoreCase);
 
-        var acceptedSessions = sessionGroups
+        var importedSessions = sessionGroups
             .SelectMany(group => group.Sessions ?? [])
             .Where(session => session.IsServiceSession == false)
             .Where(session => string.Equals(session.Status, "Accepted", StringComparison.OrdinalIgnoreCase))
-            .Select(session => new
-            {
-                Session = session,
-                StartsAtLocal = TimeZoneInfo.ConvertTimeFromUtc(ToUtc(session.StartsAt), timeZone)
-            })
-            .OrderBy(item => item.StartsAtLocal)
+            .Select(session => BuildImportedSession(session, speakerLookup, timeZone))
             .ToList();
 
-        return acceptedSessions
-            .GroupBy(item => item.StartsAtLocal.Date)
-            .Select(group => new ImportedEventPlan(
-                BuildEventName(group.Min(item => item.StartsAtLocal)),
-                group.Min(item => item.StartsAtLocal),
-                group.Select(item => BuildPresentationPlan(item.Session, speakerLookup)).ToList()))
+        return importedSessions
+            .GroupBy(session => session.StartsAtLocal.Date)
+            .Select(BuildImportedEventPlan)
             .OrderBy(plan => plan.StartsAtLocal)
             .ToList();
     }
 
     internal static string BuildEventName(DateTime startsAtLocal) => $"Dev Night - {startsAtLocal:MMMM yyyy}";
+
+    private static ImportedEventPlan BuildImportedEventPlan(IEnumerable<ImportedSessionPlan> sessions)
+    {
+        var orderedSessions = sessions
+            .OrderBy(session => session.StartsAtLocal)
+            .ToList();
+
+        var eventStartsAtLocal = orderedSessions[0].StartsAtLocal;
+
+        return new ImportedEventPlan(
+            BuildEventName(eventStartsAtLocal),
+            eventStartsAtLocal,
+            orderedSessions.Select(session => session.Presentation).ToList());
+    }
+
+    private static ImportedSessionPlan BuildImportedSession(
+        SessionizeSessionDto session,
+        IReadOnlyDictionary<string, SessionizeSpeakerDto> speakerLookup,
+        TimeZoneInfo timeZone)
+    {
+        var startsAtLocal = TimeZoneInfo.ConvertTimeFromUtc(ToUtc(session.StartsAt), timeZone);
+
+        return new ImportedSessionPlan(
+            startsAtLocal,
+            BuildPresentationPlan(session, speakerLookup));
+    }
 
     private static ImportedPresentationPlan BuildPresentationPlan(
         SessionizeSessionDto session,
@@ -79,4 +97,8 @@ public class SessionizeSyncPlanner
             _ => DateTime.SpecifyKind(dateTime, DateTimeKind.Utc)
         };
     }
+
+    private record ImportedSessionPlan(
+        DateTime StartsAtLocal,
+        ImportedPresentationPlan Presentation);
 }
