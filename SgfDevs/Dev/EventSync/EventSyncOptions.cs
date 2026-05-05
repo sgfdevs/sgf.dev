@@ -3,6 +3,7 @@ namespace SgfDevs.Dev.EventSync;
 
 public class EventSyncOptions
 {
+    public bool EventSyncEnabled { get; set; }
     public SessionizeOptions Sessionize { get; set; } = new();
     public MeetupApiOptions MeetupApi { get; set; } = new();
     public string EventTimeZoneId { get; set; } = "America/Chicago";
