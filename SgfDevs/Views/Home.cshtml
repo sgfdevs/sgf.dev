@@ -9,6 +9,7 @@
 @inject UmbracoHelper _helper;
 @inject MemberConverter _memberConverter;
 @inject MemberTagDisplayService _memberTagDisplayService;
+@inject PresentationPresenterDisplayService _presentationPresenterDisplayService;
 
 @{
     Layout = "_Layout";
@@ -57,23 +58,21 @@
                 @foreach (var presentation in presentations)
                 {
                     var group = presentation.Group;
-
-                    var presenter = _memberConverter.FromContent(presentation.Presenter);
+                    var presenters = _presentationPresenterDisplayService.GetPresenters(presentation, 500);
 
                     <li>
                         <div class="members">
-                            <a href="/member/@presenter.Username.ToLower()">
-                                <img src="@presenter.ProfileImage.GetCropUrl(width: 500)" alt="@presenter.Name">
-                            </a>
-                            @if (presentation.OtherPresenters != null)
+                            @foreach (var presenter in presenters)
                             {
-                                foreach (var publishedContent in presentation.OtherPresenters)
+                                if (!string.IsNullOrWhiteSpace(presenter.ProfileUrl))
                                 {
-                                    var otherPresenter = _memberConverter.FromContent(publishedContent);
-                                    var image = otherPresenter.ProfileImage == null ? "/images/pipey.jpg" : otherPresenter.ProfileImage.GetCropUrl(width: 500);
-                                    <a href="/member/@otherPresenter.Username">
-                                        <img src="@image" alt="@presenter.Name">
+                                    <a href="@presenter.ProfileUrl">
+                                        <img src="@presenter.ImageUrl" alt="@presenter.Name">
                                     </a>
+                                }
+                                else
+                                {
+                                    <img src="@presenter.ImageUrl" alt="@presenter.Name">
                                 }
                             }
                         </div>
@@ -89,14 +88,15 @@
 
                         <dl>
                             <dt>Presented By</dt>
-                            <dd><a href="/member/@presenter.Username.ToLower()">@presenter.Name</a></dd>
-
-                            @if (presentation.OtherPresenters != null)
+                            @foreach (var presenter in presenters)
                             {
-                                @foreach (var publishedContent in presentation.OtherPresenters)
+                                if (!string.IsNullOrWhiteSpace(presenter.ProfileUrl))
                                 {
-                                    var otherPresenter = _memberConverter.FromContent(publishedContent);
-                                    <dd><a href="/member/@otherPresenter.Username.ToLower()">@otherPresenter.Name</a></dd>
+                                    <dd><a href="@presenter.ProfileUrl">@presenter.Name</a></dd>
+                                }
+                                else
+                                {
+                                    <dd>@presenter.Name</dd>
                                 }
                             }
 

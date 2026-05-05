@@ -4,6 +4,7 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @inject MemberConverter _memberConverter;
 @inject MemberTagDisplayService _memberTagDisplayService;
+@inject PresentationPresenterDisplayService _presentationPresenterDisplayService;
 @{
     var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
     var leaders = (Model.Leaders ?? []).ToArray();
@@ -179,21 +180,19 @@
                     @foreach (Presentation presentation in upcomingPresentations)
                     {
                         var parentEvent = presentation.Parent<Event>();
-                        var presenterContent = presentation.Presenter;
+                        var presenters = _presentationPresenterDisplayService.GetPresenters(presentation, 960);
+                        var primaryPresenter = presenters.FirstOrDefault();
 
-                        if (presenterContent == null)
+                        if (primaryPresenter == null)
                         {
                             continue;
                         }
 
-                        var presenter = _memberConverter.FromContent(presenterContent);
-                        var presenterMemberTags = _memberTagDisplayService.GetDisplayMemberTags(presenter);
-                        var presenterImage = presenter.ProfileImage?.GetCropUrl(width: 960) ?? "/images/pipey.jpg";
                         <div class="card company_card">
                             <figure>
-                                <img src="@presenterImage" alt="@presenter.Name">
+                                <img src="@primaryPresenter.ImageUrl" alt="@primaryPresenter.Name">
                                 <figcaption>
-                                    @foreach (var tagName in presenterMemberTags)
+                                    @foreach (var tagName in primaryPresenter.Tags)
                                     {
                                         <div>@tagName</div>
                                     }
@@ -202,7 +201,10 @@
                             <div class="content">
                                 <dl>
                                     <dt>@presentation.Name</dt>
-                                    <dd>@presenter.Name</dd>
+                                    @foreach (var presenter in presenters)
+                                    {
+                                        <dd>@presenter.Name</dd>
+                                    }
                                     <dd>@parentEvent.Name</dd>
                                 </dl>
                                 <footer>
