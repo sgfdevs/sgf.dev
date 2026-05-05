@@ -141,6 +141,55 @@ public class SessionizeSyncPlannerTests
     }
 
     [Fact]
+    public void FindMatch_MatchesMeetupTitlesWithEventPrefix()
+    {
+        var sessionStartsAtLocal = new DateTime(2026, 5, 6, 18, 30, 0);
+        var events = new[]
+        {
+            new MeetupApiEventDto
+            {
+                Id = "1",
+                Title = "Dev Night - Software History 101",
+                EventUrl = "https://meetup.example/events/1",
+                DateTime = new DateTime(2026, 5, 6, 18, 0, 0)
+            }
+        };
+
+        var match = _matcher.FindMatch(events, "Software History 101", sessionStartsAtLocal);
+
+        Assert.NotNull(match);
+        Assert.Equal("1", match!.Id);
+    }
+
+    [Fact]
+    public void FindMatch_PrefersExactTitleOverPrefixedVariant()
+    {
+        var sessionStartsAtLocal = new DateTime(2026, 5, 6, 18, 30, 0);
+        var events = new[]
+        {
+            new MeetupApiEventDto
+            {
+                Id = "1",
+                Title = "Dev Night - Software History 101",
+                EventUrl = "https://meetup.example/events/1",
+                DateTime = new DateTime(2026, 5, 6, 18, 0, 0)
+            },
+            new MeetupApiEventDto
+            {
+                Id = "2",
+                Title = "Software History 101",
+                EventUrl = "https://meetup.example/events/2",
+                DateTime = new DateTime(2026, 5, 6, 18, 5, 0)
+            }
+        };
+
+        var match = _matcher.FindMatch(events, "Software History 101", sessionStartsAtLocal);
+
+        Assert.NotNull(match);
+        Assert.Equal("2", match!.Id);
+    }
+
+    [Fact]
     public void FindMatch_ReturnsNullWhenOnlyFarAwayDatesExist()
     {
         var events = new[]

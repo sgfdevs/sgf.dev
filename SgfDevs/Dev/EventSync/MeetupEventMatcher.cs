@@ -14,10 +14,47 @@ public class MeetupEventMatcher
         var normalizedSessionTitle = Normalize(sessionTitle);
 
         return events
-            .Where(meetupEvent => string.Equals(Normalize(meetupEvent.Title), normalizedSessionTitle, StringComparison.Ordinal))
-            .Where(meetupEvent => Math.Abs((meetupEvent.DateTime.Date - sessionStartsAtLocal.Date).TotalDays) <= 2)
-            .OrderBy(meetupEvent => Math.Abs((meetupEvent.DateTime - sessionStartsAtLocal).TotalMinutes))
+            .Select(meetupEvent => new
+            {
+                Event = meetupEvent,
+                MatchRank = GetMatchRank(normalizedSessionTitle, Normalize(meetupEvent.Title))
+            })
+            .Where(item => item.MatchRank.HasValue)
+            .Where(item => Math.Abs((item.Event.DateTime.Date - sessionStartsAtLocal.Date).TotalDays) <= 2)
+            .OrderBy(item => item.MatchRank)
+            .ThenBy(item => Math.Abs((item.Event.DateTime - sessionStartsAtLocal).TotalMinutes))
+            .Select(item => item.Event)
             .FirstOrDefault();
+    }
+
+    private static int? GetMatchRank(string normalizedSessionTitle, string normalizedMeetupTitle)
+    {
+        if (string.Equals(normalizedMeetupTitle, normalizedSessionTitle, StringComparison.Ordinal))
+        {
+            return 0;
+        }
+
+        if (ContainsWholePhrase(normalizedMeetupTitle, normalizedSessionTitle))
+        {
+            return 1;
+        }
+
+        if (ContainsWholePhrase(normalizedSessionTitle, normalizedMeetupTitle))
+        {
+            return 2;
+        }
+
+        return null;
+    }
+
+    private static bool ContainsWholePhrase(string source, string phrase)
+    {
+        if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(phrase))
+        {
+            return false;
+        }
+
+        return $" {source} ".Contains($" {phrase} ", StringComparison.Ordinal);
     }
 
     internal static string Normalize(string value)
