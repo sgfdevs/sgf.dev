@@ -10,11 +10,16 @@ namespace SgfDevs.Dev.EventSync;
 
 public class PresenterMemberMatcher
 {
-    private readonly IMemberService _memberService;
+    private readonly Func<string, IReadOnlyList<Guid>> _findMembersByDisplayName;
 
     public PresenterMemberMatcher(IMemberService memberService)
     {
-        _memberService = memberService;
+        _findMembersByDisplayName = searchTerm => FindMembersByDisplayName(memberService, searchTerm);
+    }
+
+    internal PresenterMemberMatcher(Func<string, IReadOnlyList<Guid>> findMembersByDisplayName)
+    {
+        _findMembersByDisplayName = findMembersByDisplayName;
     }
 
     public IReadOnlyList<ImportedPresenterPlan> MatchPresenters(IReadOnlyList<ImportedPresenterPlan> presenters)
@@ -32,12 +37,12 @@ public class PresenterMemberMatcher
             : presenter;
     }
 
-    internal static Guid? GetMatchedMemberKey(IReadOnlyList<Guid> memberKeys)
+    private static Guid? GetMatchedMemberKey(IReadOnlyList<Guid> memberKeys)
     {
         return memberKeys.Count == 1 ? memberKeys[0] : null;
     }
 
-    internal static IReadOnlyList<string> BuildSearchTerms(string? name)
+    private static IReadOnlyList<string> BuildSearchTerms(string? name)
     {
         var normalizedName = NormalizeName(name);
         if (string.IsNullOrWhiteSpace(normalizedName))
@@ -68,7 +73,7 @@ public class PresenterMemberMatcher
         return GetMatchedMemberKey(memberKeys);
     }
 
-    internal static string NormalizeName(string? name)
+    private static string NormalizeName(string? name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -81,13 +86,15 @@ public class PresenterMemberMatcher
             .ToLowerInvariant();
     }
 
-    private IReadOnlyList<Guid> FindMembersByDisplayName(string searchTerm)
+    private IReadOnlyList<Guid> FindMembersByDisplayName(string searchTerm) => _findMembersByDisplayName(searchTerm);
+
+    private static IReadOnlyList<Guid> FindMembersByDisplayName(IMemberService memberService, string searchTerm)
     {
         const int pageIndex = 0;
         const int pageSize = 10;
         long totalRecords;
 
-        return _memberService
+        return memberService
             .FindMembersByDisplayName(searchTerm, pageIndex, pageSize, out totalRecords, StringPropertyMatchType.Exact)
             .Select(member => member.Key)
             .ToList();

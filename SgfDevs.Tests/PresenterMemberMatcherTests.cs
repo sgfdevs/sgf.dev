@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SgfDevs.Dev.EventSync;
 using SgfDevs.Dev.EventSync.Sessionize;
 using Xunit;
@@ -8,28 +9,63 @@ namespace SgfDevs.Tests;
 public class PresenterMemberMatcherTests
 {
     [Fact]
-    public void BuildSearchTerms_IncludesNormalizedNameOnce()
+    public void MatchPresenters_AssignsMemberKeyWhenExactlyOneMemberMatches()
     {
-        var result = PresenterMemberMatcher.BuildSearchTerms("Bertram   Gilfoyle");
+        var memberKey = Guid.NewGuid();
+        var matcher = CreateMatcher(new Dictionary<string, IReadOnlyList<Guid>>
+        {
+            ["bertram gilfoyle"] = [memberKey]
+        });
 
-        Assert.Equal(["bertram gilfoyle", "Bertram   Gilfoyle"], result);
+        var result = Assert.Single(matcher.MatchPresenters([new ImportedPresenterPlan("speaker-1", "Bertram   Gilfoyle", null)]));
+
+        Assert.Equal(memberKey, result.MatchedMemberKey);
     }
 
     [Fact]
-    public void GetMatchedMemberKey_ReturnsSingleKeyWhenExactlyOneMatchExists()
+    public void MatchPresenters_LeavesPresenterUnchangedWhenNoMembersMatch()
     {
-        var key = Guid.NewGuid();
+        var matcher = CreateMatcher(new Dictionary<string, IReadOnlyList<Guid>>());
 
-        var result = PresenterMemberMatcher.GetMatchedMemberKey([key]);
+        var result = Assert.Single(matcher.MatchPresenters([new ImportedPresenterPlan("speaker-1", "Bertram Gilfoyle", null)]));
 
-        Assert.Equal(key, result);
+        Assert.Null(result.MatchedMemberKey);
     }
 
     [Fact]
-    public void GetMatchedMemberKey_ReturnsNullWhenMultipleMatchesExist()
+    public void MatchPresenters_LeavesPresenterUnchangedWhenMultipleMembersMatch()
     {
-        var result = PresenterMemberMatcher.GetMatchedMemberKey([Guid.NewGuid(), Guid.NewGuid()]);
+        var matcher = CreateMatcher(new Dictionary<string, IReadOnlyList<Guid>>
+        {
+            ["bertram gilfoyle"] = [Guid.NewGuid(), Guid.NewGuid()]
+        });
 
-        Assert.Null(result);
+        var result = Assert.Single(matcher.MatchPresenters([new ImportedPresenterPlan("speaker-1", "Bertram Gilfoyle", null)]));
+
+        Assert.Null(result.MatchedMemberKey);
     }
+
+    [Fact]
+    public void MatchPresenters_DeduplicatesSameMemberReturnedByMultipleSearchTerms()
+    {
+        var memberKey = Guid.NewGuid();
+        var matcher = CreateMatcher(new Dictionary<string, IReadOnlyList<Guid>>
+        {
+            ["bertram gilfoyle"] = [memberKey],
+            ["Bertram   Gilfoyle"] = [memberKey]
+        });
+
+        var result = Assert.Single(matcher.MatchPresenters([new ImportedPresenterPlan("speaker-1", "Bertram   Gilfoyle", null)]));
+
+        Assert.Equal(memberKey, result.MatchedMemberKey);
+    }
+
+    private static PresenterMemberMatcher CreateMatcher(IReadOnlyDictionary<string, IReadOnlyList<Guid>> resultsBySearchTerm)
+    {
+        return new PresenterMemberMatcher(searchTerm =>
+            resultsBySearchTerm.TryGetValue(searchTerm, out var result)
+                ? result
+                : []);
+    }
+
 }
