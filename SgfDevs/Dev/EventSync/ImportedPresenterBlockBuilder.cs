@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using SgfDevs.Dev.EventSync.Sessionize;
 using Umbraco.Cms.Core.Services;
 
 namespace SgfDevs.Dev.EventSync;

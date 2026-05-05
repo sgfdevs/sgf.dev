@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SgfDevs.Dev.EventSync;
+namespace SgfDevs.Dev.EventSync.Meetup;
 
 public class MeetupApiAuthRequestDto
 {

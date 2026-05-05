@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using SgfDevs.Dev.EventSync;
+using SgfDevs.Dev.EventSync.Meetup;
+using SgfDevs.Dev.EventSync.Sessionize;
 using Xunit;
 
 namespace SgfDevs.Tests;

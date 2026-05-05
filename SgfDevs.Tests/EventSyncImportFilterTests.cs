@@ -1,5 +1,6 @@
 using System;
 using SgfDevs.Dev.EventSync;
+using SgfDevs.Dev.EventSync.Sessionize;
 using Xunit;
 
 namespace SgfDevs.Tests;

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SgfDevs.Dev;
+using SgfDevs.Dev.EventSync.Meetup;
+using SgfDevs.Dev.EventSync.Sessionize;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;

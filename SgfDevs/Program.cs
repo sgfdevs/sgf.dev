@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using SGFDevs.Controllers;
 using SgfDevs.Dev;
 using SgfDevs.Dev.EventSync;
+using SgfDevs.Dev.EventSync.Meetup;
+using SgfDevs.Dev.EventSync.Sessionize;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Persistence.Sqlite;

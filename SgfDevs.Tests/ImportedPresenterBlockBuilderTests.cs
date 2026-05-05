@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using SgfDevs.Dev.EventSync;
+using SgfDevs.Dev.EventSync.Sessionize;
 using Xunit;
 
 namespace SgfDevs.Tests;

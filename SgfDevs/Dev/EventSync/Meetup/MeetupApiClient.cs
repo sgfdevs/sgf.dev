@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace SgfDevs.Dev.EventSync;
+namespace SgfDevs.Dev.EventSync.Meetup;
 
 public class MeetupApiClient
 {
