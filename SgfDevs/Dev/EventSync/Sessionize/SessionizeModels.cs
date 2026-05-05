@@ -51,4 +51,5 @@ public record ImportedPresenterPlan(
     string SessionizeSpeakerId,
     string Name,
     string? ProfileImageUrl,
-    string? ProfileImageUdi = null);
+    string? ProfileImageUdi = null,
+    Guid? MatchedMemberKey = null);

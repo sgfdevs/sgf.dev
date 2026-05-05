@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using SgfDevs.Dev.EventSync.Sessionize;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Services;
 
 namespace SgfDevs.Dev.EventSync;
 
 public class ImportedPresenterBlockBuilder
 {
+    private const string PresenterPickerAlias = "presenterPicker";
     private const string NonMemberPresenterAlias = "nonMemberPresenter";
 
     private readonly IContentTypeService? _contentTypeService;
+    private readonly Guid? _presenterPickerTypeKey;
     private readonly Guid? _nonMemberPresenterTypeKey;
 
     public ImportedPresenterBlockBuilder(IContentTypeService contentTypeService)
@@ -20,8 +23,9 @@ public class ImportedPresenterBlockBuilder
         _contentTypeService = contentTypeService;
     }
 
-    internal ImportedPresenterBlockBuilder(Guid nonMemberPresenterTypeKey)
+    internal ImportedPresenterBlockBuilder(Guid presenterPickerTypeKey, Guid nonMemberPresenterTypeKey)
     {
+        _presenterPickerTypeKey = presenterPickerTypeKey;
         _nonMemberPresenterTypeKey = nonMemberPresenterTypeKey;
     }
 
@@ -32,6 +36,9 @@ public class ImportedPresenterBlockBuilder
             return string.Empty;
         }
 
+        var presenterPickerTypeKey = _presenterPickerTypeKey
+            ?? _contentTypeService?.Get(PresenterPickerAlias)?.Key
+            ?? throw new InvalidOperationException($"Could not find content type '{PresenterPickerAlias}'.");
         var nonMemberPresenterTypeKey = _nonMemberPresenterTypeKey
             ?? _contentTypeService?.Get(NonMemberPresenterAlias)?.Key
             ?? throw new InvalidOperationException($"Could not find content type '{NonMemberPresenterAlias}'.");
@@ -39,33 +46,46 @@ public class ImportedPresenterBlockBuilder
         var blocks = presenters.Select(presenter =>
         {
             var key = Guid.NewGuid();
+            var isMatchedMember = presenter.MatchedMemberKey.HasValue;
 
             return new
             {
                 key,
                 contentData = new
                 {
-                    contentTypeKey = nonMemberPresenterTypeKey,
+                    contentTypeKey = isMatchedMember ? presenterPickerTypeKey : nonMemberPresenterTypeKey,
                     key,
-                    values = new object[]
-                    {
-                        new
+                    values = isMatchedMember
+                        ? new object[]
                         {
-                            alias = "presenterName",
-                            culture = (string?)null,
-                            editorAlias = (string?)null,
-                            segment = (string?)null,
-                            value = presenter.Name
-                        },
-                        new
-                        {
-                            alias = "profileImage",
-                            culture = (string?)null,
-                            editorAlias = (string?)null,
-                            segment = (string?)null,
-                            value = presenter.ProfileImageUdi ?? string.Empty
+                            new
+                            {
+                                alias = "member",
+                                culture = (string?)null,
+                                editorAlias = (string?)null,
+                                segment = (string?)null,
+                                value = new GuidUdi(Constants.UdiEntityType.Member, presenter.MatchedMemberKey!.Value).ToString()
+                            }
                         }
-                    }
+                        : new object[]
+                        {
+                            new
+                            {
+                                alias = "presenterName",
+                                culture = (string?)null,
+                                editorAlias = (string?)null,
+                                segment = (string?)null,
+                                value = presenter.Name
+                            },
+                            new
+                            {
+                                alias = "profileImage",
+                                culture = (string?)null,
+                                editorAlias = (string?)null,
+                                segment = (string?)null,
+                                value = presenter.ProfileImageUdi ?? string.Empty
+                            }
+                        }
                 }
             };
         }).ToList();

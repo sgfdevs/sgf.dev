@@ -52,7 +52,7 @@ public class SessionizeSpeakerMediaService
 
     public async Task<ImportedPresenterPlan> ImportProfileImageAsync(ImportedPresenterPlan presenter, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(presenter.ProfileImageUrl))
+        if (presenter.MatchedMemberKey.HasValue || string.IsNullOrWhiteSpace(presenter.ProfileImageUrl))
         {
             return presenter;
         }

@@ -33,6 +33,7 @@ public class SessionizeEventSyncService
     private readonly SessionizeApiClient _sessionizeApiClient;
     private readonly MeetupApiClient _meetupApiClient;
     private readonly EventSyncImportFilter _eventSyncImportFilter;
+    private readonly PresenterMemberMatcher _presenterMemberMatcher;
     private readonly SessionizeSyncPlanner _planner;
     private readonly MeetupEventMatcher _meetupEventMatcher;
     private readonly ImportedPresenterBlockBuilder _presenterBlockBuilder;
@@ -45,6 +46,7 @@ public class SessionizeEventSyncService
         SessionizeApiClient sessionizeApiClient,
         MeetupApiClient meetupApiClient,
         EventSyncImportFilter eventSyncImportFilter,
+        PresenterMemberMatcher presenterMemberMatcher,
         SessionizeSyncPlanner planner,
         MeetupEventMatcher meetupEventMatcher,
         ImportedPresenterBlockBuilder presenterBlockBuilder,
@@ -56,6 +58,7 @@ public class SessionizeEventSyncService
         _sessionizeApiClient = sessionizeApiClient;
         _meetupApiClient = meetupApiClient;
         _eventSyncImportFilter = eventSyncImportFilter;
+        _presenterMemberMatcher = presenterMemberMatcher;
         _planner = planner;
         _meetupEventMatcher = meetupEventMatcher;
         _presenterBlockBuilder = presenterBlockBuilder;
@@ -117,7 +120,8 @@ public class SessionizeEventSyncService
 
             foreach (var presentationPlan in eventPlan.Presentations)
             {
-                var presentersWithImages = await ImportPresenterImagesAsync(presentationPlan.Presenters, speakerImageUdis, cancellationToken);
+                var matchedPresenters = _presenterMemberMatcher.MatchPresenters(presentationPlan.Presenters);
+                var presentersWithImages = await ImportPresenterImagesAsync(matchedPresenters, speakerImageUdis, cancellationToken);
                 var enrichedPresentationPlan = presentationPlan with { Presenters = presentersWithImages };
                 var meetupMatch = _meetupEventMatcher.FindMatch(meetupEvents, presentationPlan.Title, eventPlan.StartsAtLocal);
 
