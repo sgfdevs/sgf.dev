@@ -113,6 +113,7 @@ public class SessionizeEventSyncService
             var eventContent = GetOrCreateEvent(existingEvents, references.EventsContainerId, eventPlan);
             SaveEventContent(eventContent, eventPlan);
             _contentService.Save(eventContent, SystemUserId);
+            var presentationsToPublish = new List<IContent>();
 
             var existingPresentations = GetChildren(eventContent.Id)
                 .Where(content => string.Equals(content.ContentType.Alias, PresentationAlias, StringComparison.Ordinal))
@@ -136,9 +137,14 @@ public class SessionizeEventSyncService
                 var presentationContent = GetOrCreatePresentation(existingPresentations, eventContent.Id, presentationPlan);
                 SavePresentationContent(presentationContent, references.SpringfieldDevsGroupKey, enrichedPresentationPlan, meetupMatch?.EventUrl);
                 _contentService.Save(presentationContent, SystemUserId);
+                presentationsToPublish.Add(presentationContent);
             }
 
-            PublishEventBranch(eventContent);
+            PublishContent(eventContent, "event", clearSchedule: true);
+            foreach (var presentationContent in presentationsToPublish)
+            {
+                PublishContent(presentationContent, "presentation");
+            }
         }
     }
 
@@ -256,11 +262,29 @@ public class SessionizeEventSyncService
         return enrichedPresenters;
     }
 
-    private void PublishEventBranch(IContent eventContent)
+    private void PublishContent(IContent content, string contentKind, bool clearSchedule = false)
     {
-        _contentService.PersistContentSchedule(eventContent, new ContentScheduleCollection());
-        _contentService.PublishBranch(eventContent, PublishBranchFilter.IncludeUnpublished, ["*"], SystemUserId);
-        _logger.LogInformation("Published event branch {EventName} and cleared any existing schedule.", eventContent.Name);
+        if (clearSchedule)
+        {
+            _contentService.PersistContentSchedule(content, new ContentScheduleCollection());
+        }
+
+        var publishResult = _contentService.Publish(content, ["*"], SystemUserId);
+        if (publishResult.Success)
+        {
+            _logger.LogInformation(
+                "Published {ContentKind} {ContentName} with result {PublishResult}.",
+                contentKind,
+                content.Name,
+                publishResult.Result);
+            return;
+        }
+
+        _logger.LogWarning(
+            "Failed to publish {ContentKind} {ContentName}. Publish result was {PublishResult}.",
+            contentKind,
+            content.Name,
+            publishResult.Result);
     }
 
     private IReadOnlyList<IContent> GetChildren(int parentId)
