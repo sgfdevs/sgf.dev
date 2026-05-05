@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SGFDevs.Controllers;
 using SgfDevs.Dev;
+using SgfDevs.Dev.EventSync;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Persistence.Sqlite;
@@ -42,11 +43,19 @@ else
 umbracoBuilder.Build();
 
 builder.Services.AddHttpClient();
+builder.Services.Configure<EventSyncOptions>(builder.Configuration.GetSection("SGFDevs"));
 builder.Services.AddScoped<MemberConverter>();
 builder.Services.AddScoped<MemberTagDisplayService>();
 builder.Services.AddScoped<PresentationPresenterDisplayService>();
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
+builder.Services.AddScoped<SessionizeSyncPlanner>();
+builder.Services.AddScoped<MeetupEventMatcher>();
+builder.Services.AddScoped<ImportedPresenterBlockBuilder>();
+builder.Services.AddScoped<ImportedEventPublishingPolicy>();
+builder.Services.AddScoped<SessionizeApiClient>();
+builder.Services.AddScoped<MeetupApiClient>();
+builder.Services.AddScoped<SessionizeEventSyncService>();
 
 var app = builder.Build();
 
