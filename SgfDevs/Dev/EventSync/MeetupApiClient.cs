@@ -7,7 +7,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -35,7 +34,7 @@ public class MeetupApiClient
         string.IsNullOrWhiteSpace(_options.Value.MeetupApi.ClientSecret) == false &&
         string.IsNullOrWhiteSpace(_options.Value.MeetupApi.GroupId) == false;
 
-    public async Task<IReadOnlyList<MeetupApiEventDto>> GetEventsAsync(DateTime afterLocal, DateTime beforeLocal, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<MeetupApiEventDto>> GetEventsAsync(CancellationToken cancellationToken)
     {
         if (IsConfigured == false)
         {
@@ -46,7 +45,7 @@ public class MeetupApiClient
         var client = _httpClientFactory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var requestUrl = BuildEventsUrl(afterLocal, beforeLocal);
+        var requestUrl = BuildEventsUrl();
         var results = new List<MeetupApiEventDto>();
 
         while (string.IsNullOrWhiteSpace(requestUrl) == false)
@@ -90,18 +89,9 @@ public class MeetupApiClient
         return payload.AccessToken;
     }
 
-    private string BuildEventsUrl(DateTime afterLocal, DateTime beforeLocal)
+    private string BuildEventsUrl()
     {
-        var query = new Dictionary<string, string?>
-        {
-            ["after"] = afterLocal.ToString("O"),
-            ["before"] = beforeLocal.ToString("O"),
-            ["limit"] = "100"
-        };
-
-        return QueryHelpers.AddQueryString(
-            BuildAbsoluteUrl($"/v1/groups/{_options.Value.MeetupApi.GroupId}/events"),
-            query);
+        return BuildAbsoluteUrl($"/v1/groups/{_options.Value.MeetupApi.GroupId}/events?limit=100");
     }
 
     private string BuildAbsoluteUrl(string path)

@@ -132,9 +132,7 @@ public class SessionizeEventSyncService
             return GetMeetupEventsFallback();
         }
 
-        var firstStart = eventPlans.Min(plan => plan.StartsAtLocal).AddDays(-7);
-        var lastStart = eventPlans.Max(plan => plan.StartsAtLocal).AddDays(7);
-        return await _meetupApiClient.GetEventsAsync(firstStart, lastStart, cancellationToken);
+        return await _meetupApiClient.GetEventsAsync(cancellationToken);
     }
 
     private (int EventsContainerId, Guid SpringfieldDevsGroupKey) GetContentReferences()
