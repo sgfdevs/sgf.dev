@@ -62,11 +62,12 @@ public class SessionizeSyncPlanner
         if (string.IsNullOrWhiteSpace(speaker.Id) == false && speakerLookup.TryGetValue(speaker.Id, out var detailedSpeaker))
         {
             return new ImportedPresenterPlan(
+                speaker.Id,
                 string.IsNullOrWhiteSpace(detailedSpeaker.FullName) ? speaker.Name : detailedSpeaker.FullName,
                 detailedSpeaker.ProfilePicture);
         }
 
-        return new ImportedPresenterPlan(speaker.Name, null);
+        return new ImportedPresenterPlan(speaker.Id, speaker.Name, null);
     }
 
     private static DateTime ToUtc(DateTime dateTime)

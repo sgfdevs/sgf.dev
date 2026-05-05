@@ -33,6 +33,7 @@ public class SessionizeEventSyncService
     private readonly SessionizeSyncPlanner _planner;
     private readonly MeetupEventMatcher _meetupEventMatcher;
     private readonly ImportedPresenterBlockBuilder _presenterBlockBuilder;
+    private readonly SessionizeSpeakerMediaService _speakerMediaService;
     private readonly IContentService _contentService;
     private readonly IOptions<EventSyncOptions> _options;
     private readonly ILogger<SessionizeEventSyncService> _logger;
@@ -43,6 +44,7 @@ public class SessionizeEventSyncService
         SessionizeSyncPlanner planner,
         MeetupEventMatcher meetupEventMatcher,
         ImportedPresenterBlockBuilder presenterBlockBuilder,
+        SessionizeSpeakerMediaService speakerMediaService,
         IContentService contentService,
         IOptions<EventSyncOptions> options,
         ILogger<SessionizeEventSyncService> logger)
@@ -52,6 +54,7 @@ public class SessionizeEventSyncService
         _planner = planner;
         _meetupEventMatcher = meetupEventMatcher;
         _presenterBlockBuilder = presenterBlockBuilder;
+        _speakerMediaService = speakerMediaService;
         _contentService = contentService;
         _options = options;
         _logger = logger;
@@ -78,6 +81,7 @@ public class SessionizeEventSyncService
 
         var meetupEvents = await GetMeetupEventsAsync(eventPlans, cancellationToken);
         var references = GetContentReferences();
+        var speakerImageUdis = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
         var existingEvents = GetChildren(references.EventsContainerId)
             .Where(content => string.Equals(content.ContentType.Alias, EventAlias, StringComparison.Ordinal))
             .ToList();
@@ -95,6 +99,8 @@ public class SessionizeEventSyncService
 
             foreach (var presentationPlan in eventPlan.Presentations)
             {
+                var presentersWithImages = await ImportPresenterImagesAsync(presentationPlan.Presenters, speakerImageUdis, cancellationToken);
+                var enrichedPresentationPlan = presentationPlan with { Presenters = presentersWithImages };
                 var meetupMatch = _meetupEventMatcher.FindMatch(meetupEvents, presentationPlan.Title, eventPlan.StartsAtLocal);
 
                 if (meetupMatch == null)
@@ -106,7 +112,7 @@ public class SessionizeEventSyncService
                 }
 
                 var presentationContent = GetOrCreatePresentation(existingPresentations, eventContent.Id, presentationPlan);
-                SavePresentationContent(presentationContent, references.SpringfieldDevsGroupKey, presentationPlan, meetupMatch?.EventUrl);
+                SavePresentationContent(presentationContent, references.SpringfieldDevsGroupKey, enrichedPresentationPlan, meetupMatch?.EventUrl);
                 _contentService.Save(presentationContent, SystemUserId);
             }
 
@@ -213,10 +219,36 @@ public class SessionizeEventSyncService
             presentationContent.SetValue(MeetupUrlPropertyAlias, meetupUrl);
         }
 
-        if (string.IsNullOrWhiteSpace(presentationContent.GetValue(PresentersPropertyAlias)?.ToString()))
+        presentationContent.SetValue(PresentersPropertyAlias, _presenterBlockBuilder.Build(presentationPlan.Presenters));
+    }
+
+    private async Task<IReadOnlyList<ImportedPresenterPlan>> ImportPresenterImagesAsync(
+        IReadOnlyList<ImportedPresenterPlan> presenters,
+        Dictionary<string, string?> speakerImageUdis,
+        CancellationToken cancellationToken)
+    {
+        var enrichedPresenters = new List<ImportedPresenterPlan>(presenters.Count);
+
+        foreach (var presenter in presenters)
         {
-            presentationContent.SetValue(PresentersPropertyAlias, _presenterBlockBuilder.Build(presentationPlan.Presenters));
+            if (string.IsNullOrWhiteSpace(presenter.ProfileImageUrl) || string.IsNullOrWhiteSpace(presenter.SessionizeSpeakerId))
+            {
+                enrichedPresenters.Add(presenter);
+                continue;
+            }
+
+            if (speakerImageUdis.TryGetValue(presenter.SessionizeSpeakerId, out var existingUdi))
+            {
+                enrichedPresenters.Add(presenter with { ProfileImageUdi = existingUdi });
+                continue;
+            }
+
+            var enrichedPresenter = await _speakerMediaService.ImportProfileImageAsync(presenter, cancellationToken);
+            speakerImageUdis[presenter.SessionizeSpeakerId] = enrichedPresenter.ProfileImageUdi;
+            enrichedPresenters.Add(enrichedPresenter);
         }
+
+        return enrichedPresenters;
     }
 
     private void PublishEventBranch(IContent eventContent)

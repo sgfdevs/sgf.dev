@@ -72,8 +72,10 @@ public class SessionizeSyncPlannerTests
         Assert.Equal("optimize the box", presentation.Description);
 
         var presenter = Assert.Single(presentation.Presenters);
+        Assert.Equal("speaker-1", presenter.SessionizeSpeakerId);
         Assert.Equal("Bertram Gilfoyle", presenter.Name);
         Assert.Equal("https://sessionize.example/gilfoyle.jpg", presenter.ProfileImageUrl);
+        Assert.Null(presenter.ProfileImageUdi);
     }
 
     [Fact]
@@ -103,6 +105,7 @@ public class SessionizeSyncPlannerTests
         var plans = _planner.BuildEventPlans(sessionGroups, Array.Empty<SessionizeSpeakerDto>(), TimeZoneInfo.Utc);
 
         var presenter = Assert.Single(Assert.Single(Assert.Single(plans).Presentations).Presenters);
+        Assert.Equal("missing-speaker", presenter.SessionizeSpeakerId);
         Assert.Equal("Dinesh Chugtai", presenter.Name);
         Assert.Null(presenter.ProfileImageUrl);
     }

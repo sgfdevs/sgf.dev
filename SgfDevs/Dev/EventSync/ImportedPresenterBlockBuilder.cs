@@ -44,7 +44,7 @@ public class ImportedPresenterBlockBuilder
                             culture = (string?)null,
                             editorAlias = (string?)null,
                             segment = (string?)null,
-                            value = string.Empty
+                            value = presenter.ProfileImageUdi ?? string.Empty
                         }
                     }
                 }

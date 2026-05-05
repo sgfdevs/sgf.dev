@@ -48,5 +48,7 @@ public record ImportedPresentationPlan(
     IReadOnlyList<ImportedPresenterPlan> Presenters);
 
 public record ImportedPresenterPlan(
+    string SessionizeSpeakerId,
     string Name,
-    string? ProfileImageUrl);
+    string? ProfileImageUrl,
+    string? ProfileImageUdi = null);

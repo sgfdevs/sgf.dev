@@ -22,8 +22,8 @@ public class ImportedPresenterBlockBuilderTests
     {
         var result = _builder.Build(
         [
-            new ImportedPresenterPlan("Bertram Gilfoyle", null),
-            new ImportedPresenterPlan("Dinesh Chugtai", null)
+            new ImportedPresenterPlan("speaker-1", "Bertram Gilfoyle", null, "umb://media/0123456789abcdef0123456789abcdef"),
+            new ImportedPresenterPlan("speaker-2", "Dinesh Chugtai", null)
         ]);
 
         using var document = JsonDocument.Parse(result);
@@ -37,6 +37,9 @@ public class ImportedPresenterBlockBuilderTests
         Assert.Equal("presenterName", firstValues[0].GetProperty("alias").GetString());
         Assert.Equal("Bertram Gilfoyle", firstValues[0].GetProperty("value").GetString());
         Assert.Equal("profileImage", firstValues[1].GetProperty("alias").GetString());
-        Assert.Equal(string.Empty, firstValues[1].GetProperty("value").GetString());
+        Assert.Equal("umb://media/0123456789abcdef0123456789abcdef", firstValues[1].GetProperty("value").GetString());
+
+        var secondValues = root.GetProperty("contentData")[1].GetProperty("values");
+        Assert.Equal(string.Empty, secondValues[1].GetProperty("value").GetString());
     }
 }

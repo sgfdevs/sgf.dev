@@ -55,6 +55,7 @@ builder.Services.AddScoped<MeetupEventMatcher>();
 builder.Services.AddScoped<ImportedPresenterBlockBuilder>();
 builder.Services.AddScoped<SessionizeApiClient>();
 builder.Services.AddScoped<MeetupApiClient>();
+builder.Services.AddScoped<SessionizeSpeakerMediaService>();
 builder.Services.AddScoped<SessionizeEventSyncService>();
 
 var app = builder.Build();
