@@ -30,6 +30,7 @@ public class SessionizeEventSyncService
 
     private readonly SessionizeApiClient _sessionizeApiClient;
     private readonly MeetupApiClient _meetupApiClient;
+    private readonly EventSyncImportFilter _eventSyncImportFilter;
     private readonly SessionizeSyncPlanner _planner;
     private readonly MeetupEventMatcher _meetupEventMatcher;
     private readonly ImportedPresenterBlockBuilder _presenterBlockBuilder;
@@ -41,6 +42,7 @@ public class SessionizeEventSyncService
     public SessionizeEventSyncService(
         SessionizeApiClient sessionizeApiClient,
         MeetupApiClient meetupApiClient,
+        EventSyncImportFilter eventSyncImportFilter,
         SessionizeSyncPlanner planner,
         MeetupEventMatcher meetupEventMatcher,
         ImportedPresenterBlockBuilder presenterBlockBuilder,
@@ -51,6 +53,7 @@ public class SessionizeEventSyncService
     {
         _sessionizeApiClient = sessionizeApiClient;
         _meetupApiClient = meetupApiClient;
+        _eventSyncImportFilter = eventSyncImportFilter;
         _planner = planner;
         _meetupEventMatcher = meetupEventMatcher;
         _presenterBlockBuilder = presenterBlockBuilder;
@@ -69,13 +72,16 @@ public class SessionizeEventSyncService
         }
 
         var timeZone = EventSyncTimeZoneResolver.Resolve(_options.Value.EventTimeZoneId);
+        var nowLocal = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, timeZone).DateTime;
         var sessionGroups = await _sessionizeApiClient.GetSessionsAsync(cancellationToken);
         var speakers = await _sessionizeApiClient.GetSpeakersAsync(cancellationToken);
-        var eventPlans = _planner.BuildEventPlans(sessionGroups, speakers, timeZone);
+        var eventPlans = _eventSyncImportFilter.GetUpcomingEvents(
+            _planner.BuildEventPlans(sessionGroups, speakers, timeZone),
+            nowLocal);
 
         if (eventPlans.Count == 0)
         {
-            _logger.LogInformation("No accepted Sessionize sessions were found to import.");
+            _logger.LogInformation("No upcoming accepted Sessionize sessions were found to import.");
             return;
         }
 

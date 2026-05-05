@@ -50,6 +50,7 @@ builder.Services.AddScoped<PresentationPresenterDisplayService>();
 builder.Services.AddScoped<EventDisplayService>();
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
+builder.Services.AddScoped<EventSyncImportFilter>();
 builder.Services.AddScoped<SessionizeSyncPlanner>();
 builder.Services.AddScoped<MeetupEventMatcher>();
 builder.Services.AddScoped<ImportedPresenterBlockBuilder>();
