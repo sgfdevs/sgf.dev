@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SgfDevs.Dev.EventSync.Sessionize;
+using Umbraco.Cms.Core.Persistence.Querying;
 using Umbraco.Cms.Core.Services;
 
 namespace SgfDevs.Dev.EventSync;
@@ -18,41 +19,53 @@ public class PresenterMemberMatcher
 
     public IReadOnlyList<ImportedPresenterPlan> MatchPresenters(IReadOnlyList<ImportedPresenterPlan> presenters)
     {
-        var memberNameLookup = BuildMemberNameLookup(GetAllMemberNames());
-
         return presenters
-            .Select(presenter => MatchPresenter(presenter, memberNameLookup))
+            .Select(MatchPresenter)
             .ToList();
     }
 
-    internal static ImportedPresenterPlan MatchPresenter(
-        ImportedPresenterPlan presenter,
-        IReadOnlyDictionary<string, IReadOnlyList<Guid>> memberNameLookup)
+    private ImportedPresenterPlan MatchPresenter(ImportedPresenterPlan presenter)
     {
-        var normalizedName = NormalizeName(presenter.Name);
-        if (string.IsNullOrWhiteSpace(normalizedName))
-        {
-            return presenter;
-        }
-
-        if (memberNameLookup.TryGetValue(normalizedName, out var memberKeys) == false || memberKeys.Count != 1)
-        {
-            return presenter;
-        }
-
-        return presenter with { MatchedMemberKey = memberKeys[0] };
+        var matchedMemberKey = FindUniqueMemberKey(presenter.Name);
+        return matchedMemberKey.HasValue
+            ? presenter with { MatchedMemberKey = matchedMemberKey.Value }
+            : presenter;
     }
 
-    internal static IReadOnlyDictionary<string, IReadOnlyList<Guid>> BuildMemberNameLookup(IEnumerable<(Guid Key, string? Name, string? FirstName, string? LastName)> members)
+    internal static Guid? GetMatchedMemberKey(IReadOnlyList<Guid> memberKeys)
     {
-        return members
-            .SelectMany(member => GetCandidateNames(member)
-                .Select(name => new { Name = name, member.Key }))
-            .GroupBy(item => item.Name, StringComparer.Ordinal)
-            .ToDictionary(
-                group => group.Key,
-                group => (IReadOnlyList<Guid>)group.Select(item => item.Key).Distinct().ToList(),
-                StringComparer.Ordinal);
+        return memberKeys.Count == 1 ? memberKeys[0] : null;
+    }
+
+    internal static IReadOnlyList<string> BuildSearchTerms(string? name)
+    {
+        var normalizedName = NormalizeName(name);
+        if (string.IsNullOrWhiteSpace(normalizedName))
+        {
+            return [];
+        }
+
+        var searchTerms = new List<string> { normalizedName };
+        var trimmedName = name?.Trim();
+
+        if (string.IsNullOrWhiteSpace(trimmedName) == false && string.Equals(normalizedName, trimmedName, StringComparison.OrdinalIgnoreCase) == false)
+        {
+            searchTerms.Add(trimmedName);
+        }
+
+        return searchTerms
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    private Guid? FindUniqueMemberKey(string? presenterName)
+    {
+        var memberKeys = BuildSearchTerms(presenterName)
+            .SelectMany(FindMembersByDisplayName)
+            .Distinct()
+            .ToList();
+
+        return GetMatchedMemberKey(memberKeys);
     }
 
     internal static string NormalizeName(string? name)
@@ -68,41 +81,15 @@ public class PresenterMemberMatcher
             .ToLowerInvariant();
     }
 
-    private IEnumerable<(Guid Key, string? Name, string? FirstName, string? LastName)> GetAllMemberNames()
+    private IReadOnlyList<Guid> FindMembersByDisplayName(string searchTerm)
     {
-        long pageIndex = 0;
-        const int pageSize = 500;
+        const int pageIndex = 0;
+        const int pageSize = 10;
         long totalRecords;
 
-        do
-        {
-            var members = _memberService.GetAll(pageIndex, pageSize, out totalRecords).ToList();
-
-            foreach (var member in members)
-            {
-                yield return (
-                    member.Key,
-                    member.Name,
-                    member.GetValue<string>("firstName"),
-                    member.GetValue<string>("lastName"));
-            }
-
-            pageIndex++;
-        }
-        while (pageIndex * pageSize < totalRecords);
-    }
-
-    private static IEnumerable<string> GetCandidateNames((Guid Key, string? Name, string? FirstName, string? LastName) member)
-    {
-        if (string.IsNullOrWhiteSpace(member.Name) == false)
-        {
-            yield return NormalizeName(member.Name);
-        }
-
-        var fullName = string.Join(' ', new[] { member.FirstName, member.LastName }.Where(value => string.IsNullOrWhiteSpace(value) == false));
-        if (string.IsNullOrWhiteSpace(fullName) == false)
-        {
-            yield return NormalizeName(fullName);
-        }
+        return _memberService
+            .FindMembersByDisplayName(searchTerm, pageIndex, pageSize, out totalRecords, StringPropertyMatchType.Exact)
+            .Select(member => member.Key)
+            .ToList();
     }
 }

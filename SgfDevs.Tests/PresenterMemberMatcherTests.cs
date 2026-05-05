@@ -8,43 +8,28 @@ namespace SgfDevs.Tests;
 public class PresenterMemberMatcherTests
 {
     [Fact]
-    public void MatchPresenter_MatchesUniqueNormalizedFullName()
+    public void BuildSearchTerms_IncludesNormalizedNameOnce()
     {
-        var memberKey = Guid.NewGuid();
-        var presenter = new ImportedPresenterPlan("speaker-1", "Bertram   Gilfoyle", null);
-        var lookup = PresenterMemberMatcher.BuildMemberNameLookup(
-        [
-            (memberKey, "Bertram Gilfoyle", "Bertram", "Gilfoyle")
-        ]);
+        var result = PresenterMemberMatcher.BuildSearchTerms("Bertram   Gilfoyle");
 
-        var result = PresenterMemberMatcher.MatchPresenter(presenter, lookup);
-
-        Assert.Equal(memberKey, result.MatchedMemberKey);
+        Assert.Equal(["bertram gilfoyle", "Bertram   Gilfoyle"], result);
     }
 
     [Fact]
-    public void MatchPresenter_DoesNotMatchWhenMultipleMembersShareTheSameName()
+    public void GetMatchedMemberKey_ReturnsSingleKeyWhenExactlyOneMatchExists()
     {
-        var presenter = new ImportedPresenterPlan("speaker-1", "Dinesh Chugtai", null);
-        var lookup = PresenterMemberMatcher.BuildMemberNameLookup(
-        [
-            (Guid.NewGuid(), "Dinesh Chugtai", "Dinesh", "Chugtai"),
-            (Guid.NewGuid(), "Dinesh Chugtai", "Dinesh", "Chugtai")
-        ]);
+        var key = Guid.NewGuid();
 
-        var result = PresenterMemberMatcher.MatchPresenter(presenter, lookup);
+        var result = PresenterMemberMatcher.GetMatchedMemberKey([key]);
 
-        Assert.Null(result.MatchedMemberKey);
+        Assert.Equal(key, result);
     }
 
     [Fact]
-    public void MatchPresenter_DoesNotMatchWhenNoMemberExists()
+    public void GetMatchedMemberKey_ReturnsNullWhenMultipleMatchesExist()
     {
-        var presenter = new ImportedPresenterPlan("speaker-1", "Jared Dunn", null);
-        var lookup = PresenterMemberMatcher.BuildMemberNameLookup(Array.Empty<(Guid Key, string? Name, string? FirstName, string? LastName)>());
+        var result = PresenterMemberMatcher.GetMatchedMemberKey([Guid.NewGuid(), Guid.NewGuid()]);
 
-        var result = PresenterMemberMatcher.MatchPresenter(presenter, lookup);
-
-        Assert.Null(result.MatchedMemberKey);
+        Assert.Null(result);
     }
 }
