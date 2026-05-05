@@ -120,8 +120,6 @@ public class SessionizeEventSyncService
         }
     }
 
-    private IReadOnlyList<MeetupApiEventDto> GetMeetupEventsFallback() => [];
-
     private async Task<IReadOnlyList<MeetupApiEventDto>> GetMeetupEventsAsync(
         IReadOnlyList<ImportedEventPlan> eventPlans,
         CancellationToken cancellationToken)
@@ -129,7 +127,7 @@ public class SessionizeEventSyncService
         if (_meetupApiClient.IsConfigured == false)
         {
             _logger.LogInformation("Skipping meetup URL resolution because meetup API credentials are not fully configured.");
-            return GetMeetupEventsFallback();
+            return [];
         }
 
         return await _meetupApiClient.GetEventsAsync(cancellationToken);
