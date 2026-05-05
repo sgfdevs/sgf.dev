@@ -21,7 +21,7 @@ public class SessionizeEventSyncBackgroundJob : IRecurringBackgroundJob
         _logger = logger;
     }
 
-    public TimeSpan Period => TimeSpan.FromDays(1);
+    public TimeSpan Period => TimeSpan.FromHours(2);
     public TimeSpan Delay => TimeSpan.FromMinutes(1);
     public ServerRole[] ServerRoles => [ServerRole.Single, ServerRole.SchedulingPublisher];
 
