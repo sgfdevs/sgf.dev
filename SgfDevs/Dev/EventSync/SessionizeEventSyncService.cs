@@ -79,7 +79,17 @@ public class SessionizeEventSyncService
             return;
         }
 
-        var meetupEvents = await GetMeetupEventsAsync(eventPlans, cancellationToken);
+        IReadOnlyList<MeetupApiEventDto> meetupEvents = [];
+
+        if (_meetupApiClient.IsConfigured == false)
+        {
+            _logger.LogInformation("Skipping meetup URL resolution because meetup API credentials are not fully configured.");
+        }
+        else
+        {
+            meetupEvents = await _meetupApiClient.GetEventsAsync(cancellationToken);
+        }
+
         var references = GetContentReferences();
         var speakerImageUdis = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
         var existingEvents = GetChildren(references.EventsContainerId)
@@ -118,19 +128,6 @@ public class SessionizeEventSyncService
 
             PublishEventBranch(eventContent);
         }
-    }
-
-    private async Task<IReadOnlyList<MeetupApiEventDto>> GetMeetupEventsAsync(
-        IReadOnlyList<ImportedEventPlan> eventPlans,
-        CancellationToken cancellationToken)
-    {
-        if (_meetupApiClient.IsConfigured == false)
-        {
-            _logger.LogInformation("Skipping meetup URL resolution because meetup API credentials are not fully configured.");
-            return [];
-        }
-
-        return await _meetupApiClient.GetEventsAsync(cancellationToken);
     }
 
     private (int EventsContainerId, Guid SpringfieldDevsGroupKey) GetContentReferences()
