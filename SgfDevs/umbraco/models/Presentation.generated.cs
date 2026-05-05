@@ -82,20 +82,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string MeetupUrl => this.Value<string>(_publishedValueFallback, "meetupURL");
 
 		///<summary>
-		/// Other Presenters: For group presentations, panels, etc
+		/// Presenters
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("otherPresenters")]
-		public virtual global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent> OtherPresenters => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>>(_publishedValueFallback, "otherPresenters");
-
-		///<summary>
-		/// Presenter
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("presenter")]
-		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent Presenter => this.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(_publishedValueFallback, "presenter");
+		[ImplementPropertyType("presenters")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel Presenters => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "presenters");
 
 		///<summary>
 		/// Skill Tags
