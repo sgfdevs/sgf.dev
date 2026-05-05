@@ -22,13 +22,13 @@ public class SessionizeSyncPlannerTests
                     new()
                     {
                         Id = "session-1",
-                        Title = "Git internals + CTF 🚩",
-                        Description = "learn git",
+                        Title = "Middle-Out Compression for Snack Delivery",
+                        Description = "optimize the box",
                         StartsAt = new DateTime(2026, 6, 3, 23, 30, 0, DateTimeKind.Utc),
                         Status = "Accepted",
                         Speakers = new List<SessionizeSessionSpeakerDto>
                         {
-                            new() { Id = "speaker-1", Name = "Fallback Name" }
+                            new() { Id = "speaker-1", Name = "Mystery Hooli Engineer" }
                         }
                     },
                     new()
@@ -55,8 +55,8 @@ public class SessionizeSyncPlannerTests
             new SessionizeSpeakerDto
             {
                 Id = "speaker-1",
-                FullName = "Shay Nehmad",
-                ProfilePicture = "https://sessionize.example/shay.jpg"
+                FullName = "Bertram Gilfoyle",
+                ProfilePicture = "https://sessionize.example/gilfoyle.jpg"
             }
         };
 
@@ -68,12 +68,12 @@ public class SessionizeSyncPlannerTests
 
         var presentation = Assert.Single(plan.Presentations);
         Assert.Equal("session-1", presentation.SessionizeId);
-        Assert.Equal("Git internals + CTF 🚩", presentation.Title);
-        Assert.Equal("learn git", presentation.Description);
+        Assert.Equal("Middle-Out Compression for Snack Delivery", presentation.Title);
+        Assert.Equal("optimize the box", presentation.Description);
 
         var presenter = Assert.Single(presentation.Presenters);
-        Assert.Equal("Shay Nehmad", presenter.Name);
-        Assert.Equal("https://sessionize.example/shay.jpg", presenter.ProfileImageUrl);
+        Assert.Equal("Bertram Gilfoyle", presenter.Name);
+        Assert.Equal("https://sessionize.example/gilfoyle.jpg", presenter.ProfileImageUrl);
     }
 
     [Fact]
@@ -88,12 +88,12 @@ public class SessionizeSyncPlannerTests
                     new()
                     {
                         Id = "session-1",
-                        Title = "Software History 101",
+                        Title = "Pivot Tables for Decentralized Pied Pipers",
                         StartsAt = new DateTime(2026, 5, 6, 23, 30, 0, DateTimeKind.Utc),
                         Status = "Accepted",
                         Speakers = new List<SessionizeSessionSpeakerDto>
                         {
-                            new() { Id = "missing-speaker", Name = "Trevor Glauz" }
+                            new() { Id = "missing-speaker", Name = "Dinesh Chugtai" }
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public class SessionizeSyncPlannerTests
         var plans = _planner.BuildEventPlans(sessionGroups, Array.Empty<SessionizeSpeakerDto>(), TimeZoneInfo.Utc);
 
         var presenter = Assert.Single(Assert.Single(Assert.Single(plans).Presentations).Presenters);
-        Assert.Equal("Trevor Glauz", presenter.Name);
+        Assert.Equal("Dinesh Chugtai", presenter.Name);
         Assert.Null(presenter.ProfileImageUrl);
     }
 
@@ -116,20 +116,20 @@ public class SessionizeSyncPlannerTests
             new MeetupApiEventDto
             {
                 Id = "1",
-                Title = "Git internals CTF",
+                Title = "Middle Out Compression for Snack Delivery",
                 EventUrl = "https://meetup.example/events/1",
                 DateTime = new DateTime(2026, 6, 3, 18, 0, 0)
             },
             new MeetupApiEventDto
             {
                 Id = "2",
-                Title = "Git internals CTF",
+                Title = "Middle Out Compression for Snack Delivery",
                 EventUrl = "https://meetup.example/events/2",
                 DateTime = new DateTime(2026, 6, 10, 18, 0, 0)
             }
         };
 
-        var match = _matcher.FindMatch(events, "Git internals + CTF 🚩", sessionStartsAtLocal);
+        var match = _matcher.FindMatch(events, "Middle-Out Compression for Snack Delivery", sessionStartsAtLocal);
 
         Assert.NotNull(match);
         Assert.Equal("1", match!.Id);
@@ -143,13 +143,13 @@ public class SessionizeSyncPlannerTests
             new MeetupApiEventDto
             {
                 Id = "1",
-                Title = "Software History 101",
+                Title = "Pied Piper Platform Launch",
                 EventUrl = "https://meetup.example/events/1",
                 DateTime = new DateTime(2026, 5, 20, 18, 0, 0)
             }
         };
 
-        var match = _matcher.FindMatch(events, "Software History 101", new DateTime(2026, 5, 6, 18, 30, 0));
+        var match = _matcher.FindMatch(events, "Pied Piper Platform Launch", new DateTime(2026, 5, 6, 18, 30, 0));
 
         Assert.Null(match);
     }
