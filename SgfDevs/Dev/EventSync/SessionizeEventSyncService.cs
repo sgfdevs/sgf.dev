@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SgfDevs.Dev;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
@@ -32,7 +33,6 @@ public class SessionizeEventSyncService
     private readonly SessionizeSyncPlanner _planner;
     private readonly MeetupEventMatcher _meetupEventMatcher;
     private readonly ImportedPresenterBlockBuilder _presenterBlockBuilder;
-    private readonly ImportedEventPublishingPolicy _publishingPolicy;
     private readonly IContentService _contentService;
     private readonly IOptions<EventSyncOptions> _options;
     private readonly ILogger<SessionizeEventSyncService> _logger;
@@ -43,7 +43,6 @@ public class SessionizeEventSyncService
         SessionizeSyncPlanner planner,
         MeetupEventMatcher meetupEventMatcher,
         ImportedPresenterBlockBuilder presenterBlockBuilder,
-        ImportedEventPublishingPolicy publishingPolicy,
         IContentService contentService,
         IOptions<EventSyncOptions> options,
         ILogger<SessionizeEventSyncService> logger)
@@ -53,7 +52,6 @@ public class SessionizeEventSyncService
         _planner = planner;
         _meetupEventMatcher = meetupEventMatcher;
         _presenterBlockBuilder = presenterBlockBuilder;
-        _publishingPolicy = publishingPolicy;
         _contentService = contentService;
         _options = options;
         _logger = logger;
@@ -83,8 +81,6 @@ public class SessionizeEventSyncService
         var existingEvents = GetChildren(references.EventsContainerId)
             .Where(content => string.Equals(content.ContentType.Alias, EventAlias, StringComparison.Ordinal))
             .ToList();
-        var nowLocal = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, timeZone).DateTime;
-
         foreach (var eventPlan in eventPlans)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -114,7 +110,7 @@ public class SessionizeEventSyncService
                 _contentService.Save(presentationContent, SystemUserId);
             }
 
-            SyncEventPublishState(eventContent, eventPlan.StartsAtLocal, nowLocal);
+            PublishEventBranch(eventContent);
         }
     }
 
@@ -223,24 +219,11 @@ public class SessionizeEventSyncService
         }
     }
 
-    private void SyncEventPublishState(IContent eventContent, DateTime startsAtLocal, DateTime nowLocal)
+    private void PublishEventBranch(IContent eventContent)
     {
-        if (_publishingPolicy.ShouldBePublished(startsAtLocal, nowLocal))
-        {
-            var schedule = ContentScheduleCollection.CreateWithEntry(null, _publishingPolicy.GetUnpublishAt(startsAtLocal));
-            _contentService.PersistContentSchedule(eventContent, schedule);
-            _contentService.PublishBranch(eventContent, PublishBranchFilter.IncludeUnpublished, ["*"], SystemUserId);
-            _logger.LogInformation("Published event branch {EventName} with unpublish scheduled for {UnpublishAt}.", eventContent.Name, _publishingPolicy.GetUnpublishAt(startsAtLocal));
-            return;
-        }
-
-        if (eventContent.Published)
-        {
-            _contentService.Unpublish(eventContent, null, SystemUserId);
-            _logger.LogInformation("Unpublished expired event {EventName}.", eventContent.Name);
-        }
-
         _contentService.PersistContentSchedule(eventContent, new ContentScheduleCollection());
+        _contentService.PublishBranch(eventContent, PublishBranchFilter.IncludeUnpublished, ["*"], SystemUserId);
+        _logger.LogInformation("Published event branch {EventName} and cleared any existing schedule.", eventContent.Name);
     }
 
     private IReadOnlyList<IContent> GetChildren(int parentId)

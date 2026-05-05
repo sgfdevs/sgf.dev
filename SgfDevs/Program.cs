@@ -47,12 +47,12 @@ builder.Services.Configure<EventSyncOptions>(builder.Configuration.GetSection("S
 builder.Services.AddScoped<MemberConverter>();
 builder.Services.AddScoped<MemberTagDisplayService>();
 builder.Services.AddScoped<PresentationPresenterDisplayService>();
+builder.Services.AddScoped<EventDisplayService>();
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
 builder.Services.AddScoped<SessionizeSyncPlanner>();
 builder.Services.AddScoped<MeetupEventMatcher>();
 builder.Services.AddScoped<ImportedPresenterBlockBuilder>();
-builder.Services.AddScoped<ImportedEventPublishingPolicy>();
 builder.Services.AddScoped<SessionizeApiClient>();
 builder.Services.AddScoped<MeetupApiClient>();
 builder.Services.AddScoped<SessionizeEventSyncService>();

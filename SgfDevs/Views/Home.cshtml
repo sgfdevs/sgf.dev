@@ -10,12 +10,14 @@
 @inject MemberConverter _memberConverter;
 @inject MemberTagDisplayService _memberTagDisplayService;
 @inject PresentationPresenterDisplayService _presentationPresenterDisplayService;
+@inject EventDisplayService _eventDisplayService;
 
 @{
     Layout = "_Layout";
     //var mapper = AutoMapperConfig.Configure();
-    var nextDevNight = Model.Descendants<Event>().OrderBy(d => d.Date).FirstOrDefault();
-    var upcomingDevNights = Model.Descendants<Event>().Where(d => d.Date > DateTime.Today).OrderBy(d => d.Date).ToList();
+    var visibleDevNights = _eventDisplayService.GetCurrentAndUpcomingEvents(Model.Descendants<Event>(), d => d.Date, DateTime.Now);
+    var nextDevNight = visibleDevNights.FirstOrDefault();
+    var upcomingDevNights = visibleDevNights.Skip(1).ToList();
     var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
     var allUpcomingEvents = new List<Event>();
 
@@ -23,11 +25,6 @@
     var dailyRandomMembers = allMembers.GetDailyRandomItems(15);
 
     var companies = Model.Descendants<Company>().Where(c => c.IsSponsor).ToList();
-
-    if (nextDevNight != null)
-    {
-        upcomingDevNights.Remove(nextDevNight);
-    }
 
     if(upcomingDevNights.Any())
     {
