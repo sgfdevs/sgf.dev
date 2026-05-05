@@ -3,12 +3,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using Umbraco.Cms.Core.Services;
 
 namespace SgfDevs.Dev.EventSync;
 
 public class ImportedPresenterBlockBuilder
 {
-    private static readonly Guid NonMemberPresenterTypeKey = new("5ff3a2c3-9dc3-4131-8f07-99c2c0a38be5");
+    private const string NonMemberPresenterAlias = "nonMemberPresenter";
+
+    private readonly IContentTypeService? _contentTypeService;
+    private readonly Guid? _nonMemberPresenterTypeKey;
+
+    public ImportedPresenterBlockBuilder(IContentTypeService contentTypeService)
+    {
+        _contentTypeService = contentTypeService;
+    }
+
+    internal ImportedPresenterBlockBuilder(Guid nonMemberPresenterTypeKey)
+    {
+        _nonMemberPresenterTypeKey = nonMemberPresenterTypeKey;
+    }
 
     public string Build(IReadOnlyList<ImportedPresenterPlan> presenters)
     {
@@ -16,6 +30,10 @@ public class ImportedPresenterBlockBuilder
         {
             return string.Empty;
         }
+
+        var nonMemberPresenterTypeKey = _nonMemberPresenterTypeKey
+            ?? _contentTypeService?.Get(NonMemberPresenterAlias)?.Key
+            ?? throw new InvalidOperationException($"Could not find content type '{NonMemberPresenterAlias}'.");
 
         var blocks = presenters.Select(presenter =>
         {
@@ -26,7 +44,7 @@ public class ImportedPresenterBlockBuilder
                 key,
                 contentData = new
                 {
-                    contentTypeKey = NonMemberPresenterTypeKey,
+                    contentTypeKey = nonMemberPresenterTypeKey,
                     key,
                     values = new object[]
                     {

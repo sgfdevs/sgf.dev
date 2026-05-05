@@ -7,7 +7,7 @@ namespace SgfDevs.Tests;
 
 public class ImportedPresenterBlockBuilderTests
 {
-    private readonly ImportedPresenterBlockBuilder _builder = new();
+    private readonly ImportedPresenterBlockBuilder _builder = new(new Guid("5ff3a2c3-9dc3-4131-8f07-99c2c0a38be5"));
 
     [Fact]
     public void Build_ReturnsEmptyStringWhenNoPresentersExist()
