@@ -5,8 +5,16 @@
 @inject MemberConverter _memberConverter;
 @inject MemberTagDisplayService _memberTagDisplayService;
 @inject PresentationPresenterDisplayService _presentationPresenterDisplayService;
+@inject EventDisplayService _eventDisplayService;
 @{
-    var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>().Where(p => p.Group.Id == Model.Id);
+    var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>()
+        .Where(p => p.Group?.Id == Model.Id)
+        .Where(p =>
+        {
+            var parentEvent = p.Parent<Event>();
+            return parentEvent != null && _eventDisplayService.IsCurrentOrUpcoming(parentEvent.Date, DateTime.Now);
+        })
+        .OrderBy(p => p.Parent<Event>()!.Date);
     var leaders = (Model.Leaders ?? []).ToArray();
 }
 
