@@ -66,21 +66,27 @@
             
             .members {
                 display: flex;
-                
+
                 top: -40px;
                 position: absolute;
                 align-self: center;
-                
-                a {
+
+                > img,
+                > a {
                     border: 2px solid $light_blue;
                     border-radius: 50%;
                     width: 80px;
                     height: 80px;
                     display: block;
                     background: #153557;
+                    overflow: hidden;
                 }
-                
-                a:not(:first-child) {
+
+                a {
+                    flex-shrink: 0;
+                }
+
+                > :not(:first-child) {
                     margin-left: -10px;
                     transform:rotateY(-1deg); /* and here */
                 }
