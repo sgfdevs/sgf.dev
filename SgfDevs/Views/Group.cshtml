@@ -7,12 +7,13 @@
 @inject PresentationPresenterDisplayService _presentationPresenterDisplayService;
 @inject EventDisplayService _eventDisplayService;
 @{
+    var now = _eventDisplayService.GetCurrentTime();
     var upcomingPresentations = Umbraco.ContentAtRoot().First().Descendants<Presentation>()
         .Where(p => p.Group?.Id == Model.Id)
         .Where(p =>
         {
             var parentEvent = p.Parent<Event>();
-            return parentEvent != null && _eventDisplayService.IsCurrentOrUpcoming(parentEvent.Date, DateTime.Now);
+            return parentEvent != null && _eventDisplayService.IsCurrentOrUpcoming(parentEvent.Date, now);
         })
         .OrderBy(p => p.Parent<Event>()!.Date);
     var leaders = (Model.Leaders ?? []).ToArray();

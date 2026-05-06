@@ -1,5 +1,6 @@
 using System;
 using SgfDevs.Dev;
+using SgfDevs.Dev.EventSync;
 using Xunit;
 
 namespace SgfDevs.Tests;
@@ -59,5 +60,15 @@ public class EventDisplayServiceTests
         Assert.Equal(
             [new DateTime(2026, 5, 6, 18, 30, 0), new DateTime(2026, 6, 3, 18, 30, 0)],
             result);
+    }
+
+    [Fact]
+    public void GetCurrentTime_UsesConfiguredEventTimeZone()
+    {
+        var service = new EventDisplayService(EventSyncTimeZoneResolver.Resolve("America/Chicago"));
+
+        var result = service.GetCurrentTime(new DateTimeOffset(2026, 5, 6, 20, 46, 0, TimeSpan.Zero));
+
+        Assert.Equal(new DateTime(2026, 5, 6, 15, 46, 0), result);
     }
 }

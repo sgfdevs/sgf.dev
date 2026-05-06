@@ -14,11 +14,12 @@
 
 @{
     Layout = "_Layout";
+    var now = _eventDisplayService.GetCurrentTime();
     //var mapper = AutoMapperConfig.Configure();
-    var visibleDevNights = _eventDisplayService.GetCurrentAndUpcomingEvents(Model.Descendants<Event>(), d => d.Date, DateTime.Now);
+    var visibleDevNights = _eventDisplayService.GetCurrentAndUpcomingEvents(Model.Descendants<Event>(), d => d.Date, now);
     var nextDevNight = visibleDevNights.FirstOrDefault();
     var upcomingDevNights = visibleDevNights.Skip(1).ToList();
-    var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > DateTime.Today).OrderBy(d => d.StartTime).ToList();
+    var communityEvents = Model.Descendants<CommunityEvent>().Where(d => d.StartTime > now.Date).OrderBy(d => d.StartTime).ToList();
     var allUpcomingEvents = new List<Event>();
 
     var allMembers = _directoryHelper.GetAllMembers().ToList();

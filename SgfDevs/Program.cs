@@ -49,7 +49,7 @@ builder.Services.Configure<EventSyncOptions>(builder.Configuration.GetSection("S
 builder.Services.AddScoped<MemberConverter>();
 builder.Services.AddScoped<MemberTagDisplayService>();
 builder.Services.AddScoped<PresentationPresenterDisplayService>();
-builder.Services.AddScoped<EventDisplayService>();
+builder.Services.AddScoped(_ => new EventDisplayService(EventSyncTimeZoneResolver.Resolve(builder.Configuration["SGFDevs:EventTimeZoneId"])));
 builder.Services.AddScoped<DirectoryHelper>();
 builder.Services.AddScoped<NewsletterHelper>();
 builder.Services.AddScoped<EventSyncImportFilter>();
