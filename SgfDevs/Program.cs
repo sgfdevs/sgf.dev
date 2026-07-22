@@ -1,6 +1,8 @@
 using System;
 using System.Data.Common;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ using SgfDevs.Dev;
 using SgfDevs.Dev.EventSync;
 using SgfDevs.Dev.EventSync.Meetup;
 using SgfDevs.Dev.EventSync.Sessionize;
+using SgfDevs.HealthChecks;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Persistence.Sqlite;
@@ -44,6 +47,8 @@ else
 
 umbracoBuilder.Build();
 
+builder.Services.AddHealthChecks()
+    .AddCheck<ReadinessHealthCheck>("ready", tags: ["ready"]);
 builder.Services.AddHttpClient();
 builder.Services.Configure<EventSyncOptions>(builder.Configuration.GetSection("SGFDevs"));
 builder.Services.AddScoped<MemberConverter>();
@@ -71,6 +76,20 @@ if (builder.Environment.IsDevelopment())
 
 await app.BootUmbracoAsync();
 
+var healthCheckOptions = new HealthCheckOptions
+{
+    ResponseWriter = static (_, _) => Task.CompletedTask
+};
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = static _ => false,
+    ResponseWriter = healthCheckOptions.ResponseWriter
+}).AllowAnonymous();
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = static check => check.Tags.Contains("ready"),
+    ResponseWriter = healthCheckOptions.ResponseWriter
+}).AllowAnonymous();
 
 app.UseUmbraco()
     .WithMiddleware(u =>
