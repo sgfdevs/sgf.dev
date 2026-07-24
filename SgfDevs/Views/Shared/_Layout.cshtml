@@ -1,4 +1,7 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Microsoft.Extensions.Options
+@using SgfDevs.Dev
+@inject IOptions<SiteFeaturesOptions> SiteFeatures
 @* @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Base> *@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
@@ -18,6 +21,10 @@
     <meta property="og:title" content="@pageTitle" />
     @*<meta property="og:description" content="" />*@
     <meta property="og:image" content="https://sgf.dev/images/og.jpg" />
+    @if (!SiteFeatures.Value.SearchIndexingEnabled)
+    {
+        <meta name="robots" content="noindex, nofollow" />
+    }
     <title>@pageTitle</title>
 
     <link rel="stylesheet" href="/css/styles.css?data=@rand.Next()" />
@@ -25,14 +32,15 @@
 
     @RenderSection("TopScripts", required: false)
 
-    <environment names="Production">
+    @if (SiteFeatures.Value.AnalyticsEnabled)
+    {
         <!-- Privacy-friendly analytics by Plausible -->
         <script async src="https://plausible.sgf.dev/js/pa-aOg8YJ_yiLgBbrOwNU2_7.js"></script>
         <script>
           window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
           plausible.init()
         </script>
-    </environment>
+    }
 
     <style>
         /*.dev_night_banner ul.presentations_1 {
