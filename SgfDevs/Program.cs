@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using SGFDevs.Controllers;
 using SgfDevs.Dev;
 using SgfDevs.Dev.EventSync;
@@ -51,6 +53,7 @@ builder.Services.AddHealthChecks()
     .AddCheck<ReadinessHealthCheck>("ready", tags: ["ready"]);
 builder.Services.AddHttpClient();
 builder.Services.Configure<EventSyncOptions>(builder.Configuration.GetSection("SGFDevs"));
+builder.Services.Configure<SiteFeaturesOptions>(builder.Configuration.GetSection("SGFDevs:Site"));
 builder.Services.AddScoped<MemberConverter>();
 builder.Services.AddScoped<MemberTagDisplayService>();
 builder.Services.AddScoped<PresentationPresenterDisplayService>();
@@ -90,6 +93,14 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
     Predicate = static check => check.Tags.Contains("ready"),
     ResponseWriter = healthCheckOptions.ResponseWriter
 }).AllowAnonymous();
+app.MapGet("/robots.txt", (IOptions<SiteFeaturesOptions> siteFeatures) =>
+    Results.Text(
+        siteFeatures.Value.SearchIndexingEnabled
+            ? "User-agent: *\nAllow: /\n"
+            : "User-agent: *\nDisallow: /\n",
+        "text/plain"
+    )
+).AllowAnonymous();
 
 app.UseUmbraco()
     .WithMiddleware(u =>
