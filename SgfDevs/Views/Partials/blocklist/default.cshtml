@@ -8,11 +8,10 @@
 <div class="umb-block-list">
     @foreach (var block in Model)
     {
-        if (block?.ContentUdi == null)
+        if (block?.Content is not { } data)
         {
             continue;
         }
-        var data = block.Content;
 
         @await Html.PartialAsync("blocklist/Components/" + data.ContentType.Alias, block)
     }

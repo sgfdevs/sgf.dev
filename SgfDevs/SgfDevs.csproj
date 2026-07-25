@@ -3,17 +3,19 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.1.1" />
-    <PackageReference Include="MailKit" Version="4.16.0" />
-    <PackageReference Include="ReverseMarkdown" Version="5.3.0" />
-    <PackageReference Include="Sentry.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="MailKit" Version="4.17.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.11.0" />
+    <PackageReference Include="ReverseMarkdown" Version="6.1.0" />
+    <PackageReference Include="Sentry.AspNetCore" Version="6.7.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.8" NoWarn="NU1510" />
-    <PackageReference Include="Umbraco.Cms" Version="17.4.2" />
-    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.4.2" />
-    <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="17.0.0" />
-    <PackageReference Include="uSync" Version="17.3.2" />
-    <PackageReference Include="Skybrud.Umbraco.Redirects" Version="17.0.4" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" NoWarn="NU1510" />
+    <PackageReference Include="Umbraco.Cms" Version="18.0.2" />
+    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.0.2" />
+    <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="18.0.0" />
+    <PackageReference Include="uSync" Version="18.0.3" />
+    <PackageReference Include="Skybrud.Umbraco.Redirects" Version="18.0.0-alpha001" />
   </ItemGroup>
   <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
   <ItemGroup>
@@ -30,10 +32,7 @@
   <PropertyGroup>
     <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
   </PropertyGroup>
-  <!-- Keep this as false if ModelsBuilder mode is InMemoryAuto -->
   <PropertyGroup>
-    <RazorCompileOnBuild>false</RazorCompileOnBuild>
-    <RazorCompileOnPublish>false</RazorCompileOnPublish>
     <UserSecretsId>07f9a230-462a-4700-abd3-ae6f73067aaf</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
