@@ -1,22 +1,17 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-RUN mkdir -p /usr/src/main
 WORKDIR /usr/src/main
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-RUN mkdir -p /src
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS publish
 WORKDIR /src
-COPY "./SgfDevs/SgfDevs.csproj" "./SgfDevs/SgfDevs.csproj"
-RUN dotnet restore "./SgfDevs/SgfDevs.csproj"
-COPY . .
-RUN dotnet build "./SgfDevs/SgfDevs.csproj" -c Release -o /usr/src/main/build
-
-FROM build AS publish
-RUN dotnet publish "./SgfDevs/SgfDevs.csproj" -c Release -o /usr/src/main/publish
+COPY SgfDevs/SgfDevs.csproj SgfDevs/
+RUN dotnet restore SgfDevs/SgfDevs.csproj
+COPY SgfDevs/ SgfDevs/
+RUN dotnet publish SgfDevs/SgfDevs.csproj -c Release --no-restore -o /app/publish
 
 FROM base AS final
 ENV ASPNETCORE_HTTP_PORTS=80
 WORKDIR /usr/src/main
-COPY --from=publish /usr/src/main/publish .
+COPY --from=publish /app/publish .
 RUN mkdir -p umbraco/Data && touch umbraco/Data/Umbraco.sqlite.db
 ENTRYPOINT ["dotnet", "SgfDevs.dll"]
