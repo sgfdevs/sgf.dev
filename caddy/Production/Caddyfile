@@ -1,5 +1,5 @@
 http://www.sgf.dev {
-	reverse_proxy sgf-devs:80
+	reverse_proxy sgf-devs:8080
 }
 
 sgf.dev {

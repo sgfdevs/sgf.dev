@@ -12,8 +12,8 @@ RUN dotnet publish SgfDevs/SgfDevs.csproj -c Release --no-restore --arch $TARGET
     && touch /app/publish/umbraco/Data/Umbraco.sqlite.db
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-chiseled-extra AS final
-ENV ASPNETCORE_HTTP_PORTS=80
+ENV ASPNETCORE_HTTP_PORTS=8080
 WORKDIR /usr/src/main
 COPY --from=publish --chown=$APP_UID:$APP_UID /app/publish .
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "SgfDevs.dll"]
