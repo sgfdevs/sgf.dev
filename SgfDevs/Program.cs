@@ -33,20 +33,18 @@ var umbracoBuilder = builder.CreateUmbracoBuilder()
     .AddComposers();
 
 var blobStorageKey = builder.Configuration["SGFDevs:AzureBlobStorageKey"];
-if (string.IsNullOrEmpty(blobStorageKey))
-{
-    umbracoBuilder.AddCdnMediaUrlProvider(options =>
-    {
-        options.Url = new Uri("https://sgf.dev/media/");
-    });
-}
-else
+if (!string.IsNullOrEmpty(blobStorageKey))
 {
     umbracoBuilder.AddAzureBlobMediaFileSystem(options =>
     {
         options.ConnectionString = $"DefaultEndpointsProtocol=https;AccountName=sgfdevs;AccountKey={blobStorageKey};EndpointSuffix=core.windows.net";
         options.ContainerName = "website";
     });
+}
+
+if (!string.IsNullOrEmpty(builder.Configuration["Umbraco:Storage:Cdn:Url"]))
+{
+    umbracoBuilder.AddCdnMediaUrlProvider();
 }
 
 var serverRoleName = builder.Configuration["SGFDevs:ServerRole"] ?? nameof(ServerRole.Single);
