@@ -45,3 +45,39 @@ jobs:
     with:
       version: ${{ needs.release.outputs.release-version }}
     secrets: inherit
+
+  promote-staging:
+    needs:
+      - release
+      - docker
+    if: ${{ needs.release.outputs.new-release-published == 'true' }}
+    uses: glitchedmob/infra-gha/.github/workflows/kustomize-image-pr.yml@v0.8.0
+    with:
+      deployment-repository: sgfdevs/infra-k8s-apps
+      kustomization-path: src/k8s/apps/sgf.dev/staging
+      image: ghcr.io/sgfdevs/sgf.dev
+      image-tag: ${{ needs.release.outputs.release-version }}
+      source-ref: v${{ needs.release.outputs.release-version }}
+      promotion-id: staging
+      auto-merge: true
+      github-app-id: "4527359"
+    secrets:
+      github-app-private-key: ${{ secrets.INFRA_AUTOMATION_APP_PRIVATE_KEY }}
+
+  promote-production:
+    needs:
+      - release
+      - docker
+      - promote-staging
+    if: ${{ needs.release.outputs.new-release-published == 'true' }}
+    uses: glitchedmob/infra-gha/.github/workflows/kustomize-image-pr.yml@v0.8.0
+    with:
+      deployment-repository: sgfdevs/infra-k8s-apps
+      kustomization-path: src/k8s/apps/sgf.dev/production
+      image: ghcr.io/sgfdevs/sgf.dev
+      image-tag: ${{ needs.release.outputs.release-version }}
+      source-ref: v${{ needs.release.outputs.release-version }}
+      promotion-id: production
+      github-app-id: "4527359"
+    secrets:
+      github-app-private-key: ${{ secrets.INFRA_AUTOMATION_APP_PRIVATE_KEY }}
