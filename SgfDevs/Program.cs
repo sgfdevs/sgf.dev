@@ -17,6 +17,8 @@ using SgfDevs.Dev.EventSync.Sessionize;
 using SgfDevs.HealthChecks;
 using SGFDevs.Dev;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Sync;
+using Umbraco.Cms.Infrastructure.DependencyInjection;
 using Umbraco.Cms.Persistence.Sqlite;
 using Umbraco.Extensions;
 
@@ -47,6 +49,17 @@ else
     });
 }
 
+var serverRoleName = builder.Configuration["SGFDevs:ServerRole"] ?? nameof(ServerRole.Single);
+if (!Enum.TryParse(serverRoleName, false, out ServerRole serverRole) ||
+    serverRole is ServerRole.Unknown ||
+    !Enum.IsDefined(serverRole))
+{
+    throw new InvalidOperationException(
+        $"Unsupported SGFDevs:ServerRole value '{serverRoleName}'. " +
+        $"Expected {nameof(ServerRole.Single)}, {nameof(ServerRole.SchedulingPublisher)}, or {nameof(ServerRole.Subscriber)}.");
+}
+
+umbracoBuilder.SetServerRegistrar(new FixedServerRoleAccessor(serverRole));
 umbracoBuilder.Build();
 
 builder.Services.AddHealthChecks()
