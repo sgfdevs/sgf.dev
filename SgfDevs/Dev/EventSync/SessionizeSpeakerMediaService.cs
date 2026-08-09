@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -67,6 +68,30 @@ public class SessionizeSpeakerMediaService
 
             var importedSpeakersFolder = GetOrCreateImportedSpeakersFolder();
             var media = GetOrCreateSpeakerImage(importedSpeakersFolder.Id, presenter);
+            var profileImageUdi = new GuidUdi(Constants.UdiEntityType.Media, media.Key).ToString();
+
+            if (media.HasIdentity)
+            {
+                try
+                {
+                    using var existingStream = _mediaFileManager.GetFile(media, out _);
+                    if (ReferenceEquals(existingStream, Stream.Null) == false &&
+                        StreamsHaveEqualContent(stream, existingStream))
+                    {
+                        return presenter with { ProfileImageUdi = profileImageUdi };
+                    }
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogWarning(
+                        exception,
+                        "Failed to compare the existing Sessionize speaker image for {SpeakerName} ({SpeakerId}); retaining it.",
+                        presenter.Name,
+                        presenter.SessionizeSpeakerId);
+                    return presenter with { ProfileImageUdi = profileImageUdi };
+                }
+            }
+
             var fileName = BuildFileName(presenter);
 
             media.SetValue(
@@ -82,7 +107,7 @@ public class SessionizeSpeakerMediaService
 
             return presenter with
             {
-                ProfileImageUdi = new GuidUdi(Constants.UdiEntityType.Media, media.Key).ToString()
+                ProfileImageUdi = profileImageUdi
             };
         }
         catch (Exception exception)
@@ -177,5 +202,40 @@ public class SessionizeSpeakerMediaService
             : presenter.SessionizeSpeakerId;
 
         return $"{baseName}{extension}";
+    }
+
+    internal static bool StreamsHaveEqualContent(Stream first, Stream second)
+    {
+        var firstPosition = first.CanSeek ? first.Position : 0;
+        var secondPosition = second.CanSeek ? second.Position : 0;
+
+        try
+        {
+            if (first.CanSeek)
+            {
+                first.Position = 0;
+            }
+
+            if (second.CanSeek)
+            {
+                second.Position = 0;
+            }
+
+            var firstHash = SHA256.HashData(first);
+            var secondHash = SHA256.HashData(second);
+            return firstHash.AsSpan().SequenceEqual(secondHash);
+        }
+        finally
+        {
+            if (first.CanSeek)
+            {
+                first.Position = firstPosition;
+            }
+
+            if (second.CanSeek)
+            {
+                second.Position = secondPosition;
+            }
+        }
     }
 }
