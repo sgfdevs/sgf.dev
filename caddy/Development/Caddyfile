@@ -1,3 +1,0 @@
-http://localhost {
-	reverse_proxy sgf-devs:8080
-}
