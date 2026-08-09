@@ -3,7 +3,7 @@
 ![](https://pbs.twimg.com/profile_banners/2869149607/1567717351/1500x500)
 
 ## Prerequisites
-- [.NET SDK 8.x](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [.NET SDK 10.x](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 - [Node.js 18.x](https://nodejs.org/en/download/)
 
 ## Local Installation Instructions
@@ -17,15 +17,13 @@ There are a couple of ways to run this project depending on if you have a .NET I
   - Windows `New-Item -ItemType Directory -Force -Path .\SgfDevs\umbraco\Data; New-Item -ItemType File -Force -Path .\SgfDevs\umbraco\Data\Umbraco.sqlite.db`
 
 #### CLI Tools
-- Copy `.env.example` to `.env`
 - Navigate to the SgfDevs project folder `cd SgfDevs`
-- User the `dotnet user-secrets` command to set your connection string
+- Use the `dotnet user-secrets` command to set your connection string
   - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True;Default Timeout=60"`
 - `dotnet run`
 - Open the URL that's printed in the console in your browser
 
 #### .NET IDE e.g. Rider or Visual Studio (Windows)
-- Copy `.env.example` to `.env`
 - Update your .NET User Secrets with a connection string
   - Most IDEs have a shortcut to navigate to this file
   - Reference `appsettings.json` for an example of the `ConnectionStrings` object

@@ -1,3 +1,0 @@
-https://staging.sgf.dev {
-	reverse_proxy sgf-devs:80
-}
