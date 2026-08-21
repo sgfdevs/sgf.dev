@@ -112,8 +112,7 @@ public class SessionizeEventSyncService
 
             var eventContent = GetOrCreateEvent(existingEvents, references.EventsContainerId, eventPlan);
             SaveEventContent(eventContent, eventPlan);
-            _contentService.Save(eventContent, SystemUserId);
-            var presentationsToPublish = new List<IContent>();
+            SaveAndPublishContent(eventContent, "event", clearSchedule: true);
 
             var existingPresentations = GetChildren(eventContent.Id)
                 .Where(content => string.Equals(content.ContentType.Alias, PresentationAlias, StringComparison.Ordinal))
@@ -136,14 +135,7 @@ public class SessionizeEventSyncService
 
                 var presentationContent = GetOrCreatePresentation(existingPresentations, eventContent.Id, presentationPlan);
                 SavePresentationContent(presentationContent, references.SpringfieldDevsGroupKey, enrichedPresentationPlan, meetupMatch?.EventUrl);
-                _contentService.Save(presentationContent, SystemUserId);
-                presentationsToPublish.Add(presentationContent);
-            }
-
-            PublishContent(eventContent, "event", clearSchedule: true);
-            foreach (var presentationContent in presentationsToPublish)
-            {
-                PublishContent(presentationContent, "presentation");
+                SaveAndPublishContent(presentationContent, "presentation");
             }
         }
     }
@@ -262,29 +254,31 @@ public class SessionizeEventSyncService
         return enrichedPresenters;
     }
 
-    private void PublishContent(IContent content, string contentKind, bool clearSchedule = false)
+    private void SaveAndPublishContent(IContent content, string contentKind, bool clearSchedule = false)
     {
-        if (clearSchedule)
+        if (content.IsDirty() == false && content.IsCultureEdited(null!) == false)
+        {
+            return;
+        }
+
+        if (clearSchedule && content.HasIdentity)
         {
             _contentService.PersistContentSchedule(content, new ContentScheduleCollection());
         }
 
-        var publishResult = _contentService.Publish(content, ["*"], SystemUserId);
+        var publishResult = _contentService.SaveAndPublish(content, [], SystemUserId);
         if (publishResult.Success)
         {
             _logger.LogInformation(
-                "Published {ContentKind} {ContentName} with result {PublishResult}.",
+                "Saved and published {ContentKind} {ContentName} with result {PublishResult}.",
                 contentKind,
                 content.Name,
                 publishResult.Result);
             return;
         }
 
-        _logger.LogWarning(
-            "Failed to publish {ContentKind} {ContentName}. Publish result was {PublishResult}.",
-            contentKind,
-            content.Name,
-            publishResult.Result);
+        throw new InvalidOperationException(
+            $"Failed to save and publish {contentKind} {content.Name}. Publish result was {publishResult.Result}.");
     }
 
     private IReadOnlyList<IContent> GetChildren(int parentId)

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using SgfDevs.Dev.EventSync.Sessionize;
 using Umbraco.Cms.Core;
@@ -45,7 +47,7 @@ public class ImportedPresenterBlockBuilder
 
         var blocks = presenters.Select(presenter =>
         {
-            var key = Guid.NewGuid();
+            var key = BuildBlockKey(presenter);
             var isMatchedMember = presenter.MatchedMemberKey.HasValue;
 
             return new
@@ -113,5 +115,22 @@ public class ImportedPresenterBlockBuilder
         };
 
         return JsonSerializer.Serialize(payload);
+    }
+
+    private static Guid BuildBlockKey(ImportedPresenterPlan presenter)
+    {
+        if (presenter.MatchedMemberKey.HasValue)
+        {
+            return presenter.MatchedMemberKey.Value;
+        }
+
+        if (Guid.TryParse(presenter.SessionizeSpeakerId, out var sessionizeSpeakerKey))
+        {
+            return sessionizeSpeakerKey;
+        }
+
+        var identity = $"{presenter.SessionizeSpeakerId}\n{presenter.Name}";
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(identity));
+        return new Guid(hash.AsSpan(0, 16));
     }
 }

@@ -45,4 +45,19 @@ public class ImportedPresenterBlockBuilderTests
         Assert.Equal("Dinesh Chugtai", secondValues[0].GetProperty("value").GetString());
         Assert.Equal(string.Empty, secondValues[1].GetProperty("value").GetString());
     }
+
+    [Fact]
+    public void Build_ReturnsSamePayloadForSamePresenters()
+    {
+        var presenters = new[]
+        {
+            new ImportedPresenterPlan("speaker-1", "Bertram Gilfoyle", null, MatchedMemberKey: new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")),
+            new ImportedPresenterPlan("speaker-2", "Dinesh Chugtai", null)
+        };
+
+        var first = _builder.Build(presenters);
+        var second = _builder.Build(presenters);
+
+        Assert.Equal(first, second);
+    }
 }
