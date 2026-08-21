@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - run: npm install -g semantic-release conventional-changelog-conventionalcommits @semantic-release/exec
+      - run: npm install -g semantic-release conventional-changelog-conventionalcommits@10.3.0 @semantic-release/exec
 
       - name: Create Release
         id: semantic
