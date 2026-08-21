@@ -31,7 +31,7 @@ public class ImportedPresenterBlockBuilder
         _nonMemberPresenterTypeKey = nonMemberPresenterTypeKey;
     }
 
-    public string Build(IReadOnlyList<ImportedPresenterPlan> presenters)
+    public string Build(Guid presentationKey, IReadOnlyList<ImportedPresenterPlan> presenters)
     {
         if (presenters.Count == 0)
         {
@@ -47,7 +47,7 @@ public class ImportedPresenterBlockBuilder
 
         var blocks = presenters.Select(presenter =>
         {
-            var key = BuildBlockKey(presenter);
+            var key = BuildBlockKey(presentationKey, presenter);
             var isMatchedMember = presenter.MatchedMemberKey.HasValue;
 
             return new
@@ -117,19 +117,11 @@ public class ImportedPresenterBlockBuilder
         return JsonSerializer.Serialize(payload);
     }
 
-    private static Guid BuildBlockKey(ImportedPresenterPlan presenter)
+    private static Guid BuildBlockKey(Guid presentationKey, ImportedPresenterPlan presenter)
     {
-        if (presenter.MatchedMemberKey.HasValue)
-        {
-            return presenter.MatchedMemberKey.Value;
-        }
-
-        if (Guid.TryParse(presenter.SessionizeSpeakerId, out var sessionizeSpeakerKey))
-        {
-            return sessionizeSpeakerKey;
-        }
-
-        var identity = $"{presenter.SessionizeSpeakerId}\n{presenter.Name}";
+        var presenterIdentity = presenter.MatchedMemberKey?.ToString("N")
+            ?? (string.IsNullOrWhiteSpace(presenter.SessionizeSpeakerId) ? presenter.Name : presenter.SessionizeSpeakerId);
+        var identity = $"{presentationKey:N}\n{presenterIdentity}";
         var hash = SHA256.HashData(Encoding.UTF8.GetBytes(identity));
         return new Guid(hash.AsSpan(0, 16));
     }

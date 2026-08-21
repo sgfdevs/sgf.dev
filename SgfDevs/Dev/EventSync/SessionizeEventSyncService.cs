@@ -222,7 +222,7 @@ public class SessionizeEventSyncService
             presentationContent.SetValue(MeetupUrlPropertyAlias, meetupUrl);
         }
 
-        presentationContent.SetValue(PresentersPropertyAlias, _presenterBlockBuilder.Build(presentationPlan.Presenters));
+        presentationContent.SetValue(PresentersPropertyAlias, _presenterBlockBuilder.Build(presentationContent.Key, presentationPlan.Presenters));
     }
 
     private async Task<IReadOnlyList<ImportedPresenterPlan>> ImportPresenterImagesAsync(
