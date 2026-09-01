@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.2.0" />
     <PackageReference Include="MailKit" Version="4.17.0" />
-    <PackageReference Include="Microsoft.OpenApi" Version="2.12.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.12.2" />
     <PackageReference Include="ReverseMarkdown" Version="6.2.1" />
     <PackageReference Include="Sentry.AspNetCore" Version="6.9.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
@@ -14,7 +14,7 @@
     <PackageReference Include="Umbraco.Cms" Version="18.1.1" />
     <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.1.1" />
     <PackageReference Include="Umbraco.StorageProviders.AzureBlob" Version="18.0.0" />
-    <PackageReference Include="uSync" Version="18.1.1" />
+    <PackageReference Include="uSync" Version="18.1.2" />
     <PackageReference Include="Skybrud.Umbraco.Redirects" Version="18.0.0-alpha001" />
   </ItemGroup>
   <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
