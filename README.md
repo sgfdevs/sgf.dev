@@ -12,15 +12,14 @@ There are a couple of ways to run this project depending on if you have a .NET I
 
 ### Environment Specific Steps
 
-Local media uses MinIO. With Docker Compose installed, run from the repo root:
+Local media uses SeaweedFS. With Docker Compose installed, run from the repo root:
 
 ```sh
-docker compose up -d minio
-docker compose run --rm minio-init
+docker compose up -d
 ```
 
-The development launch profiles supply local-only credentials. The console is at
-`http://localhost:9001`, using `sgf-dev-local` / `sgf-dev-local-password`.
+The local bucket is created automatically at `http://localhost:8333`.
+The development launch profiles supply local-only credentials.
 Media persists across restarts; `docker compose down --volumes` deletes it.
 
 - Create an `Umbraco.sqlite.db` file in the `./SgfDevs/umbraco/Data` directory 

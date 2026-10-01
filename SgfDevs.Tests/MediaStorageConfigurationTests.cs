@@ -33,12 +33,12 @@ public class MediaStorageConfigurationTests
     }
 
     [Fact]
-    public void DevelopmentUsesItsOwnMinioBucketWithPathStyleAddressing()
+    public void DevelopmentUsesItsOwnSeaweedFsBucketWithPathStyleAddressing()
     {
         var configuration = LoadConfiguration(development: true);
 
         Assert.Equal("sgf-dev-local", configuration["Umbraco:Storage:AWSS3:Media:BucketName"]);
-        Assert.Equal("http://localhost:9000", configuration["AWS:ServiceURL"]);
+        Assert.Equal("http://localhost:8333", configuration["AWS:ServiceURL"]);
         Assert.True(configuration.GetValue<bool>("AWS:ForcePathStyle"));
         Assert.Equal("us-east-2", configuration["AWS:Region"]);
     }
