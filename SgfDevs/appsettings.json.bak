@@ -1,8 +1,5 @@
 {
   "$schema": "./appsettings-schema.json",
-  "SGFDevs": {
-    "AzureBlobStorageKey": ""
-  },
   "Serilog": {
     "MinimumLevel": {
       "Default": "Information",

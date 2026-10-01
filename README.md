@@ -12,6 +12,16 @@ There are a couple of ways to run this project depending on if you have a .NET I
 
 ### Environment Specific Steps
 
+Local media uses SeaweedFS. With Docker Compose installed, run from the repo root:
+
+```sh
+docker compose up -d
+```
+
+The local bucket is created automatically at `http://localhost:8333`.
+The development launch profiles supply local-only credentials.
+Media persists across restarts; `docker compose down --volumes` deletes it.
+
 - Create an `Umbraco.sqlite.db` file in the `./SgfDevs/umbraco/Data` directory 
   - Mac OS/Linux `mkdir -p ./SgfDevs/umbraco/Data && touch ./SgfDevs/umbraco/Data/Umbraco.sqlite.db`
   - Windows `New-Item -ItemType Directory -Force -Path .\SgfDevs\umbraco\Data; New-Item -ItemType File -Force -Path .\SgfDevs\umbraco\Data\Umbraco.sqlite.db`
@@ -20,7 +30,7 @@ There are a couple of ways to run this project depending on if you have a .NET I
 - Navigate to the SgfDevs project folder `cd SgfDevs`
 - Use the `dotnet user-secrets` command to set your connection string
   - `dotnet user-secrets set "ConnectionStrings:umbracoDbDSN" "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True;Default Timeout=60"`
-- `dotnet run`
+- `dotnet run --launch-profile Umbraco.Web.UI`
 - Open the URL that's printed in the console in your browser
 
 #### .NET IDE e.g. Rider or Visual Studio (Windows)
