@@ -1,0 +1,39 @@
+name: sgf-dev-local
+
+services:
+  minio:
+    # Community build of upstream MinIO, pinned for amd64 and arm64.
+    image: ghcr.io/golithus/minio@sha256:8793e960474071520bdb91bb9a6d1793eb229fdbc9dcb7ec75ad836b69bbab40
+    command: [server, /data, --console-address, ":9001"]
+    environment:
+      MINIO_ROOT_USER: sgf-dev-local
+      MINIO_ROOT_PASSWORD: sgf-dev-local-password
+      MINIO_REGION_NAME: us-east-2
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    volumes:
+      - minio-data:/data
+
+  minio-init:
+    image: ghcr.io/golithus/mc@sha256:dde55ccc0bc9e65dc582c8e652d652eea1438c6e60d774524f4da15d7b26a900
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint: [/bin/sh, -ec]
+    command:
+      - |
+        attempts=0
+        until mc alias set local http://minio:9000 sgf-dev-local sgf-dev-local-password; do
+          attempts=$$((attempts + 1))
+          if [ "$$attempts" -ge 30 ]; then
+            echo "MinIO did not become ready within 60 seconds." >&2
+            exit 1
+          fi
+          sleep 2
+        done
+        mc mb --ignore-existing local/sgf-dev-local
+        mc anonymous set none local/sgf-dev-local
+
+volumes:
+  minio-data:
