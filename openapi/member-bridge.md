@@ -1,10 +1,14 @@
 # Private member bridge
 
-`sgf-member-v1.openapi.json` is the unedited response from the backend's named `sgf-member-v1` document, exported at `/umbraco/openapi/sgf-member-v1.json` from commit `6221692892e64fb61e59ebebba2cc1eaed95cd70`.
+`sgf-member-v1.openapi.json` is the unedited response from the backend's named `sgf-member-v1` document, exported at `/umbraco/openapi/sgf-member-v1.json` from commit `9e0bdf5b8b38e631f8e65232bbc965e3131412d0`.
 
-Raw SHA-256: `c571fd9b54776a248634c44568ec509e6e63a149e67c631e968444c2bdd483d9`.
+Raw SHA-256: `e0768888cbd5ed561a527d9c4e60192e08e7bdbd51de17f56a9ddd74f302c3cf`.
 
 The export used a fresh source archive, private empty SQLite install, Development mode and the process-only `AF.Umbraco.S3.Media.Storage,` assembly exclusion. It did not import content or members. Empty installation does not prove existing-member login or registration with the real member schema/group.
+
+Newsletter signup posts the footer's existing email and empty-only name honeypot to the dedicated same-origin Kit action at `/newsletter`. Native submissions show a confirmation or retry page; enhanced submissions stay in the footer. Only accepted requests clear the email and show confirmation pending. Validation/provider failures keep the input. The private generated client calls `/api/v1/member/newsletter` with the existing bridge secret but no member cookie, and ignores provider cookie responses. No member session is required and Kit CSRF stays enabled.
+
+Configure the existing backend `SGFDevs:NewsletterEndpoint` and `SGFDevs:NewsletterListId` privately. Neither has a fallback value. Local bootstrap still requires both empty. The helper's accepted response does not prove actual confirmation delivery.
 
 Run `npm run api:member:generate` to generate the separate server-only types. The public document and client are unchanged.
 
