@@ -29,10 +29,11 @@ export function createMemberClient(options: {
 			const target = new URL(request.url);
 			if (target.origin !== origin || ![
 				'/api/v1/member/login', '/api/v1/member/session', '/api/v1/member/logout', '/api/v1/member/register',
-				'/api/v1/member/forgot-password', '/api/v1/member/reset-password', '/api/v1/member/profile', '/api/v1/member/avatar'
+				'/api/v1/member/forgot-password', '/api/v1/member/reset-password', '/api/v1/member/profile', '/api/v1/member/avatar', '/api/v1/member/newsletter'
 			].includes(target.pathname) || target.search || target.hash) throw new Error('Invalid member bridge request.');
 			const headers = new Headers({ 'X-SGF-Member-Bridge': options.secret! });
-			const cookie = memberCookieHeader(options.cookies, base);
+			const newsletter = target.pathname === '/api/v1/member/newsletter';
+			const cookie = newsletter ? '' : memberCookieHeader(options.cookies, base);
 			if (cookie) headers.set('Cookie', cookie);
 			const avatar = target.pathname === '/api/v1/member/avatar';
 			if (request.body) headers.set('Content-Type', avatar ? request.headers.get('Content-Type')! : 'application/json');
@@ -42,11 +43,12 @@ export function createMemberClient(options: {
 				headers, redirect: 'error', credentials: 'omit', cache: 'no-store',
 				signal: AbortSignal.timeout(avatar ? 30000 : 8000)
 			}));
-			relayMemberCookies(response.headers, options.cookies, base, options.secure);
+			if (!newsletter) relayMemberCookies(response.headers, options.cookies, base, options.secure);
 			return response;
 		}
 	});
 	return {
+		newsletterSignup: (body: components['schemas']['NewsletterSignupRequest']) => client.POST('/api/v1/member/newsletter', { body }),
 		uploadAvatar: (file: File) => client.POST('/api/v1/member/avatar', {
 			// OpenAPI represents binary data as a string. Send the native File as multipart bytes.
 			body: { file: file.name },

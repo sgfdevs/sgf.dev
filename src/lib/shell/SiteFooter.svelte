@@ -1,5 +1,30 @@
 <script lang="ts">
-	import { footerMainLinks, footerSocialLinks } from './navigation';
+	import { enhance } from '$app/forms';
+    import { page } from '$app/state';
+    import type { SubmitFunction } from '$app/forms';
+    import { footerMainLinks, footerSocialLinks } from './navigation';
+
+    type Notice = { accepted: boolean; message: string };
+    let notice = $state<Notice | null>(null);
+    let pending = $state(false);
+    const nativeForm = $derived(page.url.pathname === '/newsletter' && page.form?.newsletter ? page.form : null);
+    const result = $derived(notice ?? nativeForm);
+    const submit: SubmitFunction = () => {
+        pending = true;
+        notice = null;
+        return async ({ result, formElement }) => {
+            pending = false;
+            if ((result.type === 'success' || result.type === 'failure') && result.data?.newsletter) {
+                notice = {
+                    accepted: result.data.accepted === true,
+                    message: typeof result.data.message === 'string' ? result.data.message : ''
+                };
+                if (notice.accepted) formElement.reset();
+            } else {
+                notice = { accepted: false, message: 'Newsletter signup is unavailable right now. Please try again.' };
+            }
+        };
+    };
 </script>
 
 <footer class="site-footer">
@@ -42,16 +67,22 @@
 				Subscribe to our newsletter and be the first to know about exciting events, exclusive offers from sponsors and what’s happening in our dev community.
 			</p>
 
-			<form id="updates_subscribe" aria-describedby="newsletter-disabled-note" onsubmit={(event) => event.preventDefault()}>
+			<form id="updates_subscribe" method="POST" action="/newsletter" use:enhance={submit} aria-describedby="newsletter-note">
 				<div class="material-input">
 					<label for="email">Email</label>
-					<input type="email" placeholder="laurie.bream@raviga.com" name="email" id="email" autocomplete="email" />
+					<input type="email" placeholder="laurie.bream@raviga.com" name="email" id="email" autocomplete="email" required maxlength="254" value={nativeForm?.email ?? ''} />
 					<label for="name" class="null-check">Leave this field empty</label>
-					<input type="text" id="name" name="name" class="null-check" tabindex="-1" autocomplete="off" />
+					<input type="text" id="name" name="name" class="null-check" tabindex="-1" autocomplete="off" value={nativeForm?.name ?? ''} />
 				</div>
 
-				<button class="button" type="submit" disabled aria-disabled="true">Sign Up</button>
-				<p id="newsletter-disabled-note" class="newsletter-note">Newsletter signup will be wired through a typed server action in a later layer.</p>
+				<button class="button" type="submit" disabled={pending}>Sign Up</button>
+                <div id="newsletter-note" class="newsletter-note" aria-live="polite">
+                    {#if result?.accepted}
+                        <p><strong>Check your email</strong><br />You'll be sent an email to confirm your subscriptions to our newsletter.</p>
+                    {:else if result?.message}
+                        <p><strong>Whoops</strong><br />{result.message}</p>
+                    {/if}
+                </div>
 			</form>
 		</div>
 	</div>
@@ -219,16 +250,8 @@
 	}
 
 	.newsletter-note {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-	}
+        font-size: 14px;
+    }
 
 	@media (max-width: 1024px) {
 		.footer-container {
