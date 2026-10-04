@@ -32,6 +32,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/member/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["Member_Profile"];
+        put?: never;
+        post: operations["Member_ProfileUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/member/register": {
         parameters: {
             query?: never;
@@ -113,6 +129,43 @@ export interface components {
             succeeded: boolean;
         };
         MemberPasswordResetResult: {
+            succeeded: boolean;
+            errors: {
+                [key: string]: string[];
+            };
+        };
+        MemberProfileChoice: {
+            key: string;
+            name: string;
+        };
+        MemberProfileEditDto: {
+            values: components["schemas"]["MemberProfileEditRequest"];
+            profileImageUrl: null | string;
+            skills: components["schemas"]["MemberProfileChoice"][];
+            groups: components["schemas"]["MemberProfileChoice"][];
+        };
+        MemberProfileEditRequest: {
+            email?: null | string;
+            firstName?: null | string;
+            lastName?: null | string;
+            jobTitle?: null | string;
+            aboutText?: null | string;
+            city?: null | string;
+            state?: null | string;
+            availableForHire?: null | boolean;
+            availableForContractWork?: null | boolean;
+            twitterUrl?: null | string;
+            twitchUrl?: null | string;
+            facebookUrl?: null | string;
+            instagramUrl?: null | string;
+            linkedInUrl?: null | string;
+            meetupUrl?: null | string;
+            websiteUrl?: null | string;
+            youTubeUrl?: null | string;
+            skills?: null | string[];
+            groups?: null | string[];
+        };
+        MemberProfileEditResult: {
             succeeded: boolean;
             errors: {
                 [key: string]: string[];
@@ -225,6 +278,95 @@ export interface operations {
                     "application/json": components["schemas"]["MemberPasswordResetResult"];
                     "text/json": components["schemas"]["MemberPasswordResetResult"];
                     "text/plain": components["schemas"]["MemberPasswordResetResult"];
+                };
+            };
+        };
+    };
+    Member_Profile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberProfileEditDto"];
+                    "text/json": components["schemas"]["MemberProfileEditDto"];
+                    "text/plain": components["schemas"]["MemberProfileEditDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    Member_ProfileUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberProfileEditRequest"];
+                "text/json": components["schemas"]["MemberProfileEditRequest"];
+                "application/*+json": components["schemas"]["MemberProfileEditRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberProfileEditResult"];
+                    "text/json": components["schemas"]["MemberProfileEditResult"];
+                    "text/plain": components["schemas"]["MemberProfileEditResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberProfileEditResult"];
+                    "text/json": components["schemas"]["MemberProfileEditResult"];
+                    "text/plain": components["schemas"]["MemberProfileEditResult"];
                 };
             };
         };
