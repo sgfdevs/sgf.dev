@@ -7,6 +7,7 @@
 
 <main class="site-container login">
 	<form method="POST" class="form">
+		{#if data.passwordReset}<p role="status">Your password has been updated. Please log in.</p>{/if}
 		{#if form?.message}<p class="validation-summary-errors" role="alert">{form.message}</p>{/if}
 		<input type="hidden" name="returnTo" value={form?.returnTo ?? data.returnTo} />
 		<div class="field">

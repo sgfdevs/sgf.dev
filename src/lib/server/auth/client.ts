@@ -28,7 +28,8 @@ export function createMemberClient(options: {
 		fetch: async request => {
 			const target = new URL(request.url);
 			if (target.origin !== origin || ![
-				'/api/v1/member/login', '/api/v1/member/session', '/api/v1/member/logout', '/api/v1/member/register'
+				'/api/v1/member/login', '/api/v1/member/session', '/api/v1/member/logout', '/api/v1/member/register',
+				'/api/v1/member/forgot-password', '/api/v1/member/reset-password'
 			].includes(target.pathname) || target.search || target.hash) throw new Error('Invalid member bridge request.');
 			const headers = new Headers({ 'X-SGF-Member-Bridge': options.secret! });
 			const cookie = memberCookieHeader(options.cookies, base);
@@ -45,6 +46,8 @@ export function createMemberClient(options: {
 		}
 	});
 	return {
+		forgotPassword: (body: components['schemas']['MemberForgotPasswordRequest']) => client.POST('/api/v1/member/forgot-password', { body }),
+		resetPassword: (body: components['schemas']['MemberResetPasswordRequest']) => client.POST('/api/v1/member/reset-password', { body }),
 		register: (body: components['schemas']['MemberRegistrationRequest']) => client.POST('/api/v1/member/register', { body }),
 		login: (body: components['schemas']['MemberLoginRequest']) => client.POST('/api/v1/member/login', { body }),
 		session: () => client.GET('/api/v1/member/session'),
