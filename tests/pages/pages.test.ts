@@ -21,7 +21,7 @@ test('actual native schema provenance, header and operation stay separate from p
 	assert.equal(schema.paths['/umbraco/delivery/api/v2/content/item/{path}'].get.operationId, 'GetContentItemByPath2.0');
 });
 
-test('four fixed generated Delivery requests, API key only, no preview or member credentials', async () => {
+test('fixed generated Delivery requests, API key only, no preview or member credentials', async () => {
 	let calls = 0;
 	const client = createDeliveryPageClient(media.cmsInternalOrigin, 'synthetic-key', async request => {
 		calls++;
@@ -38,7 +38,7 @@ test('four fixed generated Delivery requests, API key only, no preview or member
 	for (const path of contentPagePaths) await client.getPage(path, AbortSignal.timeout(1000));
 	assert.throws(() => client.getPage('/about/leadership/' as ContentPagePath, AbortSignal.timeout(1000)));
 	assert.throws(() => client.getPage('//evil.test' as ContentPagePath, AbortSignal.timeout(1000)));
-	assert.equal(calls, 4);
+	assert.equal(calls, contentPagePaths.length);
 });
 
 test('configuration fails closed before fetching; protected and missing pages are 404', async () => {
