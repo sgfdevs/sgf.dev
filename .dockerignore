@@ -1,0 +1,24 @@
+# Only the inputs copied by Dockerfile belong in the build context.
+**
+!package.json
+!package-lock.json
+!.npmrc
+!vite.config.ts
+!tsconfig.json
+!src/
+!src/**
+!static/
+!static/**
+!Dockerfile
+!.dockerignore
+
+# Keep secrets and generated/local files out even inside source directories.
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/secrets.json
+**/node_modules
+**/.svelte-kit
+**/build
+**/*.sqlite.db*

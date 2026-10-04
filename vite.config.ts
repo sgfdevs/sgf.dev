@@ -11,7 +11,9 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter()
+			adapter: adapter(),
+			// adapter-node 6 reads paths.origin, not the older runtime ORIGIN variable.
+			paths: process.env.ORIGIN ? { origin: process.env.ORIGIN } : undefined
 		})
 	]
 });
