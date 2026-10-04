@@ -29,7 +29,7 @@ async function withTempDir<T>(fn: (dir: string) => Promise<T>): Promise<T> {
 }
 
 describe('committed SGF OpenAPI snapshot', () => {
-	it('matches the reviewed backend export and contains only the public directory and Home routes', async () => {
+	it('matches the reviewed backend export and contains only the public directory, Home and member routes', async () => {
 		const text = await readFile(schemaPath, 'utf8');
 		const document = JSON.parse(text);
 
@@ -39,7 +39,8 @@ describe('committed SGF OpenAPI snapshot', () => {
 			'/api/directory/filters/skills',
 			'/api/directory/search',
 			'/api/tags/skills',
-			'/api/v1/public/home'
+			'/api/v1/public/home',
+			'/api/v1/public/members/{username}'
 		]);
 		assert.deepEqual([...SGF_PUBLIC_GET_PATHS].sort(), Object.keys(document.paths).sort());
 	});
@@ -63,6 +64,15 @@ describe('committed SGF OpenAPI snapshot', () => {
 		assert.deepEqual(homeResponses['404'].content['application/problem+json'].schema, {
 			$ref: '#/components/schemas/ProblemDetails'
 		});
+	});
+
+	it('adds the real required member path and explicit profile response', async () => {
+		const document = JSON.parse(await readFile(schemaPath, 'utf8'));
+		const get = document.paths['/api/v1/public/members/{username}'].get;
+		assert.equal(get.operationId, 'PublicMember_Get');
+		assert.deepEqual(get.parameters, [{ name: 'username', in: 'path', required: true, schema: { type: 'string' } }]);
+		assert.deepEqual(get.responses['200'].content['application/json'].schema, { $ref: '#/components/schemas/PublicMemberProfileDto' });
+		assert.deepEqual(get.responses['404'].content['application/problem+json'].schema, { $ref: '#/components/schemas/ProblemDetails' });
 	});
 
 	it('keeps the generated public API as legacy directory arrays plus backend Home DTOs', async () => {

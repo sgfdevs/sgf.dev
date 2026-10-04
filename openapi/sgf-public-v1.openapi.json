@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:33311/"
+      "url": "http://127.0.0.1:36395/"
     }
   ],
   "paths": {
@@ -160,6 +160,46 @@
                 }
               },
               "application/json": { }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/members/{username}": {
+      "get": {
+        "tags": [
+          "PublicMember"
+        ],
+        "operationId": "PublicMember_Get",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicMemberProfileDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
             }
           }
         }
@@ -439,6 +479,142 @@
           }
         }
       },
+      "PublicMemberProfileDto": {
+        "required": [
+          "username",
+          "name",
+          "profileImageUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "lastName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "jobTitle": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "profileImageUrl": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "city": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "state": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "joinMonthLabel": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "aboutHtml": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicMemberSkillDto"
+            }
+          },
+          "websiteUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "websiteLabel": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "twitterUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "linkedInUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "facebookUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "instagramUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "youTubeUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "availableForHire": {
+            "type": "boolean"
+          },
+          "availableForContractWork": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PublicMemberSkillDto": {
+        "required": [
+          "name",
+          "directoryFilterValue"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "directoryFilterValue": {
+            "type": "string"
+          }
+        }
+      },
       "PublicSkillFilterDto": {
         "required": [
           "name"
@@ -473,6 +649,9 @@
     },
     {
       "name": "PublicHome"
+    },
+    {
+      "name": "PublicMember"
     }
   ]
 }

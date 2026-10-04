@@ -42,6 +42,17 @@ const typedProblemTitle: PublicHomeNotFound['title'] = null;
 void typedHome;
 void typedProblemTitle;
 
+const profile = await client.GET('/api/v1/public/members/{username}', { params: { path: { username: 'Ada123' } } });
+if (profile.data) {
+	const name: string = profile.data.name;
+	const term: string | undefined = profile.data.skills?.[0]?.directoryFilterValue;
+	void name;
+	void term;
+	// @ts-expect-error Email is not part of the public profile DTO.
+	profile.data.email;
+}
+// @ts-expect-error Member username path params are required.
+await client.GET('/api/v1/public/members/{username}');
 // @ts-expect-error No handwritten or hypothetical home endpoint exists in the committed schema.
 await client.GET('/api/home');
 
