@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:59151/"
+      "url": "http://127.0.0.1:58221/"
     }
   ],
   "paths": {
@@ -143,6 +143,116 @@
               "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/member/profile": {
+      "get": {
+        "tags": [
+          "MemberProfile"
+        ],
+        "operationId": "Member_Profile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditDto"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MemberProfile"
+        ],
+        "operationId": "Member_ProfileUpdate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberProfileEditRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberProfileEditRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberProfileEditRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberProfileEditResult"
                 }
               }
             }
@@ -384,6 +494,200 @@
           }
         }
       },
+      "MemberProfileChoice": {
+        "required": [
+          "key",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "MemberProfileEditDto": {
+        "required": [
+          "values",
+          "profileImageUrl",
+          "skills",
+          "groups"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "$ref": "#/components/schemas/MemberProfileEditRequest"
+          },
+          "profileImageUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberProfileChoice"
+            }
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberProfileChoice"
+            }
+          }
+        }
+      },
+      "MemberProfileEditRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "firstName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "lastName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "jobTitle": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "aboutText": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "city": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "state": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "availableForHire": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "availableForContractWork": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
+          "twitterUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "twitchUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "facebookUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "instagramUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "linkedInUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "meetupUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "websiteUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "youTubeUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "skills": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "groups": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberProfileEditResult": {
+        "required": [
+          "succeeded",
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "MemberRegistrationRequest": {
         "type": "object",
         "properties": {
@@ -483,6 +787,9 @@
   "tags": [
     {
       "name": "MemberPasswordReset"
+    },
+    {
+      "name": "MemberProfile"
     },
     {
       "name": "MemberRegistration"

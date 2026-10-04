@@ -1,8 +1,8 @@
 # Private member bridge
 
-`sgf-member-v1.openapi.json` is the unedited response from the backend's named `sgf-member-v1` document, exported at `/umbraco/openapi/sgf-member-v1.json` from commit `9e724783d83afd346a36ac85a65edaf0b8615758`.
+`sgf-member-v1.openapi.json` is the unedited response from the backend's named `sgf-member-v1` document, exported at `/umbraco/openapi/sgf-member-v1.json` from commit `5edca5959c09db8f98e86ac650b7c46c4f16ada5`.
 
-Raw SHA-256: `946ee90a1cda7008e8d41647621461e19024e294a5920237f7544aa8166b6399`.
+Raw SHA-256: `2613e659617f60b720f1069f65580ce729116b895698c2a2471da5c0abbf4cfd`.
 
 The export used a fresh source archive, private empty SQLite install, Development mode and the process-only `AF.Umbraco.S3.Media.Storage,` assembly exclusion. It did not import content or members. Empty installation does not prove existing-member login or registration with the real member schema/group.
 
@@ -16,4 +16,4 @@ Registration posts through the same private bridge and signs in persistently to 
 
 Set backend `SGFDevs__MemberBridge__FrontendOrigin` to the canonical frontend origin with no path, credentials, query or fragment. HTTPS is required outside Development loopback. The backend appends `/reset-password` and encodes opaque member ID/token query values. Missing/invalid origin or unavailable Umbraco mail/from configuration returns a generic unavailable message before member lookup. Existing and nonexistent accounts otherwise receive the same confirmation, including account-specific mail send failure. Umbraco remains responsible for token validity, expiry and use; actual SMTP delivery and real member-store reset have not been established by the empty-install export.
 
-Login defaults to remember-me, matching the legacy persistent login. Account editing is not available yet. Logout is a same-origin POST; GET only displays confirmation. Logout removes frontend member cookies even during a CMS outage; it cannot revoke a copied ticket during that outage.
+Login defaults to remember-me, matching the legacy persistent login. The guarded account editor loads and saves through generated private GET/POST `/api/v1/member/profile`. It maps only the legacy editable fields, published skill and interest-group choices and a same-origin read-only image. Unknown or privileged form fields are rejected. Email/name updates use Umbraco Identity; raw biography stays escaped in the editor and public rendering retains its existing sanitizer. Missing CMS schema/content fails safely. Actual member-store persistence and cookie renewal are not proven by the empty-install export. Logout is a same-origin POST; GET only displays confirmation. Logout removes frontend member cookies even during a CMS outage; it cannot revoke a copied ticket during that outage.
