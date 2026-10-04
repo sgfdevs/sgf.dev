@@ -5,6 +5,14 @@ export const variables = defineEnvVars({
 		description: 'Private origin for the local or deployed SGF CMS API. Required only when server code calls the CMS.',
 		schema: (value) => (value ? value : undefined)
 	},
+	CMS_MEMBER_BRIDGE_SECRET: {
+		description: 'Server-only member bridge secret matching SGFDevs:MemberBridge:Secret. No default.',
+		schema: (value) => (value ? value : undefined)
+	},
+	CMS_MEMBER_COOKIE_NAME: {
+		description: 'Server-only member application cookie name. Match the CMS if its default is customized.',
+		schema: (value) => value || '.AspNetCore.Identity.Application'
+	},
 	MEDIA_SOURCE_PUBLIC_ORIGIN: {
 		description: 'Private validation origin for public SGF media DTO URLs. Defaults to https://media.sgf.dev.',
 		schema: (value) => (value ? value : undefined)

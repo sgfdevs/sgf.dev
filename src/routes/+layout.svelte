@@ -18,6 +18,6 @@
 	{/if}
 </svelte:head>
 
-<SiteShell>
+<SiteShell memberState={data.member ? { kind: 'member', label: data.member.name } : { kind: 'anonymous' }}>
 	{@render children()}
 </SiteShell>
