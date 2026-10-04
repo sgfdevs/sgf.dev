@@ -200,7 +200,7 @@
 				</li>
 				{#if memberState.kind === 'member'}
 					<li><a href={memberState.accountHref ?? '/account'}>{memberState.label}</a></li>
-					<li><button type="button" disabled aria-disabled="true">Logout</button></li>
+					<li><form method="POST" action="/logout"><button type="submit">Logout</button></form></li>
 				{:else}
 					<li class="desktop-user-link"><a href="/login">Login</a></li>
 					<li class="desktop-user-link"><a href="/register">Sign Up</a></li>
@@ -215,9 +215,13 @@
 					<li>
 						<button bind:this={aboutButton} id="mobile_nav_about" type="button" onclick={openAboutPanel}>About <Chevron direction="right" /></button>
 					</li>
-					{#each mobileMainLinks as link}
+					{#each mobileMainLinks.filter(link => memberState.kind !== 'member' || !['/login', '/register'].includes(link.href)) as link}
 						<li><a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{link.label}</a></li>
 					{/each}
+					{#if memberState.kind === 'member'}
+						<li><a href="/account">{memberState.label}</a></li>
+						<li><form method="POST" action="/logout"><button type="submit">Logout</button></form></li>
+					{/if}
 				</ul>
 				<div class="mobile-panel mobile-about-panel" aria-hidden={!aboutPanelOpen} inert={aboutPanelOpen ? undefined : true}>
 					<button bind:this={backButton} id="mobile_nav_back" type="button" onclick={closeAboutPanel}><Chevron direction="left" />Back</button>
