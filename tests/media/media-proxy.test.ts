@@ -3,7 +3,7 @@ import { once } from 'node:events';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseOrigin, parseUpstreamPathPrefix, type MediaProxyConfig } from '../../src/lib/server/media/config';
+import { PrivateMediaConfigError, parseOrigin, parseUpstreamPathPrefix, type MediaProxyConfig } from '../../src/lib/server/media/config';
 import { mapMediaUrlToSameOrigin, mapPublicDirectoryMemberMedia } from '../../src/lib/server/media/mapper';
 import {
 	MediaProxyError,
@@ -55,6 +55,23 @@ function imageResponse(body: BodyInit | null = pngBytes, init: ResponseInit = {}
 	});
 }
 
+function cancellableImageResponse(init: ResponseInit = {}) {
+	let cancelled = false;
+	const body = new ReadableStream<Uint8Array>({
+		start(controller) {
+			controller.enqueue(pngBytes);
+		},
+		cancel() {
+			cancelled = true;
+		}
+	});
+
+	return {
+		response: imageResponse(body, init),
+		wasCancelled: () => cancelled
+	};
+}
+
 describe('media URL mapper', () => {
 	it('maps public CDN root and raw CMS media URLs to same-origin media paths', () => {
 		assert.equal(
@@ -95,7 +112,12 @@ describe('media URL mapper', () => {
 			'/media/a.jpg?url=https://evil.example/x.jpg',
 			'/media/a.jpg?width=999999',
 			'/media/a.jpg?width=500&width=800',
-			'/media/a.jpg#fragment'
+			'/media/a.jpg#fragment',
+			'/media/folder/file.svg',
+			'/media/folder/file.gif',
+			'/media/folder/file.webp',
+			'/media/folder/file.pdf',
+			'/media/folder/file'
 		];
 
 		for (const value of invalid) {
@@ -117,6 +139,7 @@ describe('media URL mapper', () => {
 			image: '/media/a/ada.png?width=500&v=abc'
 		});
 		assert.equal(mapPublicDirectoryMemberMedia({ ...member, image: 'https://evil.example/ada.png' }, config()).image, '/images/pipey.jpg');
+		assert.equal(mapPublicDirectoryMemberMedia({ ...member, image: 'https://media.sgf.dev/a/ada.svg' }, config()).image, '/images/pipey.jpg');
 	});
 });
 
@@ -183,7 +206,10 @@ describe('media path, query, and configuration validation', () => {
 		assert.throws(() => parseUpstreamPathPrefix(undefined, 'http://127.0.0.1:5099'));
 		assert.throws(() => parseUpstreamPathPrefix('/', 'http://127.0.0.1:5099'));
 		assert.throws(() => parseUpstreamPathPrefix('/', 'https://cms.sgf.dev'));
-		assert.throws(() => parseUpstreamPathPrefix('/', 'https://media.sgf.dev:8443'));
+		assert.throws(() => parseUpstreamPathPrefix('/', 'https://media.sgf.dev:8443'), PrivateMediaConfigError);
+		assert.throws(() => parseOrigin('not-a-url', 'MEDIA_UPSTREAM_ORIGIN'), PrivateMediaConfigError);
+		assert.throws(() => parseOrigin('https://media.sgf.dev/private', 'MEDIA_UPSTREAM_ORIGIN'), PrivateMediaConfigError);
+		assert.throws(() => parseUpstreamPathPrefix('/media/%2e%2e/', 'http://127.0.0.1:5099'), PrivateMediaConfigError);
 	});
 });
 
@@ -218,7 +244,8 @@ describe('media proxy route handler', () => {
 			'/media/folder/photo.jpg?url=https://evil.example/x.jpg',
 			'/media/folder/photo.jpg?width=500&width=800',
 			'/media/folder/photo.jpg?width=999999',
-			'/media/folder/photo.jpg?format=svg'
+			'/media/folder/photo.jpg?format=svg',
+			'/media/folder/photo.gif'
 		];
 
 		for (const path of invalid) {
@@ -281,6 +308,8 @@ describe('media proxy route handler', () => {
 		assert.equal(get.headers.get('content-type'), 'image/png');
 		assert.equal(get.headers.get('cache-control'), 'public, max-age=31536000, immutable');
 		assert.equal(get.headers.get('x-content-type-options'), 'nosniff');
+		assert.equal(get.headers.get('etag'), '"abc"');
+		assert.equal(get.headers.get('last-modified'), 'Wed, 21 Oct 2015 07:28:00 GMT');
 		assert.equal(get.headers.get('server'), null);
 		assert.equal(get.headers.get('cf-ray'), null);
 		assert.equal(get.headers.get('x-storage-secret'), null);
@@ -288,6 +317,28 @@ describe('media proxy route handler', () => {
 		assert.equal(head.status, 200);
 		assert.equal(head.headers.get('content-length'), String(pngBytes.byteLength));
 		assert.equal((await head.text()).length, 0);
+	});
+
+	it('sanitizes optional upstream validators before forwarding them', async () => {
+		const strong = await responseFor('/media/folder/photo.png', async () =>
+			imageResponse(pngBytes, { headers: { etag: '"abc"', 'last-modified': 'Wed, 21 Oct 2015 07:28:00 GMT' } })
+		);
+		assert.equal(strong.headers.get('etag'), '"abc"');
+		assert.equal(strong.headers.get('last-modified'), 'Wed, 21 Oct 2015 07:28:00 GMT');
+
+		const weak = await responseFor('/media/folder/photo.png', async () => imageResponse(pngBytes, { headers: { etag: 'W/"abc"' } }));
+		assert.equal(weak.headers.get('etag'), 'W/"abc"');
+
+		const malformed = await responseFor('/media/folder/photo.png', async () =>
+			imageResponse(pngBytes, {
+				headers: {
+					etag: 'bare:opaque/value',
+					'last-modified': 'Mon Jan 01 2001 00:00:00 GMT+0000 (internal host)'
+				}
+			})
+		);
+		assert.equal(malformed.headers.get('etag'), null);
+		assert.equal(malformed.headers.get('last-modified'), null);
 	});
 
 	it('rejects forbidden upstream response types, redirects, errors, private headers, and body-cap violations', async () => {
@@ -300,6 +351,32 @@ describe('media proxy route handler', () => {
 		await assert.rejects(responseFor('/media/folder/photo.png', async () => imageResponse(pngBytes, { headers: { 'cache-control': 'private' } })), MediaProxyError);
 		await assert.rejects(responseFor('/media/folder/photo.png', async () => imageResponse(pngBytes, { headers: { 'content-length': '9' } }), { maxBytes: 8 }), MediaProxyError);
 		await assert.rejects(responseFor('/media/folder/photo.png', async () => imageResponse(Buffer.alloc(9)), { maxBytes: 8 }), MediaProxyError);
+	});
+
+	it('cancels upstream bodies on early rejection and unused HEAD bodies', async () => {
+		const cases: Array<{ name: string; response: Response; overrides?: Partial<MediaProxyConfig>; method?: 'GET' | 'HEAD'; wasCancelled: () => boolean }> = [];
+
+		for (const [name, init, overrides] of [
+			['unsupported MIME', { headers: { 'content-type': 'text/html' } }, undefined],
+			['forbidden header', { headers: { 'set-cookie': 'secret=1' } }, undefined],
+			['private cache', { headers: { 'cache-control': 'private' } }, undefined],
+			['invalid declared length', { headers: { 'content-length': 'abc' } }, undefined],
+			['oversized declared length', { headers: { 'content-length': '9' } }, { maxBytes: 8 }],
+			['non-success', { status: 500 }, undefined]
+		] as const) {
+			const tracked = cancellableImageResponse(init);
+			cases.push({ name, response: tracked.response, overrides, wasCancelled: tracked.wasCancelled });
+		}
+
+		for (const rejected of cases) {
+			await assert.rejects(responseFor('/media/folder/photo.png', async () => rejected.response, rejected.overrides), MediaProxyError, rejected.name);
+			assert.equal(rejected.wasCancelled(), true, rejected.name);
+		}
+
+		const head = cancellableImageResponse({ headers: { 'content-length': String(pngBytes.byteLength) } });
+		const response = await responseFor('/media/folder/photo.png', async () => head.response, {}, 'HEAD');
+		assert.equal(response.status, 200);
+		assert.equal(head.wasCancelled(), true);
 	});
 
 	it('links caller aborts to the upstream request signal', async () => {

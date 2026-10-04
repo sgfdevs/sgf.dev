@@ -141,26 +141,34 @@ async function buildProxyResponse(
 	query: string,
 	config: MediaProxyConfig
 ): Promise<Response> {
-	if (upstreamResponse.status >= 300 && upstreamResponse.status < 400) {
-		throw new MediaProxyError(502);
-	}
-	if (!upstreamResponse.ok) {
-		throw new MediaProxyError(upstreamResponse.status === 404 ? 404 : 502);
-	}
-	assertNoForbiddenResponseHeaders(upstreamResponse.headers);
+	let headers: Headers;
+	try {
+		if (upstreamResponse.status >= 300 && upstreamResponse.status < 400) {
+			throw new MediaProxyError(502);
+		}
+		if (!upstreamResponse.ok) {
+			throw new MediaProxyError(upstreamResponse.status === 404 ? 404 : 502);
+		}
+		assertNoForbiddenResponseHeaders(upstreamResponse.headers);
 
-	const contentType = parseAllowedContentType(upstreamResponse.headers.get('content-type'));
-	if (!contentType) {
-		throw new MediaProxyError(502);
+		const contentType = parseAllowedContentType(upstreamResponse.headers.get('content-type'));
+		if (!contentType) {
+			throw new MediaProxyError(502);
+		}
+
+		const declaredLength = parseContentLength(upstreamResponse.headers.get('content-length'));
+		if (declaredLength !== undefined && declaredLength > config.maxBytes) {
+			throw new MediaProxyError(502);
+		}
+
+		headers = buildSafeResponseHeaders(upstreamResponse.headers, contentType, query, method === 'HEAD' ? declaredLength : undefined);
+	} catch (error) {
+		await cancelResponseBodyQuietly(upstreamResponse);
+		throw error;
 	}
 
-	const declaredLength = parseContentLength(upstreamResponse.headers.get('content-length'));
-	if (declaredLength !== undefined && declaredLength > config.maxBytes) {
-		throw new MediaProxyError(502);
-	}
-
-	const headers = buildSafeResponseHeaders(upstreamResponse.headers, contentType, query, method === 'HEAD' ? declaredLength : undefined);
 	if (method === 'HEAD') {
+		await cancelResponseBodyQuietly(upstreamResponse);
 		return new Response(null, { status: 200, headers });
 	}
 
@@ -216,16 +224,44 @@ function buildSafeResponseHeaders(
 		headers.set('content-length', String(contentLength));
 	}
 
-	const etag = upstreamHeaders.get('etag');
-	if (etag && /^[\x21\x23-\x7e]{1,128}$/.test(etag)) {
+	const etag = sanitizeEtag(upstreamHeaders.get('etag'));
+	if (etag) {
 		headers.set('etag', etag);
 	}
-	const lastModified = upstreamHeaders.get('last-modified');
-	if (lastModified && !/[\r\n]/.test(lastModified) && Number.isFinite(Date.parse(lastModified))) {
+	const lastModified = sanitizeLastModified(upstreamHeaders.get('last-modified'));
+	if (lastModified) {
 		headers.set('last-modified', lastModified);
 	}
 
 	return headers;
+}
+
+function sanitizeEtag(value: string | null): string | null {
+	if (!value) return null;
+	const etag = value.trim();
+	if (etag.length > 128) return null;
+	return /^(?:W\/)?"[\x21\x23-\x7e]{0,124}"$/.test(etag) ? etag : null;
+}
+
+function sanitizeLastModified(value: string | null): string | null {
+	if (!value) return null;
+	const lastModified = value.trim();
+	if (!/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(lastModified)) {
+		return null;
+	}
+	const parsed = Date.parse(lastModified);
+	if (!Number.isFinite(parsed)) return null;
+	const canonical = new Date(parsed).toUTCString();
+	return canonical === lastModified ? canonical : null;
+}
+
+async function cancelResponseBodyQuietly(response: Response): Promise<void> {
+	if (!response.body) return;
+	try {
+		await response.body.cancel();
+	} catch {
+		// Cleanup should not mask the response validation error.
+	}
 }
 
 async function readBodyUnderLimit(response: Response, maxBytes: number): Promise<Uint8Array> {

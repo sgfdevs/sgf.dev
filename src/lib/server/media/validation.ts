@@ -8,6 +8,7 @@ export const MEDIA_TIMEOUT_MS_DEFAULT = 5_000;
 const MAX_MEDIA_KEY_BYTES = 1024;
 const MEDIA_KEY_SEGMENTS = 2;
 const safeSegmentPattern = /^[A-Za-z0-9._~-]+$/;
+const allowedMediaExtensionPattern = /\.(?:jpe?g|png)$/i;
 const invalidPercentEscapePattern = /%(?:$|[^0-9A-Fa-f]|.[^0-9A-Fa-f])/;
 const encodedDangerPattern = /%(?:00|2e|2f|5c)/i;
 
@@ -50,6 +51,9 @@ export function parseMediaKey(rawKey: string): ParsedMediaPath {
 	}
 
 	const segments = rawSegments.map((segment) => decodeSafePathSegment(segment));
+	if (!allowedMediaExtensionPattern.test(segments[segments.length - 1] ?? '')) {
+		throw new Error('Media key uses an unsupported file extension.');
+	}
 	return {
 		key: segments.map((segment) => encodeURIComponent(segment)).join('/'),
 		segments

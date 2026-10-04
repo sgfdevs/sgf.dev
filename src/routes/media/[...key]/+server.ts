@@ -1,3 +1,4 @@
+import { PrivateMediaConfigError } from '../../../lib/server/media/config';
 import { handleMediaProxyRequest, MediaProxyError } from '../../../lib/server/media/proxy';
 import { readMediaProxyConfig } from '../../../lib/server/media/runtime';
 import type { RequestHandler } from './$types';
@@ -11,7 +12,7 @@ async function mediaResponse(event: Parameters<RequestHandler>[0], method: 'GET'
 	try {
 		return await handleMediaProxyRequest(event, method, readMediaProxyConfig());
 	} catch (error) {
-		if (error instanceof Error && error.message.startsWith('MEDIA_')) {
+		if (error instanceof PrivateMediaConfigError) {
 			return new Response('Media unavailable', {
 				status: 503,
 				headers: {
