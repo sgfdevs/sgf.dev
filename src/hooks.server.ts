@@ -16,7 +16,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 	const response = await resolve(event);
-	if (hasCookie || ['/login', '/logout', '/account'].includes(event.url.pathname)) {
+	if (hasCookie || ['/login', '/logout', '/account', '/register'].includes(event.url.pathname)) {
 		response.headers.set('Cache-Control', 'no-store');
 	}
 	return response;
