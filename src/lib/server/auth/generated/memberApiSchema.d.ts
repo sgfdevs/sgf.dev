@@ -1,5 +1,21 @@
 /** Generated from openapi/sgf-member-v1.openapi.json. Run npm run api:member:generate. */
 export interface paths {
+    "/api/v1/member/avatar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["Member_AvatarUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/member/forgot-password": {
         parameters: {
             query?: never;
@@ -116,6 +132,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Format: binary */
+        IFormFile: string;
+        MemberAvatarResult: {
+            profileImageUrl: string;
+        };
         MemberForgotPasswordRequest: {
             email?: string;
         };
@@ -204,6 +225,69 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    Member_AvatarUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    file: components["schemas"]["IFormFile"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberAvatarResult"];
+                    "text/json": components["schemas"]["MemberAvatarResult"];
+                    "text/plain": components["schemas"]["MemberAvatarResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Payload Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     Member_ForgotPassword: {
         parameters: {
             query?: never;

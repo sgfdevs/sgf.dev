@@ -3,6 +3,20 @@
     import type { PageProps } from './$types';
     let { data, form }: PageProps = $props();
     const values = $derived(form?.values ?? data.values);
+    let selected = $state<FileList>();
+    let preview = $state('');
+    $effect(() => {
+        const file = selected?.[0];
+        const url = file && file.size <= 8 * 1024 * 1024 ? URL.createObjectURL(file) : '';
+        preview = url;
+        return () => { if (url) URL.revokeObjectURL(url); };
+    });
+    const avatarError = $derived(({
+        invalid: 'Choose a single-frame JPEG or PNG, at most 8192 pixels per side and 16 million pixels.',
+        size: 'Choose an image no larger than 8 MiB.',
+        busy: 'Too many uploads. Wait a minute and try again.',
+        unavailable: 'Avatar upload is unavailable right now. Try again later.'
+    } as Record<string, string>)[data.avatarStatus] ?? '');
     const nameFields = [
         { name: 'email', label: 'Email', type: 'email', max: 1000 },
         { name: 'firstName', label: 'First Name', type: 'text', max: 512 },
@@ -30,6 +44,20 @@
 {/snippet}
 
 <main class="site-container account">
+    <section class="avatar-form">
+        <h2>Profile image</h2>
+        <img class="avatar" src={data.image} width="200" height="200" alt="Your current profile" />
+        {#if data.avatarStatus === 'updated'}<p role="status">Profile image updated</p>{/if}
+        {#if avatarError}<p role="alert" class="error">{avatarError}</p>{/if}
+        <form method="POST" action="/account/avatar" enctype="multipart/form-data">
+            <label for="avatar-file">Choose an image</label>
+            <p id="avatar-help">JPEG or PNG, up to 8 MiB, 8192 pixels per side and 16 million pixels. Images are centered and cropped to a square. No animation.</p>
+            <input id="avatar-file" name="file" type="file" accept="image/jpeg,image/png" required bind:files={selected} aria-describedby="avatar-help" />
+            {#if preview}<img class="avatar" src={preview} width="200" height="200" alt="Selected avatar preview" />{/if}
+            {#if selected?.[0] && selected[0].size > 8 * 1024 * 1024}<p role="alert" class="error">Choose an image no larger than 8 MiB.</p>{/if}
+            <p><button class="button" type="submit" disabled={!!selected?.[0] && selected[0].size > 8 * 1024 * 1024}>Upload image</button></p>
+        </form>
+    </section>
     <form method="POST" class="form" use:enhance>
         <header>
             <h1>Edit your profile</h1>
@@ -37,10 +65,6 @@
             {#if data.saved && !form}<p role="status">Profile updated</p>{/if}
             {@render errors('')}
         </header>
-        <div class="field">
-            <img class="avatar" src={data.image} width="200" height="200" alt="Your current profile" />
-            <p>Your current profile image is read-only.</p>
-        </div>
         {#each nameFields as field}
             <div class="field">
                 <div class="label-row"><label for={field.name}>{field.label}</label>{@render errors(field.name)}</div>
@@ -102,7 +126,7 @@
 
 <style>
     .account { padding-bottom: 75px; }
-    .form, .logout { max-width: 675px; margin: 0 auto; }
+    .form, .logout, .avatar-form { max-width: 675px; margin: 0 auto; }
     header { margin-bottom: 35px; }
     h1 { font-size: 36px; color: #000; }
     .field { margin: 0 0 35px; }
@@ -116,6 +140,9 @@
     .checkbox-list label, .toggle { font-size: 16px; font-weight: normal; }
     input[type="checkbox"] { accent-color: var(--color-sgf-dark-blue); }
     .avatar { object-fit: cover; }
+    .avatar-form { margin-bottom: 35px; }
+    .avatar-form h2 { font-size: 24px; color: #000; }
+    .avatar-form input[type="file"] { display: block; margin: 16px 0; max-width: 100%; }
     a { color: var(--color-sgf-light-blue); }
     .button { cursor: pointer; display: inline-flex; align-items: center; border: 0; border-radius: var(--radius-sgf-button-tall); padding: 14px 30px; background: var(--color-sgf-light-blue); color: white; font: inherit; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.57px; }
     .tall { height: 64px; }

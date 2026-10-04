@@ -19,7 +19,8 @@ export const load: PageServerLoad = async event => {
         groups: profile.groups.map(choice => ({ key: choice.key, name: choice.name })),
         image: mapMediaUrlToSameOrigin(profile.profileImageUrl ?? '/images/pipey.jpg', readMediaSourceConfig()) ?? '/images/pipey.jpg',
         profileHref: '/member/' + encodeURIComponent(event.locals.member.username),
-        saved: event.url.searchParams.get('saved') === '1'
+        saved: event.url.searchParams.get('saved') === '1',
+        avatarStatus: event.url.searchParams.get('avatar') ?? ''
     };
 };
 

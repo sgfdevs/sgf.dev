@@ -6,10 +6,73 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:58221/"
+      "url": "http://127.0.0.1:42837/"
     }
   ],
   "paths": {
+    "/api/v1/member/avatar": {
+      "post": {
+        "tags": [
+          "MemberAvatar"
+        ],
+        "operationId": "Member_AvatarUpload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "$ref": "#/components/schemas/IFormFile"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAvatarResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAvatarResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberAvatarResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "413": {
+            "description": "Payload Too Large"
+          },
+          "429": {
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/member/forgot-password": {
       "post": {
         "tags": [
@@ -429,6 +492,21 @@
   },
   "components": {
     "schemas": {
+      "IFormFile": {
+        "type": "string",
+        "format": "binary"
+      },
+      "MemberAvatarResult": {
+        "required": [
+          "profileImageUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "profileImageUrl": {
+            "type": "string"
+          }
+        }
+      },
       "MemberForgotPasswordRequest": {
         "type": "object",
         "properties": {
@@ -785,6 +863,9 @@
     }
   },
   "tags": [
+    {
+      "name": "MemberAvatar"
+    },
     {
       "name": "MemberPasswordReset"
     },

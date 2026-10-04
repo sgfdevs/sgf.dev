@@ -29,23 +29,33 @@ export function createMemberClient(options: {
 			const target = new URL(request.url);
 			if (target.origin !== origin || ![
 				'/api/v1/member/login', '/api/v1/member/session', '/api/v1/member/logout', '/api/v1/member/register',
-				'/api/v1/member/forgot-password', '/api/v1/member/reset-password', '/api/v1/member/profile'
+				'/api/v1/member/forgot-password', '/api/v1/member/reset-password', '/api/v1/member/profile', '/api/v1/member/avatar'
 			].includes(target.pathname) || target.search || target.hash) throw new Error('Invalid member bridge request.');
 			const headers = new Headers({ 'X-SGF-Member-Bridge': options.secret! });
 			const cookie = memberCookieHeader(options.cookies, base);
 			if (cookie) headers.set('Cookie', cookie);
-			if (request.body) headers.set('Content-Type', 'application/json');
+			const avatar = target.pathname === '/api/v1/member/avatar';
+			if (request.body) headers.set('Content-Type', avatar ? request.headers.get('Content-Type')! : 'application/json');
 			// Native fetch, not event.fetch: Kit must never auto-forward browser credentials.
 			const response = await fetchImpl(new Request(target, {
-				method: request.method, body: request.body ? await request.text() : undefined,
+				method: request.method, body: request.body ? (avatar ? await request.arrayBuffer() : await request.text()) : undefined,
 				headers, redirect: 'error', credentials: 'omit', cache: 'no-store',
-				signal: AbortSignal.timeout(8000)
+				signal: AbortSignal.timeout(avatar ? 30000 : 8000)
 			}));
 			relayMemberCookies(response.headers, options.cookies, base, options.secure);
 			return response;
 		}
 	});
 	return {
+		uploadAvatar: (file: File) => client.POST('/api/v1/member/avatar', {
+			// OpenAPI represents binary data as a string. Send the native File as multipart bytes.
+			body: { file: file.name },
+			bodySerializer: () => {
+				const body = new FormData();
+				body.set('file', file);
+				return body;
+			}
+		}),
 		profile: () => client.GET('/api/v1/member/profile'),
 		updateProfile: (body: components['schemas']['MemberProfileEditRequest']) => client.POST('/api/v1/member/profile', { body }),
 		forgotPassword: (body: components['schemas']['MemberForgotPasswordRequest']) => client.POST('/api/v1/member/forgot-password', { body }),
