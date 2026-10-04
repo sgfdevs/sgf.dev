@@ -3,7 +3,9 @@ declare global {
 		interface Locals {
 			member: { username: string; name: string } | null;
 		}
-		interface PageData {}
+		interface PageData {
+			contentPage?: import('./lib/server/pages/mapper').ContentPageView;
+		}
 	}
 }
 
