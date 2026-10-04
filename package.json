@@ -13,6 +13,8 @@
 		"preview": "vite preview",
 		"serve": "node build",
 		"api:generate": "tsx scripts/generate-sgf-api.ts",
+		"api:delivery:generate": "tsx scripts/generate-delivery-api.ts",
+		"test:pages": "node --test --import tsx tests/pages/*.test.ts",
 		"api:member:generate": "tsx scripts/generate-sgf-member-api.ts",
 		"api:member:check": "tsx scripts/generate-sgf-member-api.ts --check",
 		"test:auth": "node --test --import tsx tests/auth/*.test.ts",
@@ -41,6 +43,7 @@
 		"vite": "8.3.2"
 	},
 	"dependencies": {
+		"marked": "18.0.14",
 		"openapi-fetch": "0.17.0",
 		"sanitize-html": "2.18.0"
 	}

@@ -5,6 +5,10 @@ export const variables = defineEnvVars({
 		description: 'Private origin for the local or deployed SGF CMS API. Required only when server code calls the CMS.',
 		schema: (value) => (value ? value : undefined)
 	},
+	CMS_DELIVERY_API_KEY: {
+		description: 'Server-only native Umbraco Delivery API key matching Umbraco:CMS:DeliveryApi:ApiKey. No default.',
+		schema: (value) => (value ? value : undefined)
+	},
 	CMS_MEMBER_BRIDGE_SECRET: {
 		description: 'Server-only member bridge secret matching SGFDevs:MemberBridge:Secret. No default.',
 		schema: (value) => (value ? value : undefined)
