@@ -13,7 +13,8 @@ export const SGF_PUBLIC_GET_PATHS = [
 	'/api/v1/public/home',
 	'/api/v1/public/members/{username}',
 	'/api/v1/public/groups',
-	'/api/v1/public/groups/{slug}'
+	'/api/v1/public/groups/{slug}',
+	'/api/v1/public/leadership'
 ] as const satisfies readonly Extract<keyof paths, string>[];
 
 export const MEMBER_GET_TEMPLATE = '/api/v1/public/members/{username}';

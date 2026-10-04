@@ -5,7 +5,7 @@
 	import type { LayoutProps } from './$types';
 
 	let { children, data }: LayoutProps = $props();
-	const contentPage = $derived(page.data.company ?? page.data.contentPage);
+	const contentPage = $derived(page.data.company ?? page.data.contentPage ?? page.data.leadership);
 	const canonical = $derived(contentPage ? new URL(contentPage.path, data.canonicalUrl).href : data.canonicalUrl);
 	const ogImage = $derived(contentPage?.ogImage ? new URL(contentPage.ogImage, data.canonicalUrl).href : data.ogImageUrl);
 </script>

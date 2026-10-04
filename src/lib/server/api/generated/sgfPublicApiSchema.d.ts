@@ -100,6 +100,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/public/leadership": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PublicLeadership_Get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/public/members/{username}": {
         parameters: {
             query?: never;
@@ -213,6 +229,18 @@ export interface components {
             websiteUrl?: null | string;
             websiteLabel?: null | string;
             isFoundingSponsor: boolean;
+        };
+        PublicLeadershipDto: {
+            officers?: components["schemas"]["PublicLeadershipMemberDto"][];
+            boardOfDirectors?: components["schemas"]["PublicLeadershipMemberDto"][];
+            history?: components["schemas"]["PublicLeadershipMemberDto"][];
+        };
+        PublicLeadershipMemberDto: {
+            name?: string;
+            username?: string;
+            imageUrl?: string;
+            officerTitle?: null | string;
+            officerBio?: null | string;
         };
         PublicMemberProfileDto: {
             username: string;
@@ -427,6 +455,35 @@ export interface operations {
                 content: {
                     "application/problem+json": components["schemas"]["ProblemDetails"];
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    PublicLeadership_Get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicLeadershipDto"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
                 };
             };
         };

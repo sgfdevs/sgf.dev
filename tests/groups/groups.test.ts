@@ -11,7 +11,7 @@ const options = { cmsInternalOrigin: media.cmsInternalOrigin, mediaConfig: media
 
 test('real exported contract adds only groups and generated DTOs, not Delivery member pickers', async () => {
 	const raw = await readFile('openapi/sgf-public-v1.openapi.json');
-	assert.equal(createHash('sha256').update(raw).digest('hex'), '3e074e950bf1243ee47ce724a214753e60f26c7e23363d4e662f55c26c17f416');
+	assert.equal(createHash('sha256').update(raw).digest('hex'), 'c1feb27b31f5b112c42498522c38d851253c3a6218761216a03ef8fb6afa6947');
 	const schema = JSON.parse(raw.toString());
 	assert.equal(schema.paths['/api/v1/public/groups'].get.operationId, 'PublicGroups_List');
 	assert.equal(schema.paths['/api/v1/public/groups/{slug}'].get.operationId, 'PublicGroups_Get');
