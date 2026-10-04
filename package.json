@@ -18,6 +18,7 @@
 		"test:api": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/api/*.test.ts",
 		"test:home": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/home/*.test.ts",
 		"test:media": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/media/*.test.ts",
+		"test:member": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/member/*.test.ts",
 		"test:theme": "node --test --import tsx tests/theme/*.test.ts",
 		"test:shell": "node --test --import tsx tests/shell/*.test.ts"
 	},
@@ -27,6 +28,7 @@
 		"@sveltejs/vite-plugin-svelte": "7.3.1",
 		"@tailwindcss/vite": "4.3.3",
 		"@types/node": "24.19.1",
+		"@types/sanitize-html": "2.16.2",
 		"openapi-typescript": "7.13.0",
 		"svelte": "5.57.1",
 		"svelte-check": "4.7.6",
@@ -36,6 +38,7 @@
 		"vite": "8.3.2"
 	},
 	"dependencies": {
-		"openapi-fetch": "0.17.0"
+		"openapi-fetch": "0.17.0",
+		"sanitize-html": "2.18.0"
 	}
 }
