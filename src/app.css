@@ -61,6 +61,7 @@
 		font-family: var(--font-sans);
 		color: var(--color-sgf-text);
 		background: white;
+		overflow-y: auto;
 	}
 
 	body {
@@ -70,5 +71,78 @@
 		line-height: var(--leading-sgf-body);
 		color: var(--color-sgf-text);
 		background: white;
+		margin: 0;
+		padding: 0;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+		overflow: visible;
+	}
+
+	body.fixed {
+		overflow: hidden;
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	a,
+	a:visited,
+	a:active,
+	a:hover {
+		text-decoration: none;
+		outline: none;
+		border: none;
+	}
+}
+
+@layer components {
+	.site-container {
+		margin: 0 auto;
+		padding: 0 50px;
+		position: relative;
+	}
+
+	.site-content {
+		flex: 1;
+	}
+
+	.frontend-placeholder {
+		min-height: 320px;
+		padding: 18px 50px 80px;
+	}
+
+	.frontend-placeholder p {
+		max-width: 720px;
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.5;
+		color: rgb(37 65 81 / 80%);
+	}
+
+	@media (min-width: 1024px) {
+		html {
+			overflow-y: scroll;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.site-container {
+			padding: 0 30px;
+		}
+
+		.frontend-placeholder {
+			padding-right: 30px;
+			padding-left: 30px;
+		}
 	}
 }

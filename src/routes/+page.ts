@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = () => ({
-	status: 'Frontend rebuild in progress'
+	status: 'Shared site shell layer only. Page content comes in later rewrite layers.'
 });
