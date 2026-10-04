@@ -169,6 +169,7 @@ export interface components {
         PublicGroupSkillDto: {
             name?: string;
             slug?: string;
+            directoryFilterValue?: string;
         };
         PublicHomeDevNightDto: {
             name: string;

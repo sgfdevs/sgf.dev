@@ -11,7 +11,7 @@ const options = { cmsInternalOrigin: media.cmsInternalOrigin, mediaConfig: media
 
 test('real exported contract adds only groups and generated DTOs, not Delivery member pickers', async () => {
 	const raw = await readFile('openapi/sgf-public-v1.openapi.json');
-	assert.equal(createHash('sha256').update(raw).digest('hex'), 'c99de23daaf51441e5b4cc33aba073736482fa3833b7088c42c9738a4d528cba');
+	assert.equal(createHash('sha256').update(raw).digest('hex'), '3e074e950bf1243ee47ce724a214753e60f26c7e23363d4e662f55c26c17f416');
 	const schema = JSON.parse(raw.toString());
 	assert.equal(schema.paths['/api/v1/public/groups'].get.operationId, 'PublicGroups_List');
 	assert.equal(schema.paths['/api/v1/public/groups/{slug}'].get.operationId, 'PublicGroups_Get');
@@ -47,7 +47,7 @@ test('explicit mapping keeps dates/order/case, safe leaders, skills and sanitize
 	assert.equal(mapped.name, source.name); assert.equal(mapped.path, '/groups/Rust-SGF/');
 	assert.equal(mapped.image, '/media/synthetic/group.jpg');
 	assert.equal(mapped.establishedText, source.establishedText);
-	assert.equal(mapped.skills[0].url, '/directory/?skill=Rust');
+	assert.equal(mapped.skills[0].url, '/directory/?skills=11111111-2222-3333-4444-555555555555');
 	assert.equal(mapped.leaders[0].path, '/member/Jane');
 	assert.equal(mapped.leaders[0].listLabel, 'Jane E.');
 	assert.equal(mapped.upcomingPresentations[0].startsAtLocal, '2026-10-07T18:30:00');

@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:40397/"
+      "url": "http://127.0.0.1:36021/"
     }
   ],
   "paths": {
@@ -491,6 +491,9 @@
             "type": "string"
           },
           "slug": {
+            "type": "string"
+          },
+          "directoryFilterValue": {
             "type": "string"
           }
         }

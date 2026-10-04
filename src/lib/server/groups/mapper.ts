@@ -55,10 +55,9 @@ export function mapGroup(value: PublicGroupDto, media: MediaSourceConfig) {
 		location: optional(group.location), establishedText: optional(group.establishedText), websiteUrl, socials,
 		skills: array(group.skills).map(value => {
 			const skill = record(value);
-			const slug = text(skill.slug);
-			if (!isPublicGroupSlug(slug)) throw new GroupDataError();
-			// Keep the legacy singular skill query and URL segment, not content keys.
-			return { name: text(skill.name), url: `/directory/?skill=${encodeURIComponent(slug)}` };
+			const term = text(skill.directoryFilterValue);
+			if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(term)) throw new GroupDataError();
+			return { name: text(skill.name), url: `/directory/?skills=${encodeURIComponent(term)}` };
 		}),
 		leaders: array(group.leaders).map(value => {
 			const leader = record(value);

@@ -5,14 +5,14 @@
 Snapshot provenance:
 
 - Backend repository: `cms.sgf.dev`
-- Backend commit: `ba6d15b69d0e2a0c1151a5b4689b9790da19570c`, draft https://github.com/sgfdevs/cms.sgf.dev/pull/18
+- Backend commit: `6423bcc1f5b529c73a033b9aea4922cabe4550cb`, draft https://github.com/sgfdevs/cms.sgf.dev/pull/18
 - Runtime export URL: `/umbraco/openapi/sgf-public-v1.json`
-- Exported file: `/home/levi/.cache/sgf-migration-validation-3KOCBS/group-pages-1-C44GXVUY/public-export-final/evidence/sgf-public-v1.openapi.json`
+- Exported file: `/home/levi/.cache/sgf-migration-validation-3KOCBS/company-pages-1-0DOnnRsl/group-export/evidence/sgf-public-v1.openapi.json`
 - Runtime provenance: `export-provenance.json` alongside that artifact
-- Raw runtime export SHA-256: `c99de23daaf51441e5b4cc33aba073736482fa3833b7088c42c9738a4d528cba`
-- Committed canonical SHA-256: `c99de23daaf51441e5b4cc33aba073736482fa3833b7088c42c9738a4d528cba`
+- Raw runtime export SHA-256: `3e074e950bf1243ee47ce724a214753e60f26c7e23363d4e662f55c26c17f416`
+- Committed canonical SHA-256: `3e074e950bf1243ee47ce724a214753e60f26c7e23363d4e662f55c26c17f416`
 
-Raw and canonical hashes happen to match for this export. Only the existing LF/terminal-newline policy was applied, with no JSON edits or reordering. The runtime export adds `PublicGroups_List` and `PublicGroups_Get` with explicit public group DTOs and 404 ProblemDetails. Existing operations and components are unchanged. Generated error media without a schema remain `unknown`.
+Raw and canonical hashes happen to match for this export. Only the existing LF/terminal-newline policy was applied, with no JSON edits or reordering. The runtime export adds `PublicGroups_List` and `PublicGroups_Get` with explicit public group DTOs and 404 ProblemDetails. The group skill DTO now also exposes the published tag GUID as directoryFilterValue. Other operations and components are unchanged. Generated error media without a schema remain `unknown`.
 
 The server-only GET fence accepts the member template only with a snapshotted ASCII alphanumeric username of 1 to 1000 characters. The final Request allows only the anchored concrete member path, never the unresolved template. The group template requires a snapshotted ASCII alphanumeric slug with hyphens or underscores, 1 to 200 characters, and the final request checks the anchored group path. The earlier paths and network/auth guards remain. This export used the existing owned install-only SQLite procedure, fake Docker shim and AF S3 assembly exclusion. No schema import or content seed ran.
 
