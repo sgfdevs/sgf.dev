@@ -6,10 +6,80 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:35899/"
+      "url": "http://127.0.0.1:53625/"
     }
   ],
   "paths": {
+    "/api/v1/member/register": {
+      "post": {
+        "tags": [
+          "MemberRegistration"
+        ],
+        "operationId": "Member_Register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberRegistrationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberRegistrationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberRegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberRegistrationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/member/login": {
       "post": {
         "tags": [
@@ -145,6 +215,68 @@
           }
         }
       },
+      "MemberRegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "lastName": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "email": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "username": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "password": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "challengeQuestion": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "MemberRegistrationResult": {
+        "required": [
+          "succeeded",
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "MemberSessionDto": {
         "required": [
           "username",
@@ -163,6 +295,9 @@
     }
   },
   "tags": [
+    {
+      "name": "MemberRegistration"
+    },
     {
       "name": "MemberSession"
     }
