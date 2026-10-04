@@ -3,7 +3,7 @@
 This repository is for the public [sgf.dev](https://sgf.dev) frontend.
 The Umbraco CMS and backend live in [cms.sgf.dev](https://github.com/sgfdevs/cms.sgf.dev).
 
-This branch starts the SvelteKit frontend rewrite with a minimal Svelte 5 app. It does not include the final page migration, Tailwind styling, asset migration, generated API client, or live CMS integration yet.
+This branch starts the SvelteKit frontend rewrite with a minimal Svelte 5 app and Tailwind CSS 4 wired through Vite. It does not include the final page migration, site theme, asset migration, generated API client, or live CMS integration yet.
 
 ## Requirements
 
