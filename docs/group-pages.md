@@ -1,0 +1,9 @@
+# Public group pages
+
+`/groups/` and `/groups/{slug}/` load the published CMS group projection through the existing server-only public client. They require `CMS_INTERNAL_ORIGIN` and the existing media configuration. Requests use the page request's fetch, a four-second timeout, omitted credentials and disabled redirects. Missing or protected content returns 404. Configuration failure returns 503; upstream or malformed payloads return 502. There is no content fallback.
+
+Raw native Delivery `group` values include a member picker, so the backend keeps `group` excluded. The two explicit public operations reuse Umbraco published route lookup and generated model converters, the anonymous content guard, public member lookup and Home presenter projection. Leaders contain only public display fields and profile paths. Group skills contain display names and URL segments, not content keys. The actual runtime contract and source commit are recorded in `openapi/README.md`. The native Delivery and private member contracts remain separate and unchanged.
+
+The list preserves published child order and excludes only the exact legacy name `Springfield Devs`. That group's detail is still addressable. Detail retains the group fields, ordered upcoming presentations and leaders. About HTML uses the existing page sanitizer; links and image URLs use existing safe mapping. The legacy YouTube video is a single static trusted URL, never CMS-provided iframe HTML. Members and Archive were commented out in the legacy Group view and remain absent. Event Details remains an unavailable placeholder.
+
+Skill links keep the legacy `/directory/?skill={urlSegment}` behavior. The current directory supports a different plural `skills` filter, so the legacy link opens the directory without applying that filter. Changing directory filtering is outside this layer.

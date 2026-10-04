@@ -11,12 +11,20 @@ export const SGF_PUBLIC_GET_PATHS = [
 	'/api/directory/filters/skills',
 	'/api/directory/search',
 	'/api/v1/public/home',
-	'/api/v1/public/members/{username}'
+	'/api/v1/public/members/{username}',
+	'/api/v1/public/groups',
+	'/api/v1/public/groups/{slug}'
 ] as const satisfies readonly Extract<keyof paths, string>[];
 
 export const MEMBER_GET_TEMPLATE = '/api/v1/public/members/{username}';
-const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS.filter((path) => path !== MEMBER_GET_TEMPLATE));
+export const GROUP_GET_TEMPLATE = '/api/v1/public/groups/{slug}';
+const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS.filter((path) => path !== MEMBER_GET_TEMPLATE && path !== GROUP_GET_TEMPLATE));
 const concreteMemberPath = /^\/api\/v1\/public\/members\/[A-Za-z0-9]{1,1000}$/;
+const concreteGroupPath = /^\/api\/v1\/public\/groups\/[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/;
+
+export function isPublicGroupSlug(value: unknown): value is string {
+	return typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/.test(value);
+}
 
 export function isPublicMemberUsername(value: unknown): value is string {
 	return typeof value === 'string' && value.length >= 1 && value.length <= 1000 && !/[^A-Za-z0-9]/.test(value);
@@ -40,9 +48,9 @@ export function createSgfApiClientForOrigin(fetchImpl: SgfApiFetch, internalOrig
 
 	return {
 		GET(url, ...init) {
-			if (url !== MEMBER_GET_TEMPLATE) assertPublicGetPath(url);
-			const options = url === MEMBER_GET_TEMPLATE
-				? snapshotMemberOptions(init[0] as RequestInitGuard)
+			if (url !== MEMBER_GET_TEMPLATE && url !== GROUP_GET_TEMPLATE) assertPublicGetPath(url);
+			const options = url === MEMBER_GET_TEMPLATE || url === GROUP_GET_TEMPLATE
+				? snapshotPathOptions(init[0] as RequestInitGuard, url === MEMBER_GET_TEMPLATE ? 'username' : 'slug')
 				: init[0] as RequestInitGuard;
 			const guardedInit = guardPublicRequestInit(options);
 			return client.GET(url, guardedInit as never);
@@ -50,17 +58,21 @@ export function createSgfApiClientForOrigin(fetchImpl: SgfApiFetch, internalOrig
 	};
 }
 
-function snapshotMemberOptions(init: RequestInitGuard): RequestInitGuard {
-	const params = init?.params as { path?: { username?: unknown } } | undefined;
-	const username = params?.path?.username;
-	if (!isPublicMemberUsername(username)) throw new Error('SGF API member username must be ASCII alphanumeric, 1 to 1000 characters.');
+function snapshotPathOptions(init: RequestInitGuard, field: 'username' | 'slug'): RequestInitGuard {
+	const params = init?.params as { path?: Record<string, unknown> } | undefined;
+	const value = params?.path?.[field];
+	if (!(field === 'username' ? isPublicMemberUsername(value) : isPublicGroupSlug(value))) {
+		throw new Error(field === 'username'
+			? 'SGF API member username must be ASCII alphanumeric, 1 to 1000 characters.'
+			: 'SGF API group slug must be ASCII alphanumeric with hyphens or underscores, 1 to 200 characters.');
+	}
 
 	// Read getter/inherited path input once. Only the validated string reaches substitution.
 	const snapshot: Record<string, unknown> = {};
 	for (const key of Object.keys(params ?? {})) {
 		if (key !== 'path') snapshot[key] = (params as Record<string, unknown>)[key];
 	}
-	snapshot.path = { username };
+	snapshot.path = { [field]: value };
 	const options: Record<string, unknown> = {};
 	for (const key of Object.keys(init ?? {})) {
 		if (key !== 'params') options[key] = init?.[key];
@@ -114,7 +126,7 @@ function assertCmsPublicRequest(request: Request, baseUrl: string): void {
 	if (request.method !== 'GET') {
 		throw new Error('SGF API request escaped the approved public GET methods.');
 	}
-	if (!concreteMemberPath.test(url.pathname)) assertPublicGetPath(url.pathname);
+	if (!concreteMemberPath.test(url.pathname) && !concreteGroupPath.test(url.pathname)) assertPublicGetPath(url.pathname);
 	if (request.redirect !== 'error') {
 		throw new Error('SGF API requests must keep redirect disabled.');
 	}

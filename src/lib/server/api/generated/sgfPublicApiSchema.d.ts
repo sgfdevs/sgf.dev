@@ -52,6 +52,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/public/groups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PublicGroups_List"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/groups/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PublicGroups_Get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/public/home": {
         parameters: {
             query?: never;
@@ -102,6 +134,41 @@ export interface components {
             image: string;
             url: string;
             tags: string[];
+        };
+        PublicGroupDto: {
+            name?: string;
+            path?: string;
+            aboutHtml?: null | string;
+            imageUrl?: null | string;
+            location?: null | string;
+            establishedText?: null | string;
+            websiteUrl?: null | string;
+            twitterUrl?: null | string;
+            linkedInUrl?: null | string;
+            facebookUrl?: null | string;
+            instagramUrl?: null | string;
+            youTubeUrl?: null | string;
+            skills?: components["schemas"]["PublicGroupSkillDto"][];
+            leaders?: components["schemas"]["PublicGroupLeaderDto"][];
+            upcomingPresentations?: components["schemas"]["PublicGroupPresentationDto"][];
+        };
+        PublicGroupLeaderDto: {
+            name?: string;
+            listLabel?: string;
+            location?: string;
+            imageUrl?: string;
+            profilePath?: string;
+            tags?: string[];
+        };
+        PublicGroupPresentationDto: {
+            title?: string;
+            eventName?: string;
+            startsAtLocal?: string;
+            presenters?: components["schemas"]["PublicHomePresenterDto"][];
+        };
+        PublicGroupSkillDto: {
+            name?: string;
+            slug?: string;
         };
         PublicHomeDevNightDto: {
             name: string;
@@ -254,6 +321,66 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    PublicGroups_List: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicGroupDto"][];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    PublicGroups_Get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicGroupDto"];
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
