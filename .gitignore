@@ -1,11 +1,21 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Local legacy CMS data and media
+/SgfDevs/umbraco/Data/
+/SgfDevs/umbraco/Logs/
+/SgfDevs/wwwroot/media/
+*.sqlite.db*
+
+# Local dependencies, IDE settings, and .NET build output
+node_modules/
+*.user
+.idea/
+.vs/
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
-/.idea
-/.vs
-SGFDevs/wwwroot/media
-/SgfDevs/Umbraco/models/ood.flag
-.env
-SgfDevs.sln.DotSettings.user
