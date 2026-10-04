@@ -68,6 +68,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/public/members/{username}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PublicMember_Get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -129,6 +145,33 @@ export interface components {
             websiteUrl?: null | string;
             websiteLabel?: null | string;
             isFoundingSponsor: boolean;
+        };
+        PublicMemberProfileDto: {
+            username: string;
+            name: string;
+            firstName?: null | string;
+            lastName?: null | string;
+            jobTitle?: null | string;
+            profileImageUrl: string;
+            tags?: string[];
+            city?: null | string;
+            state?: null | string;
+            joinMonthLabel?: null | string;
+            aboutHtml?: null | string;
+            skills?: components["schemas"]["PublicMemberSkillDto"][];
+            websiteUrl?: null | string;
+            websiteLabel?: null | string;
+            twitterUrl?: null | string;
+            linkedInUrl?: null | string;
+            facebookUrl?: null | string;
+            instagramUrl?: null | string;
+            youTubeUrl?: null | string;
+            availableForHire?: boolean;
+            availableForContractWork?: boolean;
+        };
+        PublicMemberSkillDto: {
+            name: string;
+            directoryFilterValue: string;
         };
         PublicSkillFilterDto: {
             name: string;
@@ -256,6 +299,37 @@ export interface operations {
                 content: {
                     "application/problem+json": components["schemas"]["ProblemDetails"];
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    PublicMember_Get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                username: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicMemberProfileDto"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
                 };
             };
         };

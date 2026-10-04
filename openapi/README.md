@@ -5,11 +5,16 @@
 Snapshot provenance:
 
 - Backend repository: `cms.sgf.dev`
-- Backend commit: `996553e8cb046e82751468debbc04455a7bc5aac`
+- Backend commit: `01a276aed199405cbe7b511310cd9301b28ffa9e, draft https://github.com/sgfdevs/cms.sgf.dev/pull/10`
 - Runtime export URL: `/umbraco/openapi/sgf-public-v1.json`
-- Exported file: `/tmp/sgf-public-v1-home-errors.openapi.json`
-- Raw runtime export SHA-256: `881f0b2d8e9e78b1290f831386f2e5d9b10de716f4748b66760382f04c2e41dc`
-- Committed canonical SHA-256: `881f0b2d8e9e78b1290f831386f2e5d9b10de716f4748b66760382f04c2e41dc`
+- Exported file: `/home/levi/.cache/sgf-migration-validation-3KOCBS/member-contract-export-1-nntnHn/evidence/sgf-public-v1.json`
+- Runtime provenance: `export-provenance.json` alongside that artifact
+- Raw runtime export SHA-256: `f9eee0ce6ec1ab9295ddd6eda12f0675c5bbd046efae7f1c23f768f33fde6d89`
+- Committed canonical SHA-256: `f9eee0ce6ec1ab9295ddd6eda12f0675c5bbd046efae7f1c23f768f33fde6d89`
+
+Raw and canonical hashes happen to match for this export. Only the existing LF/terminal-newline policy was applied, with no JSON edits or reordering. The runtime export adds `PublicMember_Get` with its explicit public profile DTO and 404 ProblemDetails. Existing operations and components are unchanged. Generated error media without a schema remain `unknown`.
+
+The server-only GET fence accepts the member template only with a snapshotted ASCII alphanumeric username of 1 to 1000 characters. The final Request allows only the anchored concrete member path, never the unresolved template. The four earlier literal paths and network/auth guards remain.
 
 Byte policy:
 
