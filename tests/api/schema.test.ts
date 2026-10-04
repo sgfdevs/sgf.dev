@@ -29,7 +29,7 @@ async function withTempDir<T>(fn: (dir: string) => Promise<T>): Promise<T> {
 }
 
 describe('committed SGF OpenAPI snapshot', () => {
-	it('matches the reviewed backend export and contains only the public directory, Home, member and group routes', async () => {
+	it('matches the reviewed backend export and contains only the public directory, Home, member, group and leadership routes', async () => {
 		const text = await readFile(schemaPath, 'utf8');
 		const document = JSON.parse(text);
 
@@ -42,6 +42,7 @@ describe('committed SGF OpenAPI snapshot', () => {
 			'/api/v1/public/groups',
 			'/api/v1/public/groups/{slug}',
 			'/api/v1/public/home',
+			'/api/v1/public/leadership',
 			'/api/v1/public/members/{username}'
 		]);
 		assert.deepEqual([...SGF_PUBLIC_GET_PATHS].sort(), Object.keys(document.paths).sort());

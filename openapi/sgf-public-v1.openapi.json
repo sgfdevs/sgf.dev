@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:36021/"
+      "url": "http://127.0.0.1:57671/"
     }
   ],
   "paths": {
@@ -233,6 +233,36 @@
                 }
               },
               "application/json": { }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/leadership": {
+      "get": {
+        "tags": [
+          "PublicLeadership"
+        ],
+        "operationId": "PublicLeadership_Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicLeadershipDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
             }
           }
         }
@@ -701,6 +731,55 @@
           }
         }
       },
+      "PublicLeadershipDto": {
+        "type": "object",
+        "properties": {
+          "officers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicLeadershipMemberDto"
+            }
+          },
+          "boardOfDirectors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicLeadershipMemberDto"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicLeadershipMemberDto"
+            }
+          }
+        }
+      },
+      "PublicLeadershipMemberDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "officerTitle": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "officerBio": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
       "PublicMemberProfileDto": {
         "required": [
           "username",
@@ -874,6 +953,9 @@
     },
     {
       "name": "PublicHome"
+    },
+    {
+      "name": "PublicLeadership"
     },
     {
       "name": "PublicMember"
