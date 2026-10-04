@@ -16,6 +16,7 @@
 		"api:check": "tsx scripts/generate-sgf-api.ts --check",
 		"api:schema:fetch": "tsx scripts/fetch-sgf-api-schema.ts",
 		"test:api": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/api/*.test.ts",
+		"test:media": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/media/*.test.ts",
 		"test:theme": "node --test --import tsx tests/theme/*.test.ts",
 		"test:shell": "node --test --import tsx tests/shell/*.test.ts"
 	},
