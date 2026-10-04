@@ -1,0 +1,25 @@
+{
+	"name": "sgf-dev-frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"engines": {
+		"node": ">=22.17"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"build": "vite build",
+		"preview": "vite preview",
+		"serve": "node build"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-node": "6.0.0",
+		"@sveltejs/kit": "3.0.0",
+		"@sveltejs/vite-plugin-svelte": "7.3.1",
+		"svelte": "5.57.1",
+		"svelte-check": "4.7.6",
+		"typescript": "6.0.3",
+		"vite": "8.3.2"
+	}
+}
