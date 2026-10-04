@@ -1,1 +1,74 @@
 @import 'tailwindcss';
+
+@font-face {
+	font-family: 'Source Sans Variable';
+	font-style: normal;
+	font-stretch: normal;
+	font-weight: 200 900;
+	src: url('/css/fonts/WOFF2/VAR/SourceSansVariable-Roman.ttf.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Source Sans Variable';
+	font-style: italic;
+	font-stretch: normal;
+	font-weight: 200 900;
+	src: url('/css/fonts/WOFF2/VAR/SourceSansVariable-Italic.ttf.woff2') format('woff2');
+}
+
+@theme {
+	--font-sans: 'Source Sans Variable', 'Open Sans', sans-serif;
+
+	--color-sgf-dark-blue: #153557;
+	--color-sgf-light-blue: #619ECE;
+	--color-sgf-grey: #e6e6e6;
+	--color-sgf-gray: #e6e6e6;
+	--color-sgf-light-grey: #f3f3f3;
+	--color-sgf-light-gray: #f3f3f3;
+	--color-sgf-text: rgb(37 65 81);
+
+	--breakpoint-sgf-480: 480px;
+	--breakpoint-sgf-700: 700px;
+	--breakpoint-sgf-768: 768px;
+	--breakpoint-sgf-950: 950px;
+	--breakpoint-sgf-1024: 1024px;
+	--breakpoint-sgf-1060: 1060px;
+	--breakpoint-sgf-1400: 1400px;
+
+	--radius-sgf-card: 27px;
+	--radius-sgf-button: 25.5px;
+	--radius-sgf-button-tall: 33px;
+
+	--spacing-sgf-button: 40px;
+	--spacing-sgf-button-tall: 64px;
+
+	--text-sgf-body: 18px;
+	--leading-sgf-body: 1.666;
+}
+
+@custom-variant sgf-max-1400 (@media (width <= 1400px));
+@custom-variant sgf-max-1060 (@media (width <= 1060px));
+@custom-variant sgf-max-1024 (@media (width <= 1024px));
+/* Keep the legacy 951px desktop split between 1024px and 950px max variants. */
+@custom-variant sgf-min-951 (@media (width >= 951px));
+@custom-variant sgf-max-950 (@media (width <= 950px));
+@custom-variant sgf-max-768 (@media (width <= 768px));
+@custom-variant sgf-max-700 (@media (width <= 700px));
+@custom-variant sgf-max-480 (@media (width <= 480px));
+
+@layer base {
+	html {
+		font-family: var(--font-sans);
+		color: var(--color-sgf-text);
+		background: white;
+	}
+
+	body {
+		font-family: var(--font-sans);
+		font-size: var(--text-sgf-body);
+		font-weight: 400;
+		line-height: var(--leading-sgf-body);
+		color: var(--color-sgf-text);
+		background: white;
+	}
+}
