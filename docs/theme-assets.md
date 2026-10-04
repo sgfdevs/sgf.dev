@@ -41,9 +41,9 @@ Legacy source ref: `origin/main` at `93d55c91102b75174a3b078e707767d602f8a5db`. 
 
 ## Font license
 
-`static/licenses/source-sans-variable-OFL-1.1.txt` is the Adobe Source Sans SIL Open Font License 1.1 notice fetched from `https://raw.githubusercontent.com/adobe-fonts/source-sans/release/LICENSE.md`; SHA-256 `56af9b9c6715597e458284a474dc118a50a4150e9d547c70f7b4a33c3e6a9328`.
+`static/licenses/source-sans-variable-OFL-1.1.txt` is the Adobe Source Sans 3.006R SIL Open Font License 1.1 notice fetched from `https://raw.githubusercontent.com/adobe-fonts/source-sans/3.006R/LICENSE.md`; SHA-256 `f698b3361368a7ad7cf77234e58bc7a8502bf9fe0678f8e30a67d593f47206c2`.
 
-Only the two legacy Source Sans Variable WOFF2 files were copied. Font Awesome 5 Pro, `fa-light`, and `fa-duotone` files were not copied because their licensing is not verified for redistribution in this frontend layer.
+The copied Roman and Italic variable WOFF2 files match Adobe's `source-sans-pro-3.006R.zip` release asset at `https://github.com/adobe-fonts/source-sans/releases/tag/3.006R`, paths `WOFF2/VAR/SourceSansVariable-Roman.ttf.woff2` and `WOFF2/VAR/SourceSansVariable-Italic.ttf.woff2`. Only those two legacy Source Sans Variable WOFF2 files were copied. Font Awesome 5 Pro, `fa-light`, and `fa-duotone` files were not copied because their licensing is not verified for redistribution in this frontend layer.
 
 ## Tailwind 4 theme tokens
 
@@ -51,7 +51,7 @@ Only the two legacy Source Sans Variable WOFF2 files were copied. Font Awesome 5
 - Font: `font-sans` maps to `Source Sans Variable`, then `Open Sans`, then `sans-serif`.
 - Body base: 18px, weight 400, line-height 1.666, text color `rgb(37 65 81)`.
 - Breakpoint tokens: `sgf-480`, `sgf-700`, `sgf-768`, `sgf-950`, `sgf-1024`, `sgf-1060`, `sgf-1400`, all in px to avoid mixed-unit ordering surprises.
-- Legacy max-width variants: `sgf-max-480`, `sgf-max-700`, `sgf-max-768`, `sgf-max-950`, `sgf-max-1024`, `sgf-max-1060`, `sgf-max-1400`; plus `sgf-min-951` for the legacy greater-than-small-desktop case.
+- Legacy max-width variants: `sgf-max-480`, `sgf-max-700`, `sgf-max-768`, `sgf-max-950`, `sgf-max-1024`, `sgf-max-1060`, `sgf-max-1400`; plus `sgf-min-951` for the legacy greater-than-small-desktop case. The source declares max variants from largest to smallest so narrower max-width utilities win in Tailwind's compiled CSS. `sgf-min-951` sits between `sgf-max-1024` and `sgf-max-950`, matching the legacy `951px` split.
 - Radius and sizing: `radius-sgf-card` 27px, `radius-sgf-button` 25.5px, `radius-sgf-button-tall` 33px, `spacing-sgf-button` 40px, `spacing-sgf-button-tall` 64px.
 
 ## Intentional gaps

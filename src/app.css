@@ -46,14 +46,15 @@
 	--leading-sgf-body: 1.666;
 }
 
-@custom-variant sgf-max-480 (@media (width <= 480px));
-@custom-variant sgf-max-700 (@media (width <= 700px));
-@custom-variant sgf-max-768 (@media (width <= 768px));
-@custom-variant sgf-max-950 (@media (width <= 950px));
-@custom-variant sgf-min-951 (@media (width >= 951px));
-@custom-variant sgf-max-1024 (@media (width <= 1024px));
-@custom-variant sgf-max-1060 (@media (width <= 1060px));
 @custom-variant sgf-max-1400 (@media (width <= 1400px));
+@custom-variant sgf-max-1060 (@media (width <= 1060px));
+@custom-variant sgf-max-1024 (@media (width <= 1024px));
+/* Keep the legacy 951px desktop split between 1024px and 950px max variants. */
+@custom-variant sgf-min-951 (@media (width >= 951px));
+@custom-variant sgf-max-950 (@media (width <= 950px));
+@custom-variant sgf-max-768 (@media (width <= 768px));
+@custom-variant sgf-max-700 (@media (width <= 700px));
+@custom-variant sgf-max-480 (@media (width <= 480px));
 
 @layer base {
 	html {
