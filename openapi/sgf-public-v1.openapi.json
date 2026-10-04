@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:57671/"
+      "url": "http://127.0.0.1:38745/"
     }
   ],
   "paths": {
@@ -233,6 +233,87 @@
                 }
               },
               "application/json": { }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs": {
+      "get": {
+        "tags": [
+          "PublicJob"
+        ],
+        "operationId": "PublicJobs_List",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicJobDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/jobs/{company}/{job}": {
+      "get": {
+        "tags": [
+          "PublicJob"
+        ],
+        "operationId": "PublicJobs_Get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicJobDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
             }
           }
         }
@@ -731,6 +812,59 @@
           }
         }
       },
+      "PublicJobDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "location": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "employmentType": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "compensation": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "posted": {
+            "type": "string"
+          },
+          "descriptionHtml": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "applyUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "PublicLeadershipDto": {
         "type": "object",
         "properties": {
@@ -953,6 +1087,9 @@
     },
     {
       "name": "PublicHome"
+    },
+    {
+      "name": "PublicJob"
     },
     {
       "name": "PublicLeadership"
