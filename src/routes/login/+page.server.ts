@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = ({ url, locals }) => {
 	const returnTo = safeReturnTo(url.searchParams.get('returnTo'));
 	if (locals.member) redirect(303, returnTo);
-	return { returnTo };
+	return { returnTo, passwordReset: url.searchParams.get('passwordReset') === 'success' };
 };
 
 export const actions: Actions = {

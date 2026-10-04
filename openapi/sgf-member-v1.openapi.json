@@ -6,10 +6,150 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:53625/"
+      "url": "http://127.0.0.1:59151/"
     }
   ],
   "paths": {
+    "/api/v1/member/forgot-password": {
+      "post": {
+        "tags": [
+          "MemberPasswordReset"
+        ],
+        "operationId": "Member_ForgotPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberForgotPasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberForgotPasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberForgotPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/member/reset-password": {
+      "post": {
+        "tags": [
+          "MemberPasswordReset"
+        ],
+        "operationId": "Member_ResetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberResetPasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberResetPasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberPasswordResetResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/member/register": {
       "post": {
         "tags": [
@@ -179,6 +319,14 @@
   },
   "components": {
     "schemas": {
+      "MemberForgotPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
       "MemberLoginRequest": {
         "required": [
           "username",
@@ -212,6 +360,27 @@
         "properties": {
           "succeeded": {
             "type": "boolean"
+          }
+        }
+      },
+      "MemberPasswordResetResult": {
+        "required": [
+          "succeeded",
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         }
       },
@@ -277,6 +446,23 @@
           }
         }
       },
+      "MemberResetPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        }
+      },
       "MemberSessionDto": {
         "required": [
           "username",
@@ -295,6 +481,9 @@
     }
   },
   "tags": [
+    {
+      "name": "MemberPasswordReset"
+    },
     {
       "name": "MemberRegistration"
     },

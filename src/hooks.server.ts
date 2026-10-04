@@ -16,8 +16,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 	const response = await resolve(event);
-	if (hasCookie || ['/login', '/logout', '/account', '/register'].includes(event.url.pathname)) {
+	if (hasCookie || ['/login', '/logout', '/account', '/register', '/forgotten-password', '/reset-password'].includes(event.url.pathname)) {
 		response.headers.set('Cache-Control', 'no-store');
+	}
+	if (event.url.pathname === '/reset-password') {
+		response.headers.set('Referrer-Policy', 'no-referrer');
 	}
 	return response;
 };

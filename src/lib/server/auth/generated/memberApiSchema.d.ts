@@ -1,5 +1,37 @@
 /** Generated from openapi/sgf-member-v1.openapi.json. Run npm run api:member:generate. */
 export interface paths {
+    "/api/v1/member/forgot-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["Member_ForgotPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/member/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["Member_ResetPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/member/register": {
         parameters: {
             query?: never;
@@ -68,6 +100,9 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        MemberForgotPasswordRequest: {
+            email?: string;
+        };
         MemberLoginRequest: {
             username: null | string;
             password: null | string;
@@ -76,6 +111,12 @@ export interface components {
         };
         MemberLoginResult: {
             succeeded: boolean;
+        };
+        MemberPasswordResetResult: {
+            succeeded: boolean;
+            errors: {
+                [key: string]: string[];
+            };
         };
         MemberRegistrationRequest: {
             firstName?: null | string;
@@ -91,6 +132,12 @@ export interface components {
                 [key: string]: string[];
             };
         };
+        MemberResetPasswordRequest: {
+            memberId?: string;
+            token?: string;
+            password?: string;
+            confirmPassword?: string;
+        };
         MemberSessionDto: {
             username: string;
             name: string;
@@ -104,6 +151,84 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    Member_ForgotPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberForgotPasswordRequest"];
+                "text/json": components["schemas"]["MemberForgotPasswordRequest"];
+                "application/*+json": components["schemas"]["MemberForgotPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/plain": components["schemas"]["MemberPasswordResetResult"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/plain": components["schemas"]["MemberPasswordResetResult"];
+                };
+            };
+        };
+    };
+    Member_ResetPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberResetPasswordRequest"];
+                "text/json": components["schemas"]["MemberResetPasswordRequest"];
+                "application/*+json": components["schemas"]["MemberResetPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/plain": components["schemas"]["MemberPasswordResetResult"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/json": components["schemas"]["MemberPasswordResetResult"];
+                    "text/plain": components["schemas"]["MemberPasswordResetResult"];
+                };
+            };
+        };
+    };
     Member_Register: {
         parameters: {
             query?: never;
