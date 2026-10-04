@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:36395/"
+      "url": "http://127.0.0.1:36021/"
     }
   ],
   "paths": {
@@ -112,6 +112,79 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/groups": {
+      "get": {
+        "tags": [
+          "PublicGroup"
+        ],
+        "operationId": "PublicGroups_List",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicGroupDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/groups/{slug}": {
+      "get": {
+        "tags": [
+          "PublicGroup"
+        ],
+        "operationId": "PublicGroups_Get",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicGroupDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -273,6 +346,155 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "PublicGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "aboutHtml": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "imageUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "location": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "establishedText": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "websiteUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "twitterUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "linkedInUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "facebookUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "instagramUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "youTubeUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicGroupSkillDto"
+            }
+          },
+          "leaders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicGroupLeaderDto"
+            }
+          },
+          "upcomingPresentations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicGroupPresentationDto"
+            }
+          }
+        }
+      },
+      "PublicGroupLeaderDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "listLabel": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "profilePath": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PublicGroupPresentationDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "eventName": {
+            "type": "string"
+          },
+          "startsAtLocal": {
+            "type": "string"
+          },
+          "presenters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicHomePresenterDto"
+            }
+          }
+        }
+      },
+      "PublicGroupSkillDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "directoryFilterValue": {
+            "type": "string"
           }
         }
       },
@@ -646,6 +868,9 @@
   "tags": [
     {
       "name": "DevsApi"
+    },
+    {
+      "name": "PublicGroup"
     },
     {
       "name": "PublicHome"

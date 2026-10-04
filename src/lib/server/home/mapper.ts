@@ -119,7 +119,7 @@ function mapPresentation(value: unknown, mediaConfig: MediaSourceConfig, path: s
 	};
 }
 
-function mapPresenter(value: unknown, mediaConfig: MediaSourceConfig, path: string): PublicHomePresenterView {
+export function mapPresenter(value: unknown, mediaConfig: MediaSourceConfig, path = 'presenter'): PublicHomePresenterView {
 	const source = requireRecord(value, path);
 	return {
 		name: requireString(source.name, `${path}.name`),
