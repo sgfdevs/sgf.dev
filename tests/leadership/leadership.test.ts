@@ -12,7 +12,7 @@ const options = { cmsInternalOrigin: media.cmsInternalOrigin, mediaConfig: media
 
 test('actual exported schema permits one exact anonymous leadership GET with explicit public fields', async () => {
     const raw = await readFile('openapi/sgf-public-v1.openapi.json');
-    assert.equal(createHash('sha256').update(raw).digest('hex'), 'c1feb27b31f5b112c42498522c38d851253c3a6218761216a03ef8fb6afa6947');
+    assert.equal(createHash('sha256').update(raw).digest('hex'), '1e68666e8d424d88ac4469f281aa937c6b26dcf35cd722633054e815184fde2b');
     const schema = JSON.parse(raw.toString());
     assert.equal(schema.paths['/api/v1/public/leadership'].get.operationId, 'PublicLeadership_Get');
     assert.deepEqual(Object.keys(schema.components.schemas.PublicLeadershipMemberDto.properties).sort(),

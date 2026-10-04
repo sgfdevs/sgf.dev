@@ -14,12 +14,16 @@ export const SGF_PUBLIC_GET_PATHS = [
 	'/api/v1/public/members/{username}',
 	'/api/v1/public/groups',
 	'/api/v1/public/groups/{slug}',
-	'/api/v1/public/leadership'
+	'/api/v1/public/leadership',
+	'/api/v1/public/jobs',
+	'/api/v1/public/jobs/{company}/{job}'
 ] as const satisfies readonly Extract<keyof paths, string>[];
 
 export const MEMBER_GET_TEMPLATE = '/api/v1/public/members/{username}';
 export const GROUP_GET_TEMPLATE = '/api/v1/public/groups/{slug}';
-const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS.filter((path) => path !== MEMBER_GET_TEMPLATE && path !== GROUP_GET_TEMPLATE));
+export const JOB_GET_TEMPLATE = '/api/v1/public/jobs/{company}/{job}';
+const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS.filter((path) => path !== MEMBER_GET_TEMPLATE && path !== GROUP_GET_TEMPLATE && path !== JOB_GET_TEMPLATE));
+const concreteJobPath = /^\/api\/v1\/public\/jobs\/[A-Za-z0-9][A-Za-z0-9_-]{0,199}\/[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/;
 const concreteMemberPath = /^\/api\/v1\/public\/members\/[A-Za-z0-9]{1,1000}$/;
 const concreteGroupPath = /^\/api\/v1\/public\/groups\/[A-Za-z0-9][A-Za-z0-9_-]{0,199}$/;
 
@@ -49,14 +53,29 @@ export function createSgfApiClientForOrigin(fetchImpl: SgfApiFetch, internalOrig
 
 	return {
 		GET(url, ...init) {
-			if (url !== MEMBER_GET_TEMPLATE && url !== GROUP_GET_TEMPLATE) assertPublicGetPath(url);
-			const options = url === MEMBER_GET_TEMPLATE || url === GROUP_GET_TEMPLATE
+			if (url !== MEMBER_GET_TEMPLATE && url !== GROUP_GET_TEMPLATE && url !== JOB_GET_TEMPLATE) assertPublicGetPath(url);
+			const options = url === JOB_GET_TEMPLATE ? snapshotJobOptions(init[0] as RequestInitGuard)
+				: url === MEMBER_GET_TEMPLATE || url === GROUP_GET_TEMPLATE
 				? snapshotPathOptions(init[0] as RequestInitGuard, url === MEMBER_GET_TEMPLATE ? 'username' : 'slug')
 				: init[0] as RequestInitGuard;
 			const guardedInit = guardPublicRequestInit(options);
 			return client.GET(url, guardedInit as never);
 		}
 	};
+}
+
+function snapshotJobOptions(init: RequestInitGuard): RequestInitGuard {
+	const params = init?.params as { path?: Record<string, unknown> } | undefined;
+	const company = params?.path?.company, job = params?.path?.job;
+	if (!isPublicGroupSlug(company) || !isPublicGroupSlug(job)) throw new Error('Invalid job destination.');
+	const options: Record<string, unknown> = {};
+	for (const key of Object.keys(init ?? {})) if (key !== 'params') options[key] = init?.[key];
+	for (const key of [...forbiddenNetworkOverrides, 'headers']) {
+		if (init && key in init && !(key in options)) options[key] = init[key];
+	}
+	// Jobs has no caller-selected fields, preview or collection query options.
+	options.params = { path: { company, job } };
+	return options;
 }
 
 function snapshotPathOptions(init: RequestInitGuard, field: 'username' | 'slug'): RequestInitGuard {
@@ -127,7 +146,10 @@ function assertCmsPublicRequest(request: Request, baseUrl: string): void {
 	if (request.method !== 'GET') {
 		throw new Error('SGF API request escaped the approved public GET methods.');
 	}
-	if (!concreteMemberPath.test(url.pathname) && !concreteGroupPath.test(url.pathname)) assertPublicGetPath(url.pathname);
+	if (!concreteMemberPath.test(url.pathname) && !concreteGroupPath.test(url.pathname) && !concreteJobPath.test(url.pathname)) assertPublicGetPath(url.pathname);
+	if ((concreteJobPath.test(url.pathname) || url.pathname === '/api/v1/public/jobs') && url.search) {
+		throw new Error('Jobs requests must not include query overrides.');
+	}
 	if (request.redirect !== 'error') {
 		throw new Error('SGF API requests must keep redirect disabled.');
 	}
