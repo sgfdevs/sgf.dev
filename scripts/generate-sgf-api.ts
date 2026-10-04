@@ -1,6 +1,7 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import openapiTS, { astToString } from 'openapi-typescript';
+import { writeFileAtomically } from './lib/atomic-write';
 
 const check = process.argv.includes('--check');
 const GENERATED_HEADER = `/**
@@ -30,6 +31,5 @@ for (const schema of schemas) {
 		continue;
 	}
 
-	await mkdir(dirname(schema.output), { recursive: true });
-	await writeFile(schema.output, next);
+	await writeFileAtomically(schema.output, next);
 }

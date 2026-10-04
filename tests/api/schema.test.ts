@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
+import { SGF_PUBLIC_GET_PATHS } from '../../src/lib/server/api/factory';
 
 const schemaPath = new URL('../../openapi/sgf-public-v1.openapi.json', import.meta.url);
 const generatedPath = new URL('../../src/lib/server/api/generated/sgfPublicApiSchema.d.ts', import.meta.url);
@@ -18,6 +19,7 @@ describe('committed SGF OpenAPI snapshot', () => {
 			'/api/directory/search',
 			'/api/tags/skills'
 		]);
+		assert.deepEqual([...SGF_PUBLIC_GET_PATHS].sort(), Object.keys(document.paths).sort());
 	});
 
 	it('keeps the generated public API as legacy arrays, not a fake paged shape', async () => {

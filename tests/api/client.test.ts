@@ -12,9 +12,15 @@ function jsonResponse(body: unknown, init: ResponseInit = {}) {
 	});
 }
 
-class EvilRequest extends Request {
+class CrossOriginRequest extends Request {
 	constructor(_input: RequestInfo | URL, init?: RequestInit) {
 		super('https://evil.example/leak', init);
+	}
+}
+
+class SameOriginPrivateRequest extends Request {
+	constructor(_input: RequestInfo | URL, init?: RequestInit) {
+		super('http://127.0.0.1:5099/umbraco/backoffice/private', init);
 	}
 }
 
@@ -108,13 +114,77 @@ describe('SGF API client foundation', () => {
 		assert.equal(parseCmsInternalOrigin('https://cms.internal.example/'), 'https://cms.internal.example');
 	});
 
-	it('does not allow per-request origin or fetch overrides', async () => {
+	it('does not allow per-request origin or fetch overrides', () => {
+		let customFetchCalls = 0;
 		const client = createSgfApiClientForOrigin(async () => jsonResponse([]), 'http://127.0.0.1:5099');
 
 		assert.throws(
 			() => client.GET('/api/tags/skills', { baseUrl: 'https://evil.example' } as never),
 			/SGF API requests must use the fixed CMS_INTERNAL_ORIGIN/
 		);
+		assert.throws(
+			() =>
+				client.GET('/api/tags/skills', {
+					fetch: async () => {
+						customFetchCalls += 1;
+						return jsonResponse([]);
+					}
+				} as never),
+			/SGF API requests must use the fixed CMS_INTERNAL_ORIGIN/
+		);
+		assert.equal(customFetchCalls, 0);
+	});
+
+	it('rejects same-origin private path escapes before network fetch', async () => {
+		let networkCalls = 0;
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		await assert.rejects(
+			client.GET('/api/tags/skills', {
+				middleware: [
+					{
+						onRequest: () =>
+							new Request('http://127.0.0.1:5099/umbraco/backoffice/private', {
+								credentials: 'omit',
+								redirect: 'error'
+							})
+					}
+				]
+			} as never),
+			/approved public API paths/
+		);
+		await assert.rejects(
+			client.GET('/api/tags/skills', { Request: SameOriginPrivateRequest } as never),
+			/approved public API paths/
+		);
+		await assert.rejects(
+			client.GET('/api/tags/skills', {
+				middleware: [
+					{
+						onRequest: () =>
+							new Request('http://127.0.0.1:5099/api/tags/skills', {
+								credentials: 'omit',
+								method: 'POST',
+								redirect: 'error'
+							})
+					}
+				]
+			} as never),
+			/approved public GET methods/
+		);
+		assert.equal(networkCalls, 0);
+	});
+
+	it('still rejects cross-origin middleware and custom Request escapes', async () => {
+		let networkCalls = 0;
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
 		await assert.rejects(
 			client.GET('/api/tags/skills', {
 				middleware: [{ onRequest: () => new Request('https://evil.example/leak') }]
@@ -122,8 +192,53 @@ describe('SGF API client foundation', () => {
 			/SGF API request escaped the fixed CMS_INTERNAL_ORIGIN/
 		);
 		await assert.rejects(
-			client.GET('/api/tags/skills', { Request: EvilRequest } as never),
+			client.GET('/api/tags/skills', { Request: CrossOriginRequest } as never),
 			/SGF API request escaped the fixed CMS_INTERNAL_ORIGIN/
 		);
+		assert.equal(networkCalls, 0);
+	});
+
+	it('keeps redirect, credential, and auth-header policy immutable', async () => {
+		let networkCalls = 0;
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		await assert.rejects(client.GET('/api/tags/skills', { redirect: 'follow' } as never), /redirect disabled/);
+		await assert.rejects(client.GET('/api/tags/skills', { credentials: 'include' } as never), /omit credentials/);
+		await assert.rejects(
+			client.GET('/api/tags/skills', { headers: { authorization: 'Bearer secret' } } as never),
+			/auth headers/
+		);
+		assert.equal(networkCalls, 0);
+	});
+
+	it('does not expose global openapi-fetch middleware registration', () => {
+		const client = createSgfApiClientForOrigin(async () => jsonResponse([]), 'http://127.0.0.1:5099');
+
+		assert.equal('use' in client, false);
+	});
+
+	it('maps unknown upstream bodies and preserves network failures', async () => {
+		const upstreamError = createSgfApiClientForOrigin(
+			async () => new Response('raw backend failure', { status: 418 }),
+			'http://127.0.0.1:5099'
+		);
+		const errorResult = await upstreamError.GET('/api/tags/skills');
+		assert.throws(
+			() => requireSgfApiData(errorResult),
+			(error) => {
+				const message = String((error as Error).message ?? '');
+				assert.equal(isHttpError(error, 502), true);
+				assert.equal(message.includes('raw backend failure'), false);
+				return true;
+			}
+		);
+
+		const networkError = createSgfApiClientForOrigin(async () => {
+			throw new TypeError('network broke');
+		}, 'http://127.0.0.1:5099');
+		await assert.rejects(networkError.GET('/api/tags/skills'), /network broke/);
 	});
 });

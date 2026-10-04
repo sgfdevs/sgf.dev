@@ -1,5 +1,5 @@
-import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { writeFileAtomically } from './lib/atomic-write';
 
 const schemaOrigin = process.env.SGF_CMS_SCHEMA_ORIGIN;
 const outputPath = resolve('openapi/sgf-public-v1.openapi.json');
@@ -22,7 +22,7 @@ if (!response.ok) {
 
 const text = await response.text();
 JSON.parse(text);
-await writeFile(outputPath, `${text.trimEnd()}\n`);
+await writeFileAtomically(outputPath, `${text.trimEnd()}\n`);
 
 function parseLocalSchemaOrigin(input: string): string {
 	if (input.startsWith('//')) {
