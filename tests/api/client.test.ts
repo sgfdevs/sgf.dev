@@ -24,6 +24,19 @@ class SameOriginPrivateRequest extends Request {
 	}
 }
 
+const forbiddenAuthHeaders = ['Authorization', 'Cookie', 'X-Api-Key'] as const;
+
+type HeaderRepresentation = {
+	label: string;
+	build: (name: string, value: string) => HeadersInit;
+};
+
+const headerRepresentations: HeaderRepresentation[] = [
+	{ label: 'object', build: (name, value) => ({ [name]: value }) },
+	{ label: 'tuple array', build: (name, value) => [[name, value]] },
+	{ label: 'Headers instance', build: (name, value) => new Headers([[name, value]]) }
+];
+
 describe('SGF API client foundation', () => {
 	it('uses the fixed server origin and preserves the legacy skills array contract', async () => {
 		const requests: Request[] = [];
@@ -205,12 +218,143 @@ describe('SGF API client foundation', () => {
 			return jsonResponse([]);
 		}, 'http://127.0.0.1:5099');
 
-		await assert.rejects(client.GET('/api/tags/skills', { redirect: 'follow' } as never), /redirect disabled/);
-		await assert.rejects(client.GET('/api/tags/skills', { credentials: 'include' } as never), /omit credentials/);
+		await assert.rejects(async () => client.GET('/api/tags/skills', { redirect: 'follow' } as never), /redirect disabled/);
+		await assert.rejects(async () => client.GET('/api/tags/skills', { credentials: 'include' } as never), /omit credentials/);
 		await assert.rejects(
-			client.GET('/api/tags/skills', { headers: { authorization: 'Bearer secret' } } as never),
+			async () => client.GET('/api/tags/skills', { headers: { authorization: 'Bearer secret' } } as never),
 			/auth headers/
 		);
+		assert.equal(networkCalls, 0);
+	});
+
+	it('rejects forbidden auth headers in every HeadersInit representation before fetch', async () => {
+		let networkCalls = 0;
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		for (const headerName of forbiddenAuthHeaders) {
+			for (const representation of headerRepresentations) {
+				await assert.rejects(
+					async () =>
+						client.GET('/api/tags/skills', {
+							headers: representation.build(headerName, 'secret')
+						} as never),
+					/auth headers/,
+					`${representation.label} ${headerName}`
+				);
+			}
+		}
+		assert.equal(networkCalls, 0);
+	});
+
+	it('rejects mixed-case and duplicate forbidden headers before fetch', async () => {
+		let networkCalls = 0;
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		await assert.rejects(
+			async () =>
+				client.GET('/api/tags/skills', {
+					headers: [
+						['Accept', 'application/json'],
+						['AUTHORIZATION', 'Bearer one'],
+						['authorization', 'Bearer two']
+					]
+				} as never),
+			/auth headers/
+		);
+		await assert.rejects(
+			async () =>
+				client.GET('/api/tags/skills', {
+					headers: { Cookie: 'a=b', cookie: 'c=d' }
+				} as never),
+			/auth headers/
+		);
+		assert.equal(networkCalls, 0);
+	});
+
+	it('keeps benign per-request headers across supported HeadersInit forms', async () => {
+		const requests: Request[] = [];
+		const client = createSgfApiClientForOrigin(async (request) => {
+			requests.push(request);
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+		const benignRepresentations: HeadersInit[] = [
+			{ Accept: 'application/json', 'X-Request-Id': 'object-request' },
+			[
+				['Accept', 'application/json'],
+				['X-Request-Id', 'tuple-request']
+			],
+			new Headers([
+				['Accept', 'application/json'],
+				['X-Request-Id', 'headers-request']
+			])
+		];
+
+		for (const headers of benignRepresentations) {
+			await client.GET('/api/tags/skills', { headers } as never);
+		}
+
+		assert.equal(requests.length, 3);
+		assert.equal(requests[0]?.headers.get('accept'), 'application/json');
+		assert.equal(requests[0]?.headers.get('x-request-id'), 'object-request');
+		assert.equal(requests[1]?.headers.get('accept'), 'application/json');
+		assert.equal(requests[1]?.headers.get('x-request-id'), 'tuple-request');
+		assert.equal(requests[1]?.headers.get('0'), null);
+		assert.equal(requests[2]?.headers.get('accept'), 'application/json');
+		assert.equal(requests[2]?.headers.get('x-request-id'), 'headers-request');
+	});
+
+	it('passes only a normalized header snapshot to openapi-fetch', async () => {
+		let initHeaderReads = 0;
+		let headerValueReads = 0;
+		const requests: Request[] = [];
+		const rawHeaders = {};
+		Object.defineProperty(rawHeaders, 'X-Request-Id', {
+			enumerable: true,
+			get() {
+				headerValueReads += 1;
+				return headerValueReads === 1 ? 'snapshot-request' : 'mutated-request';
+			}
+		});
+		const init = {};
+		Object.defineProperty(init, 'headers', {
+			enumerable: true,
+			get() {
+				initHeaderReads += 1;
+				return rawHeaders;
+			}
+		});
+		const client = createSgfApiClientForOrigin(async (request) => {
+			requests.push(request);
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		await client.GET('/api/tags/skills', init as never);
+
+		assert.equal(initHeaderReads, 1);
+		assert.equal(headerValueReads, 1);
+		assert.equal(requests.length, 1);
+		assert.equal(requests[0]?.headers.get('x-request-id'), 'snapshot-request');
+	});
+
+	it('rejects inherited forbidden headers before fetch', async () => {
+		let networkCalls = 0;
+		const init = Object.create({
+			get headers() {
+				return [['Authorization', 'Bearer secret']];
+			}
+		});
+		const client = createSgfApiClientForOrigin(async () => {
+			networkCalls += 1;
+			return jsonResponse([]);
+		}, 'http://127.0.0.1:5099');
+
+		await assert.rejects(async () => client.GET('/api/tags/skills', init as never), /auth headers/);
 		assert.equal(networkCalls, 0);
 	});
 

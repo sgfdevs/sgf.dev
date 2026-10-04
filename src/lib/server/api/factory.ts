@@ -16,7 +16,7 @@ const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS);
 const forbiddenNetworkOverrides = ['baseUrl', 'fetch'] as const;
 const forbiddenAuthHeaders = ['authorization', 'cookie', 'x-api-key'] as const;
 
-type RequestInitGuard = Record<string, unknown> | undefined;
+type RequestInitGuard = (Record<string, unknown> & { headers?: HeadersInit }) | undefined;
 
 export function createSgfApiClientForOrigin(fetchImpl: SgfApiFetch, internalOrigin: string | undefined): SgfApiClient {
 	const baseUrl = parseCmsInternalOrigin(internalOrigin);
@@ -33,20 +33,43 @@ export function createSgfApiClientForOrigin(fetchImpl: SgfApiFetch, internalOrig
 	return {
 		GET(url, ...init) {
 			assertPublicGetPath(url);
-			assertNoRequestNetworkOverride(init[0] as RequestInitGuard);
-			return client.GET(url, ...init);
+			const guardedInit = guardPublicRequestInit(init[0] as RequestInitGuard);
+			return client.GET(url, guardedInit as never);
 		}
 	};
 }
 
-function assertNoRequestNetworkOverride(init: RequestInitGuard): void {
-	if (!init) return;
+function guardPublicRequestInit(init: RequestInitGuard): RequestInitGuard {
+	if (!init) return undefined;
 
 	for (const option of forbiddenNetworkOverrides) {
 		if (option in init) {
 			throw new Error('SGF API requests must use the fixed CMS_INTERNAL_ORIGIN and request-scoped fetch.');
 		}
 	}
+
+	const headers = normalizeAllowedHeaders(init.headers);
+	return headers ? withNormalizedHeaders(init, headers) : init;
+}
+
+function withNormalizedHeaders(init: Exclude<RequestInitGuard, undefined>, headers: Headers): RequestInitGuard {
+	const guardedInit: Record<string, unknown> & { headers: Headers } = { headers };
+
+	for (const key of Object.keys(init)) {
+		if (key !== 'headers') {
+			guardedInit[key] = init[key];
+		}
+	}
+
+	return guardedInit;
+}
+
+function normalizeAllowedHeaders(rawHeaders: HeadersInit | undefined): Headers | undefined {
+	if (!rawHeaders) return undefined;
+
+	const headers = new Headers(rawHeaders);
+	assertNoForbiddenAuthHeaders(headers);
+	return headers;
 }
 
 function assertCmsPublicRequest(request: Request, baseUrl: string): void {
@@ -64,8 +87,12 @@ function assertCmsPublicRequest(request: Request, baseUrl: string): void {
 	if (request.credentials !== 'omit') {
 		throw new Error('SGF API requests must omit credentials.');
 	}
+	assertNoForbiddenAuthHeaders(request.headers);
+}
+
+function assertNoForbiddenAuthHeaders(headers: Headers): void {
 	for (const header of forbiddenAuthHeaders) {
-		if (request.headers.has(header)) {
+		if (headers.has(header)) {
 			throw new Error('SGF API public requests must not include auth headers.');
 		}
 	}
