@@ -6,12 +6,14 @@
 	import type { ShellMemberState } from './auth-state';
 	import { aboutLinks, desktopMainLinks, mobileMainLinks } from './navigation';
 
+	type MenuCloseOptions = { restoreScroll?: boolean };
+
 	type HeaderProps = {
 		memberState?: ShellMemberState;
 		menuOpen: boolean;
 		aboutPanelOpen: boolean;
 		onMenuToggle: () => void;
-		onMenuClose: () => void;
+		onMenuClose: (options?: MenuCloseOptions) => void;
 		onAboutOpen: () => void;
 		onAboutClose: () => void;
 	};
@@ -32,6 +34,8 @@
 	let aboutButton: HTMLButtonElement;
 	let backButton: HTMLButtonElement;
 	let returnFocusAfterClose = false;
+	let focusRequest = 0;
+	let pendingFocusTimer: number | undefined;
 
 	const focusableSelector = [
 		'a[href]',
@@ -42,20 +46,38 @@
 		'[tabindex]:not([tabindex="-1"])'
 	].join(',');
 
+	function cancelQueuedFocus() {
+		focusRequest += 1;
+		if (pendingFocusTimer) window.clearTimeout(pendingFocusTimer);
+		pendingFocusTimer = undefined;
+	}
+
 	function focusAfterRender(element: () => HTMLElement | undefined) {
-		void tick().then(() => window.setTimeout(() => element()?.focus(), 100));
+		const request = ++focusRequest;
+		if (pendingFocusTimer) window.clearTimeout(pendingFocusTimer);
+		pendingFocusTimer = undefined;
+		void tick().then(() => {
+			if (request !== focusRequest) return;
+			pendingFocusTimer = window.setTimeout(() => {
+				pendingFocusTimer = undefined;
+				if (request !== focusRequest) return;
+				element()?.focus({ preventScroll: true });
+			}, 100);
+		});
 	}
 
 	function toggleMenu() {
 		const opening = !menuOpen;
 		returnFocusAfterClose = menuOpen;
+		if (!opening) cancelQueuedFocus();
 		onMenuToggle();
 		if (opening) focusAfterRender(() => aboutButton);
 	}
 
-	function closeMenu({ focusReturn = true } = {}) {
+	function closeMenu({ focusReturn = true, restoreScroll = true } = {}) {
+		cancelQueuedFocus();
 		returnFocusAfterClose = focusReturn;
-		onMenuClose();
+		onMenuClose({ restoreScroll });
 	}
 
 	function openAboutPanel() {
@@ -94,10 +116,10 @@
 		const current = document.activeElement;
 		if (event.shiftKey && current === first) {
 			event.preventDefault();
-			last?.focus();
+			last?.focus({ preventScroll: true });
 		} else if (!event.shiftKey && current === last) {
 			event.preventDefault();
-			first?.focus();
+			first?.focus({ preventScroll: true });
 		}
 	}
 
@@ -134,7 +156,7 @@
 	});
 
 	if (browser) {
-		afterNavigate(() => closeMenu({ focusReturn: false }));
+		afterNavigate(() => closeMenu({ focusReturn: false, restoreScroll: false }));
 	}
 </script>
 

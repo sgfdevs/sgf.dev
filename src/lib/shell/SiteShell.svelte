@@ -9,16 +9,34 @@
 
 	let menuOpen = $state(false);
 	let aboutPanelOpen = $state(false);
+	let restoreScrollAfterClose = true;
+	let lockedScrollY = 0;
 
-	function closeMenu() {
+	function closeMenu({ restoreScroll = true }: { restoreScroll?: boolean } = {}) {
+		restoreScrollAfterClose = restoreScroll;
 		menuOpen = false;
 		aboutPanelOpen = false;
 	}
 
 	$effect(() => {
-		if (!browser) return;
-		document.body.classList.toggle('fixed', menuOpen);
-		return () => document.body.classList.remove('fixed');
+		if (!browser || !menuOpen) return;
+
+		lockedScrollY = window.scrollY;
+		document.documentElement.classList.add('sgf-mobile-menu-scroll-lock');
+		document.body.classList.add('sgf-mobile-menu-scroll-lock');
+
+		return () => {
+			document.documentElement.classList.remove('sgf-mobile-menu-scroll-lock');
+			document.body.classList.remove('sgf-mobile-menu-scroll-lock');
+
+			const shouldRestoreScroll = restoreScrollAfterClose;
+			const scrollY = lockedScrollY;
+			restoreScrollAfterClose = true;
+
+			if (shouldRestoreScroll) {
+				window.requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' }));
+			}
+		};
 	});
 </script>
 
@@ -27,6 +45,7 @@
 	{menuOpen}
 	{aboutPanelOpen}
 	onMenuToggle={() => {
+		restoreScrollAfterClose = true;
 		menuOpen = !menuOpen;
 		if (!menuOpen) aboutPanelOpen = false;
 	}}

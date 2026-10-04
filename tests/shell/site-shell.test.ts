@@ -70,8 +70,9 @@ describe('site shell static contract', () => {
 		assert.match(shell, /<Chevron/);
 	});
 
-	it('fixes the legacy Open Graph origin and leaves indexing opt-in', async () => {
+	it('fixes the legacy Open Graph origin, emits canonical, and leaves indexing opt-in', async () => {
 		const layout = await readFile(layoutPath, 'utf8');
+		assert.match(layout, /<link rel="canonical" href=\{data\.canonicalUrl\} \/>/);
 		assert.match(layout, /property="og:url" content=\{data\.canonicalUrl\}/);
 		assert.match(layout, /<meta name="robots" content="noindex, nofollow" \/>/);
 		assert.doesNotMatch(layout, /hearolife/);

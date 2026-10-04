@@ -81,7 +81,8 @@
 		overflow: visible;
 	}
 
-	body.fixed {
+	html.sgf-mobile-menu-scroll-lock,
+	body.sgf-mobile-menu-scroll-lock {
 		overflow: hidden;
 	}
 
