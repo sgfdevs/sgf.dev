@@ -76,6 +76,45 @@ describe('SGF API client foundation', () => {
 		assert.equal(url.searchParams.get('take'), '12');
 	});
 
+	it('allows the generated public Home endpoint as the fourth approved path', async () => {
+		const requests: Request[] = [];
+		const home = {
+			nextDevNight: null,
+			directory: { totalMembers: 0, dailyMembers: [] },
+			sponsors: []
+		};
+		const client = createSgfApiClientForOrigin(async (request) => {
+			requests.push(request);
+			return jsonResponse(home);
+		}, 'http://127.0.0.1:5099');
+
+		const result = await client.GET('/api/v1/public/home');
+
+		assert.deepEqual(requireSgfApiData(result), home);
+		assert.equal(requests.length, 1);
+		assert.equal(requests[0]?.url, 'http://127.0.0.1:5099/api/v1/public/home');
+		assert.equal(requests[0]?.method, 'GET');
+	});
+
+	it('maps generated Home 404 ProblemDetails without leaking the upstream body', async () => {
+		const response = jsonResponse(
+			{ title: 'Home content not found.', status: 404 },
+			{ status: 404, headers: { 'content-type': 'application/problem+json' } }
+		);
+		const client = createSgfApiClientForOrigin(async () => response, 'http://127.0.0.1:5099');
+		const result = await client.GET('/api/v1/public/home');
+
+		assert.throws(
+			() => requireSgfApiData(result),
+			(error) => {
+				const message = String((error as Error).message ?? '');
+				assert.equal(isHttpError(error, 404), true);
+				assert.equal(message.includes('Home content not found'), false);
+				return true;
+			}
+		);
+	});
+
 	it('keeps request-scoped fetch instances isolated', async () => {
 		const firstUrls: string[] = [];
 		const secondUrls: string[] = [];

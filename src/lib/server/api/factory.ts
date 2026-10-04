@@ -9,7 +9,8 @@ export type SgfApiFetch = (request: Request) => Promise<Response>;
 export const SGF_PUBLIC_GET_PATHS = [
 	'/api/tags/skills',
 	'/api/directory/filters/skills',
-	'/api/directory/search'
+	'/api/directory/search',
+	'/api/v1/public/home'
 ] as const satisfies readonly Extract<keyof paths, string>[];
 
 const publicGetPathSet = new Set<string>(SGF_PUBLIC_GET_PATHS);

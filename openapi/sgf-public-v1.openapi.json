@@ -2,12 +2,12 @@
   "openapi": "3.1.1",
   "info": {
     "title": "SGF public API",
-    "description": "Typed public endpoints for SGF directory clients.",
+    "description": "Typed public endpoints for SGF frontend clients.",
     "version": "1.0"
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:5127/"
+      "url": "http://127.0.0.1:33311/"
     }
   ],
   "paths": {
@@ -117,6 +117,47 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/home": {
+      "get": {
+        "tags": [
+          "PublicHome"
+        ],
+        "operationId": "PublicHome_Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicHomeDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": { }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
               },
               "application/json": { }
             }
@@ -195,6 +236,209 @@
           }
         }
       },
+      "PublicHomeDevNightDto": {
+        "required": [
+          "name",
+          "startsAtLocal",
+          "timeZone",
+          "dateLabel",
+          "dateTimeAttribute",
+          "presentations"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "startsAtLocal": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "dateLabel": {
+            "type": "string"
+          },
+          "dateTimeAttribute": {
+            "type": "string"
+          },
+          "presentations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicHomePresentationDto"
+            }
+          }
+        }
+      },
+      "PublicHomeDirectoryPreviewDto": {
+        "required": [
+          "totalMembers",
+          "dailyMembers"
+        ],
+        "type": "object",
+        "properties": {
+          "totalMembers": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "dailyMembers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicDirectoryMemberDto"
+            }
+          }
+        }
+      },
+      "PublicHomeDto": {
+        "required": [
+          "directory",
+          "sponsors"
+        ],
+        "type": "object",
+        "properties": {
+          "nextDevNight": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PublicHomeDevNightDto"
+              }
+            ]
+          },
+          "directory": {
+            "$ref": "#/components/schemas/PublicHomeDirectoryPreviewDto"
+          },
+          "sponsors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicHomeSponsorDto"
+            }
+          }
+        }
+      },
+      "PublicHomeGroupDto": {
+        "required": [
+          "name",
+          "path",
+          "showAttribution"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "showAttribution": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PublicHomePresentationDto": {
+        "required": [
+          "title",
+          "presenters"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "meetupUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "presenters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicHomePresenterDto"
+            }
+          },
+          "group": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PublicHomeGroupDto"
+              }
+            ]
+          }
+        }
+      },
+      "PublicHomePresenterDto": {
+        "required": [
+          "name",
+          "imageUrl",
+          "tags"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "profilePath": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PublicHomeSponsorDto": {
+        "required": [
+          "name",
+          "path",
+          "isFoundingSponsor"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "websiteUrl": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "websiteLabel": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "isFoundingSponsor": {
+            "type": "boolean"
+          }
+        }
+      },
       "PublicSkillFilterDto": {
         "required": [
           "name"
@@ -226,6 +470,9 @@
   "tags": [
     {
       "name": "DevsApi"
+    },
+    {
+      "name": "PublicHome"
     }
   ]
 }
