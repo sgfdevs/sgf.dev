@@ -12,8 +12,14 @@ secrets.json
 /SgfDevs/wwwroot/media/
 *.sqlite.db*
 
-# Local dependencies, IDE settings, and .NET build output
+# Local dependencies, IDE settings, and build output
 node_modules/
+/.svelte-kit/
+/build/
+.output/
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 *.user
 .idea/
 .vs/
