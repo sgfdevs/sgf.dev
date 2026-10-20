@@ -4,6 +4,8 @@ import { memberCookieHeader } from './lib/server/auth/cookies';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.member = null;
+	// Health probes must not depend on CMS sessions, even with a member cookie.
+	if (event.url.pathname === '/healthz') return resolve(event);
 	const hasCookie = Boolean(memberCookieHeader(event.cookies, memberCookieName));
 	if (hasCookie) {
 		try {

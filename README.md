@@ -29,6 +29,12 @@ privately, never in Git, client code or Docker build arguments:
   `https://media.sgf.dev/`. Use `http://127.0.0.1:5099/media/` locally. Native CMS
   media paths map to that base; existing public media URLs keep their crop and
   sizing parameters. See `docs/media.md`.
+- `SEARCH_INDEXING_ENABLED` is a private runtime flag, defaulting to `false`.
+  Set it to `true` only on production sites that should be indexed. It controls
+  both `/robots.txt` and the page's `noindex, nofollow` metadata.
+- `ANALYTICS_ENABLED` is a private runtime flag, defaulting to `false`.
+  Set it to `true` to load the existing Plausible tracker from `plausible.sgf.dev`.
+  Neither flag requires a rebuild. Only the exact value `true` enables them.
 - Backend `SGFDevs__MemberBridge__FrontendOrigin` must be the frontend origin,
   for example `http://127.0.0.1:3000`, so reset emails link to Kit.
 
@@ -92,6 +98,10 @@ checks. `PUBLIC_SITE_ORIGIN` controls canonical metadata, not request trust.
 
 Set `BODY_SIZE_LIMIT=9M` for the built server to allow the existing 8 MiB avatar
 limit plus multipart overhead. Application validation still limits accepted files.
+
+`GET /healthz` returns plain text `ok\n` with `Cache-Control: no-store`.
+It does not call the CMS or look up a member session, even with a member cookie.
+Use it for frontend liveness probes, not CMS readiness checks.
 
 ## Container and CI
 
