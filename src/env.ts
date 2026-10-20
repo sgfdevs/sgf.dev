@@ -36,9 +36,12 @@ export const variables = defineEnvVars({
 			return url.origin;
 		}
 	},
-	PUBLIC_SEARCH_INDEXING_ENABLED: {
-		description: 'Set to true only for production builds that should be indexed. Missing or false emits noindex.',
-		public: true,
+	ANALYTICS_ENABLED: {
+		description: 'Private runtime flag. Set to true to load the Plausible tracker. Defaults to false.',
+		schema: (value) => value === 'true'
+	},
+	SEARCH_INDEXING_ENABLED: {
+		description: 'Private runtime flag. Set to true only on production sites that should be indexed. Defaults to false.',
 		schema: (value) => value === 'true'
 	}
 });
