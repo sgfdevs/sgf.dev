@@ -1,7 +1,5 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { mapDeliveryCompany, trustedCompanyVideo, CompanyDataError } from '../../src/lib/server/companies/mapper';
 import { createDeliveryCompanyClient } from '../../src/lib/server/companies/client';
 import { loadCompany, CompanyLoadError } from '../../src/lib/server/companies/load';
@@ -29,8 +27,6 @@ test('company mapper keeps legacy public fields and real filters, never private 
 	for (const src of ['https://evil.test/embed/3a5mR5xoUbc', 'https://www.youtube.com.evil.test/embed/3a5mR5xoUbc', 'http://www.youtube.com/embed/3a5mR5xoUbc', 'https://private@www.youtube.com/embed/3a5mR5xoUbc', 'https://www.youtube.com/watch?v=3a5mR5xoUbc'])
 		assert.equal(trustedCompanyVideo('<iframe src="' + src + '"></iframe>'), null);
 	assert.throws(() => mapDeliveryCompany({ ...source, route: { path: '/companies/wrong/' } }, companyPath, media), CompanyDataError);
-	const raw = await readFile('openapi/umbraco-delivery.openapi.json');
-	assert.equal(createHash('sha256').update(raw).digest('hex'), '7f630c8bc7a21658b0b9619b6311998fce749909c67ca4ff159c9fd22a2edec0');
 });
 
 test('company Delivery transport stays server-only, fixed-origin, bounded to one slug and approved fields', async () => {

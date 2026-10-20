@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { SGF_PUBLIC_GET_PATHS, createSgfApiClientForOrigin } from '../../src/lib/server/api/factory';
 import { mapLeadership, LeadershipDataError } from '../../src/lib/server/leadership/mapper';
 import { loadLeadership, LeadershipLoadError } from '../../src/lib/server/leadership/load';
@@ -12,7 +11,6 @@ const options = { cmsInternalOrigin: media.cmsInternalOrigin, mediaConfig: media
 
 test('actual exported schema permits one exact anonymous leadership GET with explicit public fields', async () => {
     const raw = await readFile('openapi/sgf-public-v1.openapi.json');
-    assert.equal(createHash('sha256').update(raw).digest('hex'), '1e68666e8d424d88ac4469f281aa937c6b26dcf35cd722633054e815184fde2b');
     const schema = JSON.parse(raw.toString());
     assert.equal(schema.paths['/api/v1/public/leadership'].get.operationId, 'PublicLeadership_Get');
     assert.deepEqual(Object.keys(schema.components.schemas.PublicLeadershipMemberDto.properties).sort(),

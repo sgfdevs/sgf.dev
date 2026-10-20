@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { createSgfApiClientForOrigin } from '../../src/lib/server/api/factory';
 import { mapJobs, mapJob, JobDataError } from '../../src/lib/server/jobs/mapper';
 import { loadJobs, loadJob, JobLoadError } from '../../src/lib/server/jobs/load';
@@ -11,7 +10,6 @@ const options = { cmsInternalOrigin: media.cmsInternalOrigin, mediaConfig: media
 
 test('real exported jobs contract and fixed anonymous request paths', async () => {
 	const raw = await readFile('openapi/sgf-public-v1.openapi.json');
-	assert.equal(createHash('sha256').update(raw).digest('hex'), '1e68666e8d424d88ac4469f281aa937c6b26dcf35cd722633054e815184fde2b');
 	const schema = JSON.parse(raw.toString());
 	assert.equal(schema.paths['/api/v1/public/jobs'].get.operationId, 'PublicJobs_List');
 	assert.equal(schema.paths['/api/v1/public/jobs/{company}/{job}'].get.operationId, 'PublicJobs_Get');

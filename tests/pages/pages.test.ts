@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { createDeliveryPageClient } from '../../src/lib/server/pages/client';
 import { ContentPageLoadError, loadContentPage } from '../../src/lib/server/pages/load';
 import { mapDeliveryPage, PageDataError, PageNotFoundError } from '../../src/lib/server/pages/mapper';
@@ -14,7 +13,6 @@ const json = (value: unknown) => new Response(JSON.stringify(value), { headers: 
 
 test('actual native schema provenance, header and operation stay separate from public/member contracts', async () => {
 	const raw = await readFile('openapi/umbraco-delivery.openapi.json');
-	assert.equal(createHash('sha256').update(raw).digest('hex'), '7f630c8bc7a21658b0b9619b6311998fce749909c67ca4ff159c9fd22a2edec0');
 	const schema = JSON.parse(raw.toString());
 	assert.equal(schema.info.title, 'Umbraco Delivery API');
 	assert.equal(schema.components.securitySchemes.ApiKeyAuth.name, 'Api-Key');

@@ -18,8 +18,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - run: npm test
       - run: npm run api:check
       - run: npm run api:member:check
+      - run: npm run api:delivery:check
       - run: npm run build
         env:
           ORIGIN: http://127.0.0.1:3000
