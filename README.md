@@ -2,7 +2,8 @@
 
 The public [sgf.dev](https://sgf.dev) frontend uses SvelteKit 3, Svelte 5 and
 Tailwind CSS 4. The [Umbraco backend](https://github.com/sgfdevs/cms.sgf.dev)
-runs separately. Page SSR and member forms call the CMS from frontend server
+runs separately. See [rewrite status and staging handoff](docs/rewrite-status.md)
+for the PR inventory and remaining work. Page SSR and member forms call the CMS from frontend server
 code. Browsers load images directly from the public media host, never through
 a frontend proxy. Browsers do not call the CMS member bridge directly.
 
