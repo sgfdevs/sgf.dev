@@ -101,5 +101,7 @@ must name a CMS address reachable from that container, not its own loopback.
 The image defaults to port 3000 and `BODY_SIZE_LIMIT=9M`; it does not include a CMS.
 
 `.dockerignore` permits only build inputs and excludes local secrets and output.
-The CI workflow runs `npm ci`, check, committed public/member API freshness checks
-and build. It does not deploy, use action secrets or build/push an image.
+Run `npm test` for the unit suite. It type-checks tests once and runs every test
+folder, without a browser or live CMS. CI runs the same command, Svelte checking,
+generated API freshness checks and build. It does not deploy, use action secrets
+or build/push an image. Visual checks and complete member journeys belong in staging.

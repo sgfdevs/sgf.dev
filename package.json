@@ -9,24 +9,19 @@
 	"scripts": {
 		"dev": "vite dev",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx \"tests/**/*.test.ts\"",
 		"build": "vite build",
 		"preview": "vite preview",
 		"serve": "node build",
 		"api:generate": "tsx scripts/generate-sgf-api.ts",
 		"api:delivery:generate": "tsx scripts/generate-delivery-api.ts",
-		"test:pages": "node --test --import tsx tests/pages/*.test.ts",
 		"api:member:generate": "tsx scripts/generate-sgf-member-api.ts",
 		"api:member:check": "tsx scripts/generate-sgf-member-api.ts --check",
-		"test:auth": "node --test --import tsx tests/auth/*.test.ts",
 		"api:check": "tsx scripts/generate-sgf-api.ts --check",
 		"api:schema:fetch": "tsx scripts/fetch-sgf-api-schema.ts",
-		"test:api": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/api/*.test.ts",
-		"test:home": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/home/*.test.ts",
-		"test:media": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/media/*.test.ts",
-		"test:member": "svelte-kit sync && tsc --noEmit --project tsconfig.test.json && node --test --import tsx tests/member/*.test.ts",
-		"test:theme": "node --test --import tsx tests/theme/*.test.ts",
-		"test:shell": "node --test --import tsx tests/shell/*.test.ts"
+		"api:delivery:check": "tsx scripts/generate-delivery-api.ts --check"
 	},
+
 	"devDependencies": {
 		"@sveltejs/adapter-node": "6.0.0",
 		"@sveltejs/kit": "3.0.0",
