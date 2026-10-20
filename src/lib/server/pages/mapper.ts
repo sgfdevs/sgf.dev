@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import type { ContentPagePath } from './paths';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic } from '../media/mapper';
 import { publicDocumentHref, sanitizePageHtml } from './html';
 
 export type ContentPageView = {
@@ -78,5 +78,5 @@ function mapOgImage(value: unknown, media: MediaSourceConfig): string | null {
 	if (value == null) return null;
 	if (!Array.isArray(value) || value.length > 1) throw new PageDataError();
 	if (!value.length) return null;
-	return mapMediaUrlToSameOrigin(text(record(value[0]).url, 2000), media);
+	return mapMediaUrlToPublic(text(record(value[0]).url, 2000), media);
 }

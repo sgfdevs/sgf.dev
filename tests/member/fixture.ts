@@ -1,6 +1,6 @@
 import type { PublicMemberProfileDto } from '../../src/lib/server/member/mapper';
 
-export const mediaConfig = { publicSourceOrigin: 'https://media.sgf.dev', cmsInternalOrigin: 'http://127.0.0.1:5099' };
+export const mediaConfig = { publicMediaUrl: 'https://media.sgf.dev/', cmsInternalOrigin: 'http://127.0.0.1:5099' };
 export const profile: PublicMemberProfileDto = {
 	username: 'Ada123', name: 'Ada Lovelace', firstName: 'Ada', lastName: 'Lovelace',
 	jobTitle: 'Software Developer', profileImageUrl: '/media/synthetic/profile.png?width=800',

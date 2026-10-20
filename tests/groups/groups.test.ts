@@ -43,7 +43,7 @@ test('explicit mapping keeps dates/order/case, safe leaders, skills and sanitize
 		aboutHtml: '<p>Text <a href="https://example.test">good</a><script>bad()</script><iframe src="https://evil.test"></iframe><img src="/media/synthetic/group.jpg" onerror="bad()"></p>' };
 	const mapped = mapGroup(source, media);
 	assert.equal(mapped.name, source.name); assert.equal(mapped.path, '/groups/Rust-SGF/');
-	assert.equal(mapped.image, '/media/synthetic/group.jpg');
+	assert.equal(mapped.image, 'https://media.example.test/synthetic/group.jpg');
 	assert.equal(mapped.establishedText, source.establishedText);
 	assert.equal(mapped.skills[0].url, '/directory/?skills=11111111-2222-3333-4444-555555555555');
 	assert.equal(mapped.leaders[0].path, '/member/Jane');

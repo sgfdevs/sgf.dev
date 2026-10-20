@@ -4,7 +4,7 @@ import { mapPublicHomeDto, PublicHomeDataError, type PublicHomeDto } from '../..
 import type { MediaSourceConfig } from '../../src/lib/server/media/config';
 
 const mediaConfig: MediaSourceConfig = {
-	publicSourceOrigin: 'https://media.sgf.dev',
+	publicMediaUrl: 'https://media.sgf.dev/',
 	cmsInternalOrigin: 'http://127.0.0.1:5099'
 };
 
@@ -84,13 +84,13 @@ describe('home DTO mapper', () => {
 		assert.equal(view.sponsors[0]?.path, '/companies/fictional-sponsor/');
 	});
 
-	it('rewrites approved media fields to same-origin media URLs and uses fallbacks for unsupported images', () => {
+	it('rewrites approved media fields to public media URLs and uses fallbacks for unsupported images', () => {
 		const view = mapPublicHomeDto(homeDto(), mediaConfig);
 
-		assert.equal(view.nextDevNight?.presentations[0]?.presenters[0]?.imageUrl, '/media/people/casey.jpg?width=500&v=abc123');
-		assert.equal(view.nextDevNight?.presentations[0]?.presenters[1]?.imageUrl, '/images/pipey.jpg');
-		assert.equal(view.directory.dailyMembers[0]?.image, '/media/members/riley.png?width=500&v=v1');
-		assert.equal(view.sponsors[0]?.logoUrl, '/media/sponsors/logo.png?v=logo1');
+		assert.equal(view.nextDevNight?.presentations[0]?.presenters[0]?.imageUrl, 'https://media.sgf.dev/people/casey.jpg?width=500&v=abc123');
+		assert.equal(view.nextDevNight?.presentations[0]?.presenters[1]?.imageUrl, 'https://media.sgf.dev/people/morgan.svg');
+		assert.equal(view.directory.dailyMembers[0]?.image, 'https://media.sgf.dev/members/riley.png?width=500&v=v1');
+		assert.equal(view.sponsors[0]?.logoUrl, 'https://media.sgf.dev/sponsors/logo.png?v=logo1');
 	});
 
 	it('drops invalid external links and does not leak paired labels', () => {

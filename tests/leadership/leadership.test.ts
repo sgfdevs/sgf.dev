@@ -41,7 +41,7 @@ test('mapper preserves selection and history order, public names/titles, safe pr
     assert.deepEqual(mapped.boardOfDirectors.map(m => m.name), ['A synthetic officer', 'Z synthetic officer']);
     assert.deepEqual(mapped.history.map(m => m.name), ['Z synthetic officer', 'A synthetic officer', 'Z synthetic officer']);
     assert.equal(mapped.officers[0].path, '/member/Ada123'); assert.equal(mapped.officers[0].officerTitle, 'President');
-    assert.equal(mapped.officers[0].image, '/media/synthetic/officer.png');
+    assert.equal(mapped.officers[0].image, 'https://media.example.test/synthetic/officer.png');
     assert.match(mapped.officers[0].officerBio, /<strong>officer<\/strong>/);
     assert.equal(mapped.history[1].officerTitle || 'Board Member', 'Board Member');
     assert.ok(mapped.boardOfDirectors.every(m => m.officerBio === '' && m.officerTitle === null));

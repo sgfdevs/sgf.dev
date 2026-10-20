@@ -68,7 +68,7 @@ test('known metadata, ordered markdown/native rich-text blocks and document link
 	const mapped = mapDeliveryPage(deliveryPage(), options.path, media);
 	assert.equal(mapped.title, 'Conduct | Springfield Devs');
 	assert.equal(mapped.description, 'Our community standards.');
-	assert.equal(mapped.ogImage, '/media/synthetic/banner.jpg');
+	assert.equal(mapped.ogImage, 'https://media.example.test/synthetic/banner.jpg');
 	assert.match(mapped.blocks[0].html, /<h2>Welcome<\/h2>/);
 	assert.match(mapped.blocks[0].html, /<strong>kind<\/strong>/);
 	assert.match(mapped.blocks[0].html, /href="\/register"/);
@@ -99,12 +99,12 @@ test('sanitizer preserves content and approved image mapping, strips scripts, ha
 	const html = sanitizePageHtml('<h2>Heading</h2><p style="color:red" onclick="bad()">Text <a href="javascript:bad()">bad</a> <a href="https://example.test/" target="_blank" onclick="bad()">good</a></p><script>bad()</script><style>bad()</style><iframe src="https://evil.test"></iframe><img src="/media/test/photo.png" onerror="bad()" alt="Photo"><img src="data:image/png,x"><img src="https://evil.test/x.jpg"><svg onload="bad()"></svg>', media);
 	assert.match(html, /<h2>Heading<\/h2>/); assert.match(html, /<p>Text/);
 	assert.match(html, /rel="noopener noreferrer"/);
-	assert.match(html, /src="\/media\/test\/photo.png" alt="Photo" loading="lazy"/);
+	assert.match(html, /src="https:\/\/media\.example\.test\/test\/photo.png" alt="Photo" loading="lazy"/);
 	for (const marker of ['bad()', 'onclick', 'onerror', 'style=', 'script', 'iframe', 'svg', 'data:', 'evil.test']) assert.ok(!html.includes(marker));
 	assert.equal((html.match(/<img/g) ?? []).length, 1);
 });
 
-test('safe links and PDF hrefs stay separate from JPEG/PNG proxy', () => {
+test('safe links and PDF downloads use the public media host', () => {
 	for (const raw of ['javascript:alert(1)', 'data:text/html,x', '//evil.test', '/%2fexample.test', '/a\\b', '/%0aevil', 'https://user:pass@example.test/']) assert.equal(safePageHref(raw, media), null);
 	assert.equal(safePageHref('/register', media), '/register');
 	assert.equal(safePageHref('#sponsors', media), '#sponsors');

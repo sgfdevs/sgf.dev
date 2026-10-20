@@ -1,7 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { memberClient } from '../../lib/server/auth/runtime';
 import { profileValues, readProfileForm } from '../../lib/server/auth/profile';
-import { mapMediaUrlToSameOrigin } from '../../lib/server/media/mapper';
+import { mapMediaUrlToPublic } from '../../lib/server/media/mapper';
 import { readMediaSourceConfig } from '../../lib/server/media/runtime';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async event => {
         values: profileValues(profile.values),
         skills: profile.skills.map(choice => ({ key: choice.key, name: choice.name })),
         groups: profile.groups.map(choice => ({ key: choice.key, name: choice.name })),
-        image: mapMediaUrlToSameOrigin(profile.profileImageUrl ?? '/images/pipey.jpg', readMediaSourceConfig()) ?? '/images/pipey.jpg',
+        image: mapMediaUrlToPublic(profile.profileImageUrl ?? '/images/pipey.jpg', readMediaSourceConfig()) ?? '/images/pipey.jpg',
         profileHref: '/member/' + encodeURIComponent(event.locals.member.username),
         saved: event.url.searchParams.get('saved') === '1',
         avatarStatus: event.url.searchParams.get('avatar') ?? ''

@@ -1,7 +1,7 @@
 import type { components } from '../api/generated/sgfPublicApiSchema';
 import { isPublicMemberUsername } from '../api/factory';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic } from '../media/mapper';
 import { sanitizePageHtml } from '../pages/html';
 
 export type PublicLeadershipDto = components['schemas']['PublicLeadershipDto'];
@@ -27,7 +27,7 @@ export function mapLeadership(value: PublicLeadershipDto, media: MediaSourceConf
             if (!isPublicMemberUsername(member.username)) throw new LeadershipDataError();
             return {
                 name: text(member.name), path: `/member/${member.username}`,
-                image: mapMediaUrlToSameOrigin(text(member.imageUrl), media) ?? '/images/pipey.jpg',
+                image: mapMediaUrlToPublic(text(member.imageUrl), media) ?? '/images/pipey.jpg',
                 officerTitle: includeTitle ? optional(member.officerTitle) : null,
                 officerBio: includeBio ? sanitizePageHtml(optional(member.officerBio) ?? '', media) : ''
             };

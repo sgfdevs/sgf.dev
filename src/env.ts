@@ -17,16 +17,8 @@ export const variables = defineEnvVars({
 		description: 'Server-only member application cookie name. Match the CMS if its default is customized.',
 		schema: (value) => value || '.AspNetCore.Identity.Application'
 	},
-	MEDIA_SOURCE_PUBLIC_ORIGIN: {
-		description: 'Private validation origin for public SGF media DTO URLs. Defaults to https://media.sgf.dev.',
-		schema: (value) => (value ? value : undefined)
-	},
-	MEDIA_UPSTREAM_ORIGIN: {
-		description: 'Private fixed upstream origin for same-origin SGF media proxy requests. Required before /media/* is fetched.',
-		schema: (value) => (value ? value : undefined)
-	},
-	MEDIA_UPSTREAM_PATH_PREFIX: {
-		description: 'Private upstream media namespace fence. Use / only for https://media.sgf.dev; local/CMS/S3 origins need a specific prefix.',
+	MEDIA_PUBLIC_URL: {
+		description: 'Browser-accessible media base URL. Defaults to https://media.sgf.dev/. Use the local CMS /media/ URL for local development.',
 		schema: (value) => (value ? value : undefined)
 	},
 	PUBLIC_SITE_ORIGIN: {

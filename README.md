@@ -2,9 +2,9 @@
 
 The public [sgf.dev](https://sgf.dev) frontend uses SvelteKit 3, Svelte 5 and
 Tailwind CSS 4. The [Umbraco backend](https://github.com/sgfdevs/cms.sgf.dev)
-runs separately. Page SSR, generated API clients, the same-origin media proxy
-and member forms already call the CMS from frontend server code. Browsers do
-not call the CMS member bridge directly.
+runs separately. Page SSR and member forms call the CMS from frontend server
+code. Browsers load images directly from the public media host, never through
+a frontend proxy. Browsers do not call the CMS member bridge directly.
 
 ## Requirements and configuration
 
@@ -25,8 +25,10 @@ privately, never in Git, client code or Docker build arguments:
 - `CMS_MEMBER_BRIDGE_SECRET` must match backend `SGFDevs__MemberBridge__Secret`.
   Member calls fail closed without it. Match `CMS_MEMBER_COOKIE_NAME` only if
   the CMS cookie name has been customized.
-- Media proxy origins and path fences are private server settings. Point local
-  media upstreams only at fictional local media, not production storage.
+- `MEDIA_PUBLIC_URL` is the browser-accessible media base, defaulting to
+  `https://media.sgf.dev/`. Use `http://127.0.0.1:5099/media/` locally. Native CMS
+  media paths map to that base; existing public media URLs keep their crop and
+  sizing parameters. See `docs/media.md`.
 - Backend `SGFDevs__MemberBridge__FrontendOrigin` must be the frontend origin,
   for example `http://127.0.0.1:3000`, so reset emails link to Kit.
 

@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic } from '../media/mapper';
 import { sanitizePageHtml } from '../pages/html';
 import { safeMemberHttpUrl } from '../member/links';
 import { isCompanyPath } from './paths';
@@ -22,7 +22,7 @@ function optional(value: unknown): string | null {
 function image(value: unknown, media: MediaSourceConfig): string | null {
 	if (value == null) return null;
 	if (!Array.isArray(value) || value.length > 1) throw new CompanyDataError();
-	return value.length ? mapMediaUrlToSameOrigin(text(record(value[0]).url, 2000), media) : null;
+	return value.length ? mapMediaUrlToPublic(text(record(value[0]).url, 2000), media) : null;
 }
 
 // Parse only iframe src, then rebuild a trusted URL. Never return embed HTML or attributes.

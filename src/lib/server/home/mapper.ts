@@ -1,7 +1,6 @@
 import type { components } from '../api/generated/sgfPublicApiSchema';
 import type { MediaSourceConfig } from '../media/config';
-import { STATIC_MEDIA_PASSTHROUGH } from '../media/validation';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { STATIC_MEDIA_PASSTHROUGH, mapMediaUrlToPublic } from '../media/mapper';
 
 export type PublicDirectoryMemberDto = components['schemas']['PublicDirectoryMemberDto'];
 export type PublicHomeDevNightDto = components['schemas']['PublicHomeDevNightDto'];
@@ -123,7 +122,7 @@ export function mapPresenter(value: unknown, mediaConfig: MediaSourceConfig, pat
 	const source = requireRecord(value, path);
 	return {
 		name: requireString(source.name, `${path}.name`),
-		imageUrl: mapMediaUrlToSameOrigin(requireString(source.imageUrl, `${path}.imageUrl`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
+		imageUrl: mapMediaUrlToPublic(requireString(source.imageUrl, `${path}.imageUrl`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
 		profilePath: mapOptionalInternalPath(source.profilePath, `${path}.profilePath`),
 		tags: mapStringArray(source.tags, `${path}.tags`)
 	};
@@ -153,7 +152,7 @@ function mapDirectoryMember(value: unknown, mediaConfig: MediaSourceConfig, path
 	return {
 		name: requireString(source.name, `${path}.name`),
 		location: requireString(source.location, `${path}.location`),
-		image: mapMediaUrlToSameOrigin(requireString(source.image, `${path}.image`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
+		image: mapMediaUrlToPublic(requireString(source.image, `${path}.image`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
 		url: requireInternalPath(source.url, `${path}.url`),
 		tags: mapStringArray(source.tags, `${path}.tags`)
 	};
@@ -165,7 +164,7 @@ function mapSponsor(value: unknown, mediaConfig: MediaSourceConfig, path: string
 	return {
 		name: requireString(source.name, `${path}.name`),
 		path: requireInternalPath(source.path, `${path}.path`),
-		logoUrl: mapMediaUrlToSameOrigin(optionalString(source.logoUrl, `${path}.logoUrl`), mediaConfig),
+		logoUrl: mapMediaUrlToPublic(optionalString(source.logoUrl, `${path}.logoUrl`), mediaConfig),
 		websiteUrl,
 		websiteLabel: websiteUrl ? optionalString(source.websiteLabel, `${path}.websiteLabel`) : null,
 		isFoundingSponsor: requireBoolean(source.isFoundingSponsor, `${path}.isFoundingSponsor`)

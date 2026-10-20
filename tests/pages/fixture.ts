@@ -1,6 +1,6 @@
 import type { ContentPagePath } from '../../src/lib/server/pages/paths';
 
-export const media = { publicSourceOrigin: 'https://media.example.test', cmsInternalOrigin: 'http://cms.example.test' };
+export const media = { publicMediaUrl: 'https://media.example.test/', cmsInternalOrigin: 'http://cms.example.test' };
 export function deliveryPage(path: ContentPagePath = '/about/code-of-conduct/') {
 	return {
 		contentType: 'page', name: 'Code of Conduct', id: '00000000-0000-0000-0000-000000000001',
