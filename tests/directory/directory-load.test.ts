@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { DirectoryLoadError, loadDirectory, parseDirectorySkillQuery } from '../../src/lib/server/directory/load';
 
 const mediaConfig = {
-	publicSourceOrigin: 'https://media.sgf.dev',
+	publicMediaUrl: 'https://media.sgf.dev/',
 	cmsInternalOrigin: 'http://cms.test'
 };
 
@@ -90,7 +90,7 @@ describe('directory loading', () => {
 		assert.equal(result.directory.visibleMembers, 2);
 		assert.equal(result.directory.filters[0]?.active, false);
 		assert.equal(result.directory.filters[1]?.active, false);
-		assert.equal(result.directory.members[0]?.image, '/media/members/ada.jpg?width=500');
+		assert.equal(result.directory.members[0]?.image, 'https://media.sgf.dev/members/ada.jpg?width=500');
 		assert.equal(result.directory.members[1]?.image, '/images/pipey.jpg');
 		assert.deepEqual(
 			requests.map((request) => new URL(request.url).pathname + new URL(request.url).search),

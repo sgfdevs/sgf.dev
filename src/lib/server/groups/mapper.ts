@@ -1,7 +1,7 @@
 import type { components } from '../api/generated/sgfPublicApiSchema';
 import { isPublicGroupSlug, isPublicMemberUsername } from '../api/factory';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic } from '../media/mapper';
 import { safeMemberHttpUrl } from '../member/links';
 import { sanitizePageHtml } from '../pages/html';
 import { mapPresenter } from '../home/mapper';
@@ -51,7 +51,7 @@ export function mapGroup(value: PublicGroupDto, media: MediaSourceConfig) {
 	return {
 		name: text(group.name), path: groupPath(group.path),
 		aboutHtml: sanitizePageHtml(optional(group.aboutHtml) ?? '', media),
-		image: mapMediaUrlToSameOrigin(optional(group.imageUrl), media),
+		image: mapMediaUrlToPublic(optional(group.imageUrl), media),
 		location: optional(group.location), establishedText: optional(group.establishedText), websiteUrl, socials,
 		skills: array(group.skills).map(value => {
 			const skill = record(value);
@@ -63,7 +63,7 @@ export function mapGroup(value: PublicGroupDto, media: MediaSourceConfig) {
 			const leader = record(value);
 			return {
 				name: text(leader.name), listLabel: text(leader.listLabel), location: text(leader.location),
-				image: mapMediaUrlToSameOrigin(text(leader.imageUrl), media), path: profilePath(leader.profilePath),
+				image: mapMediaUrlToPublic(text(leader.imageUrl), media), path: profilePath(leader.profilePath),
 				tags: array(leader.tags).map(text)
 			};
 		}),

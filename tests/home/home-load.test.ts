@@ -6,7 +6,7 @@ import type { MediaSourceConfig } from '../../src/lib/server/media/config';
 
 const cmsOrigin = 'http://127.0.0.1:5099';
 const mediaConfig: MediaSourceConfig = {
-	publicSourceOrigin: 'https://media.sgf.dev',
+	publicMediaUrl: 'https://media.sgf.dev/',
 	cmsInternalOrigin: cmsOrigin
 };
 

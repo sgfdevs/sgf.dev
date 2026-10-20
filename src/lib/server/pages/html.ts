@@ -1,16 +1,12 @@
 import sanitizeHtml from 'sanitize-html';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic, publicMediaHref } from '../media/mapper';
 
 const unsafe = /[\u0000-\u0020\u007f\\]|%(?:0[0-9a-f]|1[0-9a-f]|7f|5c)/i;
-const pdfPath = /^\/media\/([A-Za-z0-9_-]+)\/([A-Za-z0-9_.~-]+\.pdf)$/i;
-
-// PDFs remain hrefs on the existing public document origin. They never enter the image proxy.
+// Documents link directly to the public media host, just like images.
 export function publicDocumentHref(path: string, media: MediaSourceConfig): string | null {
-	if (unsafe.test(path) || !path.startsWith('/media/')) return null;
-	const url = new URL(path, 'https://sgf.dev');
-	const match = pdfPath.exec(url.pathname);
-	return match ? `${media.publicSourceOrigin}/${match[1]}/${match[2]}${url.search}${url.hash}` : null;
+	const href = publicMediaHref(path, media);
+	return href && /\.pdf$/i.test(new URL(href).pathname) ? href : null;
 }
 
 export function safePageHref(raw: string, media: MediaSourceConfig): string | null {
@@ -31,7 +27,7 @@ export function safePageHref(raw: string, media: MediaSourceConfig): string | nu
 		const url = new URL(raw);
 		if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return null;
 		if (url.origin === media.cmsInternalOrigin && url.pathname.startsWith('/media/')) {
-			return publicDocumentHref(`${url.pathname}${url.search}${url.hash}`, media) ?? mapMediaUrlToSameOrigin(raw, media);
+			return publicDocumentHref(`${url.pathname}${url.search}${url.hash}`, media) ?? mapMediaUrlToPublic(raw, media);
 		}
 		return url.href;
 	} catch { return null; }
@@ -52,7 +48,7 @@ export function sanitizePageHtml(html: string, media: MediaSourceConfig): string
 					...(attrs.target === '_blank' ? { target: '_blank', rel: 'noopener noreferrer' } : {}) } : {} };
 			},
 			img: (_tag, attrs): sanitizeHtml.Tag => {
-				const src = mapMediaUrlToSameOrigin(attrs.src, media);
+				const src = mapMediaUrlToPublic(attrs.src, media);
 				return { tagName: 'img', attribs: src ? { src, alt: attrs.alt ?? '', loading: 'lazy' } : {} };
 			}
 		},

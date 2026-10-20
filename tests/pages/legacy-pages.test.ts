@@ -43,7 +43,7 @@ test('generic legacy blocks keep formatting and links; empty search page adds no
 	assert.match(mapped.blocks[0].html, /<h2>Synthetic party<\/h2>/);
 	assert.match(mapped.blocks[0].html, /<strong>Join us\.<\/strong>/);
 	assert.match(mapped.blocks[0].html, /href="https:\/\/forms.gle\/example"/);
-	assert.match(mapped.blocks[0].html, /src="\/media\/synthetic\/party.png"/);
+	assert.match(mapped.blocks[0].html, /src="https:\/\/media\.example\.test\/synthetic\/party.png"/);
 	assert.doesNotMatch(JSON.stringify(mapped), /bad\(\)|iframe|private-/);
 	const search = mapDeliveryPage({
 		...deliveryPage('/search-results/'), name: 'Search Results',

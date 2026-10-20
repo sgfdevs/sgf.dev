@@ -1,62 +1,26 @@
-import type { components } from '../api/generated/sgfPublicApiSchema';
 import type { MediaSourceConfig } from './config';
-import {
-	MEDIA_PUBLIC_ROUTE_PREFIX,
-	MEDIA_SOURCE_RELATIVE_PREFIX,
-	STATIC_MEDIA_PASSTHROUGH,
-	hasInvalidPercentEscape,
-	normalizeMediaQuery,
-	parseMediaKey
-} from './validation';
 
-export type PublicDirectoryMemberDto = components['schemas']['PublicDirectoryMemberDto'];
+export const STATIC_MEDIA_PASSTHROUGH = '/images/pipey.jpg';
+const unsafe = /[\u0000-\u0020\u007f\\\\]|%(?:0[0-9a-f]|1[0-9a-f]|2e|2f|5c|7f)/i;
 
-export function mapPublicDirectoryMemberMedia(
-	member: PublicDirectoryMemberDto,
-	config: MediaSourceConfig
-): PublicDirectoryMemberDto {
-	return {
-		...member,
-		image: mapMediaUrlToSameOrigin(member.image, config) ?? STATIC_MEDIA_PASSTHROUGH
-	};
-}
-
-export function mapMediaUrlToSameOrigin(input: string | null | undefined, config: MediaSourceConfig): string | null {
-	if (!input) return null;
-	if (input === STATIC_MEDIA_PASSTHROUGH) return input;
-	if (input.startsWith('//') || input.includes('\\') || hasInvalidPercentEscape(input)) return null;
-	if (input.includes('#')) return null;
-
-	const publicSourceOrigin = config.publicSourceOrigin;
-	const cmsInternalOrigin = config.cmsInternalOrigin;
-
-	if (input.startsWith(MEDIA_SOURCE_RELATIVE_PREFIX)) {
-		return buildSameOriginMediaUrl(input.slice(MEDIA_SOURCE_RELATIVE_PREFIX.length));
-	}
-
-	if (input.startsWith(`${publicSourceOrigin}/`)) {
-		return buildSameOriginMediaUrl(input.slice(publicSourceOrigin.length + 1));
-	}
-
-	if (cmsInternalOrigin && input.startsWith(`${cmsInternalOrigin}${MEDIA_SOURCE_RELATIVE_PREFIX}`)) {
-		return buildSameOriginMediaUrl(input.slice(cmsInternalOrigin.length + MEDIA_SOURCE_RELATIVE_PREFIX.length));
-	}
-
+// Public CDN paths omit /media/. Native CMS paths include it.
+export function publicMediaHref(input: string | null | undefined, config: MediaSourceConfig): string | null {
+	if (!input || unsafe.test(input) || input.startsWith('//') || /(?:^|\/)\.\.?(?:\/|$)/.test(input)) return null;
+	try {
+		const base = new URL(config.publicMediaUrl);
+		const url = new URL(input, 'https://sgf.dev');
+		if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return null;
+		if (url.origin === base.origin && url.pathname.startsWith(base.pathname)) return url.href;
+		if (input.startsWith('/media/') || (url.origin === config.cmsInternalOrigin && url.pathname.startsWith('/media/'))) {
+			const result = new URL(url.pathname.slice('/media/'.length) + url.search + url.hash, base);
+			return result.origin === base.origin && result.pathname.startsWith(base.pathname) ? result.href : null;
+		}
+	} catch { /* Invalid URLs are omitted from rendered content. */ }
 	return null;
 }
 
-function buildSameOriginMediaUrl(rawPathAndQuery: string): string | null {
-	const [rawPath, ...queryParts] = rawPathAndQuery.split('?');
-	if (!rawPath || queryParts.length > 1) return null;
-
-	let mediaKey: string;
-	let mediaQuery: string;
-	try {
-		mediaKey = parseMediaKey(rawPath).key;
-		mediaQuery = normalizeMediaQuery(new URLSearchParams(queryParts[0] ?? ''));
-	} catch {
-		return null;
-	}
-
-	return `${MEDIA_PUBLIC_ROUTE_PREFIX}${mediaKey}${mediaQuery ? `?${mediaQuery}` : ''}`;
+export function mapMediaUrlToPublic(input: string | null | undefined, config: MediaSourceConfig): string | null {
+	if (input === STATIC_MEDIA_PASSTHROUGH) return input;
+	const href = publicMediaHref(input, config);
+	return href && /\.(?:avif|gif|jpe?g|png|svg|webp)$/i.test(new URL(href).pathname) ? href : null;
 }

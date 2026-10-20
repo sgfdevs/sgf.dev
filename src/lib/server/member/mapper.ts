@@ -1,7 +1,7 @@
 import type { components } from '../api/generated/sgfPublicApiSchema';
 import { isPublicMemberUsername } from '../api/factory';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
+import { mapMediaUrlToPublic } from '../media/mapper';
 import { sanitizeMemberBiography } from './biography';
 import { safeMemberHttpUrl } from './links';
 
@@ -45,7 +45,7 @@ export function mapPublicMemberProfile(value: PublicMemberProfileDto, mediaConfi
 		name: string(source.name),
 		url: '/member/' + username,
 		jobTitle: optionalString(source.jobTitle),
-		image: mapMediaUrlToSameOrigin(string(source.profileImageUrl), mediaConfig) ?? '/images/pipey.jpg',
+		image: mapMediaUrlToPublic(string(source.profileImageUrl), mediaConfig) ?? '/images/pipey.jpg',
 		tags: array(source.tags).map(string),
 		location: [optionalString(source.city), optionalString(source.state)].filter(Boolean).join(', '),
 		joinMonthLabel: optionalString(source.joinMonthLabel),

@@ -14,8 +14,8 @@ test('company mapper keeps legacy public fields and real filters, never private 
 	const mapped = mapDeliveryCompany(source, companyPath, media);
 	assert.equal(mapped.path, companyPath); assert.equal(mapped.name, source.name);
 	assert.equal(mapped.headline, source.properties.headline);
-	assert.equal(mapped.image, '/media/synthetic/logo.png');
-	assert.equal(mapped.featuredImage, '/media/synthetic/featured.png');
+	assert.equal(mapped.image, 'https://media.example.test/synthetic/logo.png');
+	assert.equal(mapped.featuredImage, 'https://media.example.test/synthetic/featured.png');
 	assert.equal(mapped.isFoundingSponsor, true); assert.equal(mapped.location, 'Springfield, MO');
 	assert.equal(mapped.skills[0].url, '/directory/?skills=' + skillTerm);
 	assert.equal(mapGroup(groupFixture(), media).skills[0].url, mapped.skills[0].url);

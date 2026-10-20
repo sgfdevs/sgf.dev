@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { memberClient } from '../../../lib/server/auth/runtime';
-import { mapMediaUrlToSameOrigin } from '../../../lib/server/media/mapper';
+import { mapMediaUrlToPublic } from '../../../lib/server/media/mapper';
 import { readMediaSourceConfig } from '../../../lib/server/media/runtime';
 import type { RequestHandler } from './$types';
 
@@ -24,7 +24,7 @@ export const POST: RequestHandler = async event => {
     if (result.response.status === 413) failed('size');
     if (result.response.status === 429) failed('busy');
     if (result.response.status === 400) failed('invalid');
-    if (!result.data?.profileImageUrl || !mapMediaUrlToSameOrigin(result.data.profileImageUrl, readMediaSourceConfig()))
+    if (!result.data?.profileImageUrl || !mapMediaUrlToPublic(result.data.profileImageUrl, readMediaSourceConfig()))
         failed('unavailable');
     // Reload the current member profile; never accept a browser-selected media URL or ID.
     redirect(303, '/account?avatar=updated');

@@ -1,7 +1,6 @@
 import type { components } from '../api/generated/sgfPublicApiSchema';
 import type { MediaSourceConfig } from '../media/config';
-import { mapMediaUrlToSameOrigin } from '../media/mapper';
-import { STATIC_MEDIA_PASSTHROUGH } from '../media/validation';
+import { mapMediaUrlToPublic, STATIC_MEDIA_PASSTHROUGH } from '../media/mapper';
 
 export type PublicDirectoryMemberDto = components['schemas']['PublicDirectoryMemberDto'];
 export type PublicSkillFilterDto = components['schemas']['PublicSkillFilterDto'];
@@ -51,7 +50,7 @@ function mapDirectoryMember(value: unknown, mediaConfig: MediaSourceConfig, path
 	return {
 		name: requireString(source.name, `${path}.name`),
 		location: requireString(source.location, `${path}.location`),
-		image: mapMediaUrlToSameOrigin(requireString(source.image, `${path}.image`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
+		image: mapMediaUrlToPublic(requireString(source.image, `${path}.image`), mediaConfig) ?? STATIC_MEDIA_PASSTHROUGH,
 		url: requireInternalPath(source.url, `${path}.url`),
 		tags: mapStringArray(source.tags, `${path}.tags`)
 	};

@@ -1,5 +1,5 @@
 import type { PublicJobDto } from '../../src/lib/server/jobs/mapper';
-export const media = { publicSourceOrigin: 'https://media.example.test', cmsInternalOrigin: 'http://127.0.0.1:5099' };
+export const media = { publicMediaUrl: 'https://media.example.test/', cmsInternalOrigin: 'http://127.0.0.1:5099' };
 export function jobFixture(): PublicJobDto {
 	return { name: 'Z synthetic engineer', companyName: 'Synthetic company', path: '/companies/element-11/mid-level-engineer/',
 		location: 'Springfield, MO', employmentType: 'Full time', compensation: '$90,000', posted: 'January 2, 2001',

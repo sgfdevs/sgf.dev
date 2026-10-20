@@ -1,6 +1,6 @@
 import type { PublicGroupDto } from '../../src/lib/server/groups/mapper';
 
-export const media = { publicSourceOrigin: 'https://media.example.test', cmsInternalOrigin: 'http://cms.example.test' };
+export const media = { publicMediaUrl: 'https://media.example.test/', cmsInternalOrigin: 'http://cms.example.test' };
 export function groupFixture(name = 'Z synthetic group', path = '/groups/Rust-SGF/'): PublicGroupDto {
 	return {
 		name, path, aboutHtml: '<p>Existing group about text <strong>unchanged</strong>.</p>',
