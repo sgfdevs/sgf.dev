@@ -114,6 +114,18 @@ The image defaults to port 3000 and `BODY_SIZE_LIMIT=9M`; it does not include a 
 
 `.dockerignore` permits only build inputs and excludes local secrets and output.
 Run `npm test` for the unit suite. It type-checks tests once and runs every test
-folder, without a browser or live CMS. CI runs the same command, Svelte checking,
-generated API freshness checks and build. It does not deploy, use action secrets
-or build/push an image. Visual checks and complete member journeys belong in staging.
+folder, without a browser or live CMS. PR CI runs the same command, Svelte checking,
+generated API freshness checks and build. It does not deploy or build/push images.
+
+On `main`, semantic-release creates GitHub releases from Conventional Commits.
+A new release calls the reusable Docker publishing workflow to push native
+`linux/amd64` and `linux/arm64` images to `ghcr.io/sgfdevs/sgf.dev`, tagged
+with the release version and `latest`.
+
+Images build for the public repository Actions variable `FRONTEND_ORIGIN`,
+defaulting to `https://www.sgf.dev`. The workflow passes it as the Docker `ORIGIN`
+build argument. No CMS keys or other secrets are build arguments. Rebuild for a
+different origin; setting a runtime `ORIGIN` cannot change the built origin.
+Staging and production promotions remain manual; automated promotion jobs are
+disabled. Test staging, including visual checks and complete member journeys,
+before promoting to production.
